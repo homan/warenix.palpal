@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<style name="light_theme" parent="@android:style/Theme.Light">
+	</style>
+
+	<style name="palpal_theme" parent="light_theme">
+		<item name="android:windowNoTitle">true</item>
+	</style>
+
+	<style name="title" parent="palpal_theme">
+		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:textColor">#000000</item>
+		<item name="android:typeface">sans</item>
+		<item name="android:gravity">center_vertical|center_horizontal</item>
+		<item name="android:paddingLeft">10dip</item>
+
+	</style>
+
+	<style name="status" parent="palpal_theme">
+		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:textSize">18sp</item>
+		<item name="android:textColor">#000000</item>
+		<item name="android:typeface">sans</item>
+		<item name="android:gravity">center_vertical</item>
+		<item name="android:paddingLeft">10dip</item>
+		<item name="android:paddingTop">10dip</item>
+		<item name="android:paddingBottom">10dip</item>
+	</style>
+
+	<style name="statusCount" parent="palpal_theme">
+		<item name="android:gravity">center_vertical</item>
+		<item name="android:textColor">#000000</item>
+		<item name="android:paddingRight">5dip</item>
+	</style>
+
+
+	<style name="message" parent="palpal_theme">
+		<item name="android:textColor">#000000</item>
+		<item name="android:textSize">18sp</item>
+		<item name="android:typeface">sans</item>
+		<item name="android:gravity">center_vertical</item>
+	</style>
+
+	<style name="name" parent="palpal_theme">
+		<item name="android:gravity">center_vertical|center_horizontal</item>
+		<item name="android:textColor">#000000</item>
+		<item name="android:typeface">sans</item>
+	</style>
+
+	<style name="description" parent="palpal_theme">
+		<item name="android:textColor">#000000</item>
+		<item name="android:typeface">sans</item>
+	</style>
+
+	<style name="link" parent="palpal_theme">
+		<item name="android:typeface">sans</item>
+		<item name="android:textColor">#000000</item>
+	</style>
+
+	<style name="caption" parent="palpal_theme">
+		<item name="android:gravity">center_vertical|center_horizontal</item>
+		<item name="android:typeface">sans</item>
+		<item name="android:textColor">#000000</item>
+	</style>
+
+	<style name="source" parent="palpal_theme">
+		<item name="android:typeface">sans</item>
+		<item name="android:textColor">#000000</item>
+	</style>
+</resources>

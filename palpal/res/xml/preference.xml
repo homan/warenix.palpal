@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+	<PreferenceCategory android:title="Facebook">
+		<EditTextPreference android:key="@string/KEY_FACEBOOK_NUMBER_OF_WALL_POSTS"
+			android:title="Wall" android:summary="Number of wall posts in one page"
+			android:dialogTitle="How many wall posts will be loaded in one page?"
+			android:inputType="phone" />
+		<EditTextPreference android:key="@string/KEY_FACEBOOK_NUMBER_OF_ALBUMS"
+			android:title="Albums" android:summary="Number of albums appear in one page"
+			android:dialogTitle="How many albums will be loaded in one page?"
+			android:inputType="phone" />
+		<EditTextPreference android:key="@string/KEY_FACEBOOK_NUMBER_OF_ALBUM_PHOTOS"
+			android:title="Album Photos" android:summary="Number of album photos appear in one page"
+			android:dialogTitle="How many album photos will be loaded in one page?"
+			android:inputType="phone" />
+		<EditTextPreference android:key="@string/KEY_FACEBOOK_NUMBER_OF_COMMENTS"
+			android:title="Comments" android:summary="Number of comments appear in one page"
+			android:dialogTitle="How many comments will be loaded in a post?"
+			android:inputType="phone" />
+		<EditTextPreference android:key="@string/KEY_FACEBOOK_NUMBER_OF_RECENT_CHECKINS"
+			android:title="Checkins" android:summary="Number of recent friends' checkins appear on map"
+			android:dialogTitle="How many recent friends' checkins will be loaded on map?"
+			android:inputType="phone" />
+	</PreferenceCategory>
+
+	<PreferenceCategory android:title="Twitter">
+		<EditTextPreference android:key="@string/KEY_TWITTER_NUMBER_OF_TWEETS"
+			android:title="Tweets" android:summary="Number of tweets appear in one page"
+			android:dialogTitle="How many tweets will be loaded in one page?"
+			android:inputType="phone" />
+	</PreferenceCategory>
+</PreferenceScreen>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	android:paddingTop="@dimen/padding_top" android:paddingBottom="@dimen/padding_bottom"
+	android:cacheColorHint="#00000000" android:background="@drawable/tile">
+
+	<ImageView android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:id="@+id/loadingImage"
+		android:src="@drawable/ic_launcher" android:layout_centerInParent="true"></ImageView>
+
+	<ExpandableListView android:id="@+id/timeline"
+		android:layout_below="@id/username" android:layout_height="fill_parent"
+		android:layout_width="fill_parent" android:layout_alignParentLeft="true"
+		android:cacheColorHint="#00000000">
+	</ExpandableListView>
+</RelativeLayout>

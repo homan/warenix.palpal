@@ -1,0 +1,32 @@
+<RelativeLayout android:id="@+id/RelativeLayout01"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:background="@color/facebook_comment_background"
+	android:paddingTop="@dimen/padding_top" android:paddingBottom="@dimen/padding_bottom">
+
+	<org.dyndns.warenix.widget.WebImage
+		android:layout_alignParentLeft="true" android:id="@+id/profileImage"
+		android:layout_width="@dimen/profileImageWidth" android:layout_height="@dimen/profileImageHeight"
+		android:padding="@dimen/profilePadding" />
+	<TextView android:layout_height="wrap_content"
+		android:layout_width="wrap_content" android:layout_toRightOf="@+id/profileImage"
+		android:id="@+id/username" android:text="username"
+		android:layout_alignTop="@+id/profileImage"
+		android:layout_alignBottom="@+id/profileImage" style="@style/message"></TextView>
+
+	<TextView android:layout_height="wrap_content"
+		android:layout_width="wrap_content" android:id="@+id/postDate"
+		android:text="postDate" android:layout_toRightOf="@+id/profileImage"
+		android:layout_alignBottom="@+id/profileImage" />
+
+
+
+	<TextView android:layout_below="@id/profileImage"
+		android:layout_height="wrap_content" android:layout_width="wrap_content"
+		android:id="@+id/comment" android:text="comment" style="@style/message" />
+
+	<Gallery android:id="@+id/like_gallery" android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:layout_below="@id/comment"
+		android:spacing="3dip" />
+
+</RelativeLayout>

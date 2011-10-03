@@ -1,0 +1,25 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<!-- <item android:id="@android:id/background" android:drawable="@drawable/ic_launcher" 
+		/> -->
+<!---->
+	<!-- <item android:id="@android:id/secondaryProgress"> -->
+	<!-- <clip> -->
+	<!-- <shape> -->
+	<!-- <corners android:radius="5dip" /> -->
+	<!-- <gradient android:startColor="#80d3ff00" -->
+	<!-- android:centerColor="#80b6ff00" android:centerY="0.75" -->
+	<!-- android:endColor="#a0cbff00" android:angle="270" /> -->
+	<!-- </shape> -->
+	<!-- </clip> -->
+	<!-- </item> -->
+<!---->
+	<!-- <item android:id="@android:id/progress"> -->
+	<!-- <clip android:drawable="@drawable/icon" /> -->
+	<!-- </item> -->
+	<item>
+		<rotate android:duration="3500" android:pivotX="50%"
+			android:pivotY="50%" android:fromDegrees="0" android:toDegrees="360"
+			android:drawable="@drawable/ic_launcher" />
+	</item>
+</layer-list>

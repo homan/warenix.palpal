@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" android:layout_height="fill_parent" android:paddingTop="@dimen/padding_top" android:paddingBottom="@dimen/padding_bottom">
+	<TextView android:text="@+id/stats" android:layout_height="wrap_content"
+		android:layout_width="wrap_content" android:layout_alignParentTop="true"
+		android:layout_alignParentRight="true" android:id="@+id/stats"></TextView>
+	<TextView android:text="createdTime" android:layout_height="wrap_content"
+		android:layout_width="wrap_content" android:id="@+id/createdTime"
+		android:layout_alignParentLeft="true"></TextView>
+</RelativeLayout>

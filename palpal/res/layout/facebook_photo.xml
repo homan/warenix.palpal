@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	android:orientation="vertical" android:background="@color/facebook_album_photo_background"
+	android:paddingTop="@dimen/padding_top" android:paddingBottom="@dimen/padding_bottom">
+	<include layout="@layout/post_header" />
+	<TextView android:text="@+id/name" android:layout_height="wrap_content"
+		android:layout_width="fill_parent" android:id="@+id/name" style="@style/message"></TextView>
+	<org.dyndns.warenix.widget.WebImage
+		android:layout_width="fill_parent" android:layout_height="fill_parent"
+		android:id="@+id/picture" android:src="@drawable/ic_launcher"
+		android:layout_alignTop="@+id/description" android:layout_gravity="center_vertical|center_horizontal" />
+</LinearLayout>

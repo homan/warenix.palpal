@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	android:orientation="vertical" android:paddingTop="@dimen/padding_top"
+	android:paddingBottom="@dimen/padding_bottom" android:cacheColorHint="#00000000"
+	android:background="@drawable/tile">
+
+
+	<TextView android:text="PIN" android:layout_width="wrap_content"
+		android:layout_height="wrap_content"></TextView>
+	<EditText android:text="" android:id="@+id/oauth_pin"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:maxLength="7" android:inputType="phone"></EditText>
+	<Button android:text="submit" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:id="@+id/submit"></Button>
+
+</LinearLayout>

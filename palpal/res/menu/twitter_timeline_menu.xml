@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item android:id="@+id/menu_previous_page" android:icon="@drawable/previous_72x72"
+		android:title="Previous Page" />
+	<item android:icon="@drawable/next_72x72" android:title="Next Page"
+		android:id="@+id/menu_next_page" />
+	<item android:id="@+id/menu_share_status" android:icon="@drawable/share_72x72"
+		android:title="Compose"></item>
+	<item android:id="@+id/menu_mentions" android:icon="@drawable/at_72x72"
+		android:title="Mentions"></item>
+	<item android:title="Trigger Mode" android:id="@+id/menu_trigger_mode"
+		android:icon="@drawable/trigger_72x72" />
+</menu>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+	<item android:state_selected="false">
+		<shape android:shape="rectangle">
+			<gradient android:endColor="@color/facebook_editable_field_background"
+				android:startColor="@color/facebook_editable_field_background"
+				android:centerColor="@color/facebook_editable_field_background"
+				android:angle="0" android:centerY="0" />
+			<stroke android:width="3dp" android:color="#ff000000" />
+
+			<corners android:radius="10dip" />
+			<!-- <padding android:left="10dp" android:top="10dp" -->
+			<!-- android:right="10dp" android:bottom="10dp" /> -->
+		</shape>
+	</item>
+</selector>
