@@ -1,6 +1,6 @@
 package org.dyndns.warenix.palpal.animation;
 
-import org.dyndns.warenix.palpal.R;
+import org.dyndns.warenix.palpaltwitter.R;
 
 import android.content.Context;
 import android.view.View;
@@ -12,14 +12,14 @@ public class AnimationEffect {
 			boolean isStart) {
 		if (isStart) {
 			Animation fetchPageAnimation = AnimationUtils.loadAnimation(
-					context, R.anim.jump_anim);
-			view.setVisibility(View.VISIBLE);
+					context, R.anim.fade_in);
+			// view.setVisibility(View.VISIBLE);
 			view.startAnimation(fetchPageAnimation);
 		} else {
 			Animation fetchPageAnimation = AnimationUtils.loadAnimation(
-					context, R.anim.slide_right_out);
+					context, R.anim.pump_bottom);
 			view.startAnimation(fetchPageAnimation);
-			view.setVisibility(View.GONE);
+			// view.setVisibility(View.GONE);
 		}
 	}
 }

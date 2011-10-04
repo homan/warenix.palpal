@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-	<item android:id="@+id/menu_previous_page" android:icon="@drawable/previous_72x72"
-		android:title="Previous Page" />
-
-	<item android:id="@+id/menu_next_page" android:icon="@drawable/next_72x72"
-		android:title="Next Page" />
-
-</menu>

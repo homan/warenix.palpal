@@ -3,6 +3,7 @@ package org.dyndns.warenix.palpal;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import org.dyndns.warenix.palpaltwitter.R;
 
 public class PalPalPreference {
 	static final String PREFS_NAME = "palpal_preferenceF";

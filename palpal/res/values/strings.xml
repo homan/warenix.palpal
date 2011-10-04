@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">PalPal</string>
-
-	<string name="KEY_FACEBOOK_NUMBER_OF_WALL_POSTS">KEY_FACEBOOK_NUMBER_OF_WALL_POSTS</string>
-	<string name="KEY_FACEBOOK_NUMBER_OF_ALBUMS">KEY_FACEBOOK_NUMBER_OF_ALBUMS</string>
-	<string name="KEY_FACEBOOK_NUMBER_OF_ALBUM_PHOTOS">KEY_FACEBOOK_NUMBER_OF_ALBUM_PHOTOS</string>
-	<string name="KEY_FACEBOOK_NUMBER_OF_COMMENTS">KEY_FACEBOOK_NUMBER_OF_COMMENTS</string>
-	<string name="KEY_FACEBOOK_NUMBER_OF_RECENT_CHECKINS">KEY_FACEBOOK_NUMBER_OF_RECENT_CHECKINS</string>
-	<string name="KEY_TWITTER_NUMBER_OF_TWEETS">KEY_TWITTER_NUMBER_OF_TWEETS</string>
+	<string name="app_name">PalPal Twitter</string>
+	<string name="labelSelectUser">a</string>
+	<string name="labelSelectHashtag">#</string>
 </resources>

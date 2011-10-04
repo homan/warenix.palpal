@@ -1,17 +1,20 @@
 package org.dyndns.warenix.palpal.dialog;
 
+import java.io.File;
 import java.net.URI;
 
-import org.dyndns.warenix.palpal.R;
 import org.dyndns.warenix.palpal.content.LocalFileContentProvider;
+import org.dyndns.warenix.palpaltwitter.R;
 import org.dyndns.warenix.util.DownloadFileTool;
 import org.dyndns.warenix.util.DownloadImageTask;
+import org.dyndns.warenix.util.DownloadImageTask.DownloadImageTaskCallback;
 import org.dyndns.warenix.widget.WebImage;
 
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
+import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -65,9 +68,9 @@ public class PalPalDialog {
 		});
 
 		// set ui
-		WebView webview = (WebView) dialog.findViewById(R.id.webview);
+		final WebView webview = (WebView) dialog.findViewById(R.id.webview);
 
-		webview.setBackgroundColor(R.color.facebook_album_photo_background);
+		webview.setBackgroundColor(R.color.activityTitleColor);
 
 		FrameLayout mContentView = (FrameLayout) dialog.getWindow()
 				.getDecorView().findViewById(android.R.id.content);
@@ -78,15 +81,34 @@ public class PalPalDialog {
 		webview.getSettings().setDefaultZoom(WebSettings.ZoomDensity.FAR);
 
 		// use cached image if found
-		String localFile = authorizeUrl.toString();
-		String contentUri = LocalFileContentProvider
-				.constructUri(DownloadFileTool.getCompletePath(
-						DownloadImageTask.CACHE_DIR,
-						WebImage.hashUrl(localFile)));
-		webview.loadUrl(contentUri);
+
+		final String fileUrl = authorizeUrl.toString();
+		final String completePath = DownloadFileTool.getCompletePath(
+				DownloadImageTask.CACHE_DIR, WebImage.hashUrl(fileUrl));
+
+		if (new File(completePath).exists()) {
+			String contentUri = LocalFileContentProvider
+					.constructUri(completePath);
+			webview.loadUrl(contentUri);
+		} else {
+			DownloadImageTask task = new DownloadImageTask(
+					new DownloadImageTaskCallback() {
+
+						@Override
+						public void onDownloadComplete(String url, Bitmap bitmap) {
+							String contentUri = LocalFileContentProvider
+									.constructUri(completePath);
+							webview.loadUrl(contentUri);
+						}
+
+					}, fileUrl);
+			task.execute(WebImage.hashUrl(fileUrl));
+		}
+
 		Log.v("warenix", String.format("after loadURL %s", authorizeUrl));
 
 		dialog.show();
 
 	}
+
 }

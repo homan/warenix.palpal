@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<style name="light_theme" parent="@android:style/Theme.Light">
+	</style>
+
+	<style name="palpal_theme" parent="@android:style/Theme.Black">
+		<item name="android:windowNoTitle">true</item>
+	</style>
+
+	<!-- <style name="palpal_translucent" parent="@android:style/Theme.Translucent.NoTitleBar"> -->
+	<style name="palpal_translucent" parent="@android:style/Theme.Dialog">
+		<item name="android:windowNoTitle">true</item>
+	</style>
+</resources>

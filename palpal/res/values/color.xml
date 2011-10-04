@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<color name="timelineBackground">#f1000000</color>
+	<color name="activityTitleColor">#ffffff</color>
+	<color name="unreadMessage">#abcdef</color>
+	<color name="palpalColor">#00ccff</color>
+</resources>

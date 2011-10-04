@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="ext_src"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
-	<classpathentry kind="lib" path="lib/jtwitter.jar"/>
-	<classpathentry kind="lib" path="lib/signpost-core-1.2.1.1.jar"/>
 	<classpathentry kind="src" path="gen"/>
-	<classpathentry kind="lib" path="lib/apache-mime4j-0.6.1.jar"/>
-	<classpathentry kind="lib" path="lib/httpclient-4.0.3.jar"/>
-	<classpathentry kind="lib" path="lib/httpcore-4.1.jar"/>
-	<classpathentry kind="lib" path="lib/httpmime-4.0.3.jar"/>
-	<classpathentry kind="lib" path="lib/twitter4j-snapshot/twitter4j-async-2.2.1-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="lib/twitter4j-snapshot/twitter4j-core-2.2.1-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="lib/twitter4j-snapshot/twitter4j-stream-2.2.1-SNAPSHOT.jar"/>
+	<classpathentry kind="src" path="ext_src"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="lib/twitter4j-snapshot/twitter4j-async-android-2.2.3.jar"/>
+	<classpathentry kind="lib" path="lib/twitter4j-snapshot/twitter4j-core-android-2.2.3.jar"/>
+	<classpathentry kind="lib" path="lib/twitter4j-snapshot/twitter4j-media-support-android-2.2.3.jar"/>
+	<classpathentry kind="lib" path="lib/twitter4j-snapshot/twitter4j-stream-android-2.2.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

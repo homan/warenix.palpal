@@ -1,6 +1,6 @@
 package org.dyndns.warenix.palpal.social.twitter.stream;
 
-import org.dyndns.warenix.palpal.R;
+import org.dyndns.warenix.palpaltwitter.R;
 import org.dyndns.warenix.pattern.baseListView.ListViewItem;
 import org.dyndns.warenix.widget.WebImage;
 
@@ -46,12 +46,12 @@ public class StatusItem extends ListViewItem {
 
 	@Override
 	public void showContextMenu(ContextMenu menu) {
-		// menu.setHeaderTitle("Actions");
-		// menu.add(0, MENU_REPLY_ALL, 0, "Reply All");
-		// menu.add(0, MENU_RETWEET_RT, 0, "Retweet (RT)");
-		// if (tweet.getInReplyToStatusId() != -1) {
-		// menu.add(0, MENU_CONVERSATION, 0, "Conversation");
-		// }
+		menu.setHeaderTitle("Actions");
+		menu.add(0, MENU_REPLY_ALL, 0, "Reply All");
+		menu.add(0, MENU_RETWEET_RT, 0, "Retweet (RT)");
+		if (tweet.getInReplyToStatusId() != -1) {
+			menu.add(0, MENU_CONVERSATION, 0, "Conversation");
+		}
 	}
 
 	class ViewHolder {

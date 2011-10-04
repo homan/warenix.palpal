@@ -1,2 +1,3 @@
 <bitmap xmlns:android="http://schemas.android.com/apk/res/android"
-	android:src="@drawable/diary" android:tileMode="repeat" android:dither="true" />
+	android:src="@drawable/diary" android:tileMode="repeat"
+	android:dither="true" />

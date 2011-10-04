@@ -1,0 +1,20 @@
+
+<RelativeLayout android:id="@+id/relativeLayout1"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	xmlns:android="http://schemas.android.com/apk/res/android">
+	<ImageView android:id="@+id/frame" android:layout_height="wrap_content"
+		android:layout_width="wrap_content" android:src="@drawable/frame_300x300"
+		android:layout_centerHorizontal="true"></ImageView>
+
+	<org.dyndns.warenix.widget.WebImage
+		android:id="@+id/image" android:layout_height="300px"
+		android:layout_width="300px" android:src="@drawable/icon"
+		android:layout_marginTop="11dip" android:layout_centerHorizontal="true" />
+<!-- 	<TextView android:layout_height="wrap_content" -->
+<!-- 		android:textAppearance="?android:attr/textAppearanceSmall" -->
+<!-- 		android:text="10 likes   23 comments" android:id="@+id/textView1" -->
+<!-- 		android:layout_width="wrap_content" android:layout_marginTop="10dip" -->
+<!-- 		android:layout_marginRight="10dip" android:layout_alignBottom="@id/frame" -->
+<!-- 		android:layout_below="@id/image" android:layout_alignRight="@id/frame" -->
+<!-- 		android:textColor="@android:color/darker_gray"></TextView> -->
+</RelativeLayout>

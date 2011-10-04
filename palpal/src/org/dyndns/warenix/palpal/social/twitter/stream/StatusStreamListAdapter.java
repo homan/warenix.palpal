@@ -2,6 +2,8 @@ package org.dyndns.warenix.palpal.social.twitter.stream;
 
 import java.util.List;
 
+import org.dyndns.warenix.palpal.bubbleMessage.BubbleMessage;
+import org.dyndns.warenix.palpal.social.twitter.TwitterBubbleMessage;
 import org.dyndns.warenix.pattern.baseListView.ListViewAdapter;
 
 import twitter4j.Status;
@@ -15,8 +17,13 @@ public class StatusStreamListAdapter extends ListViewAdapter {
 	}
 
 	// adapter methods
-	public void addStatus(Status status) {
-		itemList.add(new StatusItem(status));
+	public void addStatus(Status tweet) {
+		TwitterBubbleMessage message = new TwitterBubbleMessage(tweet.getUser()
+				.getScreenName(), tweet.getText(), tweet.getUser()
+				.getProfileImageURL().toString(), new java.sql.Date(tweet
+				.getCreatedAt().getTime()), "twitter", tweet.getId() + "");
+
+		itemList.add(message);
 		((Activity) context).runOnUiThread(new Runnable() {
 			public void run() {
 				notifyDataSetChanged();
@@ -25,7 +32,7 @@ public class StatusStreamListAdapter extends ListViewAdapter {
 
 	}
 
-	public void addAllStatus(List<StatusItem> statusList) {
+	public void addAllStatus(List<BubbleMessage> statusList) {
 		itemList.addAll(statusList);
 		((Activity) context).runOnUiThread(new Runnable() {
 			public void run() {

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" android:layout_height="fill_parent">
+
+	<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_width="fill_parent" android:layout_height="fill_parent"
+		android:background="@drawable/activity_background">
+		<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			android:layout_width="fill_parent" android:layout_height="fill_parent">
+
+			<TextView android:text="page" android:id="@+id/page"
+				android:layout_width="wrap_content" android:layout_height="wrap_content"
+				android:layout_alignParentRight="true" />
+
+			<include layout="@layout/bubble_message"
+				android:layout_width="fill_parent" android:layout_height="wrap_content"
+				android:id="@+id/bubble_message" android:layout_below="@id/page" />
+			<org.dyndns.warenix.widget.WebImage
+				android:layout_width="fill_parent" android:layout_height="fill_parent"
+				android:id="@+id/image" android:layout_below="@id/bubble_message" />
+		</RelativeLayout>
+	</ScrollView>
+	<ImageButton android:id="@+id/prev" android:text=""
+		android:layout_width="wrap_content" android:layout_alignParentLeft="true" android:layout_centerVertical="true"
+		android:background="@android:drawable/ic_media_previous" android:layout_height="200dip"/>
+	<ImageButton android:id="@+id/next" android:layout_width="wrap_content"
+		android:text=""
+		android:layout_alignParentRight="true" android:layout_centerVertical="true"
+		android:background="@android:drawable/ic_media_next" android:layout_height="200dip"/>
+</RelativeLayout>

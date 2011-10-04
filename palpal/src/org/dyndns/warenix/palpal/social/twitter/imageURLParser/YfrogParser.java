@@ -23,11 +23,15 @@ public class YfrogParser {
 					Pattern.CASE_INSENSITIVE);
 			Matcher m = p.matcher(twitpicHtml);
 			String twitpitUrl = "";
+			int imageSkipped = 0;
 			while (m.find()) {
 				twitpitUrl = m.start(1) != -1 ? m.group(1) : m.group(2);
 				if (twitpitUrl.contains("yfrog")) {
-					Log.d("warenix", twitpitUrl);
-					return twitpitUrl;
+					if (imageSkipped == 1) {
+						Log.d("warenix", twitpitUrl);
+						return twitpitUrl;
+					}
+					imageSkipped++;
 				}
 			}
 

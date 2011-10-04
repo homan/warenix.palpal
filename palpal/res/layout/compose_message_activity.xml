@@ -1,0 +1,71 @@
+<RelativeLayout android:id="@+id/linearLayout1"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:background="@drawable/activity_background">
+
+	<LinearLayout android:id="@+id/header_bar"
+		android:layout_width="wrap_content" android:layout_height="wrap_content">
+		<include layout="@layout/header_bar" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" />
+	</LinearLayout>
+
+	<!-- <TextView android:id="@+id/activityTitle" -->
+	<!-- android:layout_height="48dip" android:layout_width="fill_parent" -->
+	<!-- android:text="COMPOSE MESSAGE" android:textSize="32dip" -->
+	<!-- android:textStyle="bold" android:textColor="@color/activityTitleColor" -->
+	<!-- android:gravity="left" android:background="@drawable/footer_image" 
+		/> -->
+
+	<LinearLayout android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:orientation="horizontal"
+		android:layout_below="@+id/header_bar" android:id="@+id/control">
+		<Button android:layout_width="48dip" android:layout_height="48dip"
+			android:text="@string/labelSelectUser" android:textSize="20dip"
+			android:id="@+id/user" android:layout_below="@+id/balloon_main_layout"
+			android:background="@color/timelineBackground" android:textColor="#ffffff" />
+		<Button android:layout_width="48dip" android:layout_height="48dip"
+			android:text="@string/labelSelectHashtag" android:textSize="20dip"
+			android:id="@+id/hashtag" android:layout_below="@+id/balloon_main_layout"
+			android:layout_toRightOf="@id/user" android:background="@color/timelineBackground"
+			android:textColor="#ffffff" />
+		<Button android:layout_width="48dip" android:layout_height="48dip"
+			android:text="m" android:textSize="20dip" android:id="@+id/location"
+			android:layout_below="@+id/balloon_main_layout"
+			android:layout_toRightOf="@id/hashtag" android:background="@color/timelineBackground"
+			android:textColor="#ffffff" />
+
+		<Button android:id="@+id/charCounter" android:textSize="20dip"
+			android:layout_width="72dip" android:layout_height="48dip"
+			android:text="0" android:layout_toRightOf="@id/location"
+			android:layout_below="@+id/balloon_main_layout" android:background="@color/timelineBackground"
+			android:textColor="#ffffff"></Button>
+		<Button android:id="@+id/send" android:textSize="24dip"
+			android:layout_width="fill_parent" android:layout_height="48dip"
+			android:text="send" android:layout_alignParentRight="true"
+			android:layout_below="@+id/balloon_main_layout" android:background="@color/timelineBackground"
+			android:textColor="@color/palpalColor" android:textStyle="bold"></Button>
+	</LinearLayout>
+
+
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:orientation="horizontal" android:minWidth="100dip"
+		android:id="@+id/balloon_main_layout" android:background="@drawable/bubble_2"
+		android:paddingTop="0dip" android:paddingRight="0dip"
+		android:layout_below="@+id/control">
+
+		<LinearLayout android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:orientation="vertical"
+			android:layout_weight="1" android:paddingTop="5dip"
+			android:paddingLeft="5dip" android:paddingRight="15dip"
+			android:id="@+id/balloon_inner_layout">
+			<EditText android:layout_width="fill_parent"
+				android:layout_height="wrap_content" android:lines="5" android:id="@+id/message" />
+		</LinearLayout>
+	</LinearLayout>
+
+	<include layout="@layout/bubble_message" android:id="@+id/replyToMessage"
+		android:layout_below="@+id/balloon_main_layout" android:layout_width="fill_parent"
+		android:layout_height="fill_parent" android:visibility="gone" />
+
+</RelativeLayout>
