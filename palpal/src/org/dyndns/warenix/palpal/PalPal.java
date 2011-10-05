@@ -9,8 +9,8 @@ import twitter4j.Twitter;
 public class PalPal {
 
 	// twitter
-	public static final String JTWITTER_OAUTH_KEY = "";
-	public static final String JTWITTER_OAUTH_SECRET = "";
+	public static final String JTWITTER_OAUTH_KEY = "zmSG7FZFWZadc7V73G0g";
+	public static final String JTWITTER_OAUTH_SECRET = "vUGNI8MW6HQc88F11arfOWNfW7UyufrNuOEIrZF840";
 
 	private static Twitter twitter;
 

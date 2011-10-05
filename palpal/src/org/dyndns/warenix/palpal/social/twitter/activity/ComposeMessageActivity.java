@@ -118,7 +118,8 @@ public class ComposeMessageActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				final QuickAction qa = new QuickAction(v);
+				final QuickAction qa = new QuickAction(
+						ComposeMessageActivity.this);
 				ActionItem actionItem;
 				// actionItem = new ActionItem();
 				// actionItem.setTitle("list");
@@ -138,56 +139,56 @@ public class ComposeMessageActivity extends Activity {
 				actionItem.setTitle("followers");
 				actionItem.setIcon(getResources().getDrawable(
 						R.drawable.profile));
-				actionItem.setOnClickListener(new OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-						showUser(v);
-						qa.dismiss();
-					}
-				});
-				qa.addActionItem(actionItem);
-				qa.show();
-			}
-		});
-
-		Button location = (Button) findViewById(R.id.location);
-		location.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				final QuickAction qa = new QuickAction(v);
-				ActionItem actionItem;
-				// actionItem = new ActionItem();
-				// actionItem.setTitle("list");
-				// actionItem.setIcon(getResources().getDrawable(
-				// R.drawable.dashboard));
 				// actionItem.setOnClickListener(new OnClickListener() {
 				//
 				// @Override
 				// public void onClick(View v) {
-				// showUserList(v);
+				// showUser(v);
 				// qa.dismiss();
 				// }
 				// });
 				// qa.addActionItem(actionItem);
-
-				actionItem = new ActionItem();
-				actionItem.setTitle("map");
-				actionItem.setIcon(getResources().getDrawable(
-						R.drawable.dashboard));
-				actionItem.setOnClickListener(new OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-						showPickLocation();
-						qa.dismiss();
-					}
-				});
-				qa.addActionItem(actionItem);
-				qa.show();
+				// qa.show();
 			}
 		});
+
+		// Button location = (Button) findViewById(R.id.location);
+		// location.setOnClickListener(new OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View v) {
+		// final QuickAction qa = new QuickAction(v);
+		// ActionItem actionItem;
+		// // actionItem = new ActionItem();
+		// // actionItem.setTitle("list");
+		// // actionItem.setIcon(getResources().getDrawable(
+		// // R.drawable.dashboard));
+		// // actionItem.setOnClickListener(new OnClickListener() {
+		// //
+		// // @Override
+		// // public void onClick(View v) {
+		// // showUserList(v);
+		// // qa.dismiss();
+		// // }
+		// // });
+		// // qa.addActionItem(actionItem);
+		//
+		// actionItem = new ActionItem();
+		// actionItem.setTitle("map");
+		// actionItem.setIcon(getResources().getDrawable(
+		// R.drawable.dashboard));
+		// actionItem.setOnClickListener(new OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View v) {
+		// showPickLocation();
+		// qa.dismiss();
+		// }
+		// });
+		// qa.addActionItem(actionItem);
+		// qa.show();
+		// }
+		// });
 
 		String message = getIntent().getStringExtra(BUNDLE_STATUS);
 		statusText.setText(message);
@@ -310,28 +311,28 @@ public class ComposeMessageActivity extends Activity {
 			return;
 		}
 
-		final QuickAction qa = new QuickAction(v);
-		for (String hashtagName : hashtagList) {
-			final ActionItem hashtag = new ActionItem();
-			hashtag.setOnClickListener(new OnClickListener() {
+		// final QuickAction qa = new QuickAction(v);
+		// for (String hashtagName : hashtagList) {
+		// final ActionItem hashtag = new ActionItem();
+		// hashtag.setOnClickListener(new OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View v) {
+		// statusText.setText(statusText.getText().toString());
+		// Editable newText = statusText.getText().insert(
+		// currentCursorPosition, hashtag.getTitle());
+		// statusText.setText(newText);
+		// statusText.setSelection(currentCursorPosition
+		// + hashtag.getTitle().length());
+		// qa.dismiss();
+		// }
+		// });
+		// hashtag.setTitle("#" + hashtagName);
+		// hashtag.setIcon(getResources().getDrawable(R.drawable.list));
+		// qa.addActionItem(hashtag);
+		// }
 
-				@Override
-				public void onClick(View v) {
-					statusText.setText(statusText.getText().toString());
-					Editable newText = statusText.getText().insert(
-							currentCursorPosition, hashtag.getTitle());
-					statusText.setText(newText);
-					statusText.setSelection(currentCursorPosition
-							+ hashtag.getTitle().length());
-					qa.dismiss();
-				}
-			});
-			hashtag.setTitle("#" + hashtagName);
-			hashtag.setIcon(getResources().getDrawable(R.drawable.list));
-			qa.addActionItem(hashtag);
-		}
-
-		qa.show();
+		// qa.show();
 	}
 
 	ArrayList<String> findHashtagsInMessage(String message) {

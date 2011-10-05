@@ -10,23 +10,14 @@ import net.londatiga.android.QuickAction;
 
 import org.dyndns.warenix.db.SimpleStorable;
 import org.dyndns.warenix.db.SimpleStorableManager;
-import org.dyndns.warenix.google.translate.TranslationMaster;
 import org.dyndns.warenix.palpal.bubbleMessage.BubbleMessage;
-import org.dyndns.warenix.palpal.service.CommonTaskService;
 import org.dyndns.warenix.palpal.social.twitter.activity.ComposeMessageActivity;
-import org.dyndns.warenix.palpal.social.twitter.activity.ConversationActivity;
-import org.dyndns.warenix.palpal.social.twitter.activity.PersonActivity;
-import org.dyndns.warenix.palpal.social.twitter.activity.SearchActivity;
-import org.dyndns.warenix.palpal.social.twitter.commonTask.FavouriteTwitterTask;
-import org.dyndns.warenix.palpal.social.twitter.commonTask.FollowUserTask;
 import org.dyndns.warenix.palpal.social.twitter.storable.ConversationStorable;
 import org.dyndns.warenix.palpal.social.twitter.storable.FavouriteStorable;
 import org.dyndns.warenix.palpal.social.twitter.storable.FriendStorable;
 import org.dyndns.warenix.palpaltwitter.R;
 import org.dyndns.warenix.widget.WebImage;
 
-import android.app.AlertDialog;
-import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.text.util.Linkify;
@@ -36,7 +27,6 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class TwitterBubbleMessage extends BubbleMessage {
 	public TwitterBubbleMessage(String message) {
@@ -128,7 +118,7 @@ public class TwitterBubbleMessage extends BubbleMessage {
 
 			@Override
 			public void onClick(View v) {
-				QuickAction qa = new QuickAction(v);
+				QuickAction qa = new QuickAction(context);
 				qa.addActionItem(factoryActionItem(context,
 						QUICI_ACTION_ITEM_REPLY, qa));
 				qa.addActionItem(factoryActionItem(context,
@@ -148,7 +138,7 @@ public class TwitterBubbleMessage extends BubbleMessage {
 						QUICI_ACTION_ITEM_TRANSLATE, qa));
 				qa.addActionItem(factoryActionItem(context,
 						QUICI_ACTION_MONITOR_CONVERSATION, qa));
-				qa.show();
+				qa.show(v);
 			}
 
 		});
@@ -162,7 +152,7 @@ public class TwitterBubbleMessage extends BubbleMessage {
 
 			@Override
 			public void onClick(View v) {
-				QuickAction qa = new QuickAction(v);
+				QuickAction qa = new QuickAction(context);
 				qa.addActionItem(factoryActionItem(context,
 						QUICI_ACTION_ITEM_VIEW_PROFILE, qa));
 				// boolean isUserfollowingMe = PalPal.getTwitterClient()
@@ -188,7 +178,7 @@ public class TwitterBubbleMessage extends BubbleMessage {
 				// QUICI_ACTION_ITEM_LIST, qa));
 				qa.addActionItem(factoryActionItem(context,
 						QUICI_ACTION_ITEM_USER_TIMELINE, qa));
-				qa.show();
+				qa.show(v);
 			}
 
 		});
@@ -223,279 +213,252 @@ public class TwitterBubbleMessage extends BubbleMessage {
 			int quickActionItemType, final QuickAction quickAction) {
 		final ActionItem actionItem = new ActionItem();
 
+		actionItem.setTitle("Reply");
+		actionItem
+				.setIcon(context.getResources().getDrawable(R.drawable.reply));
 		SimpleStorableManager manager = new SimpleStorableManager(context);
 		SimpleStorable item;
 
-		switch (quickActionItemType) {
-		case QUICI_ACTION_ITEM_REPLY:
-			actionItem.setTitle("Reply");
-			actionItem.setIcon(context.getResources().getDrawable(
-					R.drawable.reply));
-			actionItem.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					Intent intent = new Intent(context,
-							ComposeMessageActivity.class);
-					intent.putExtra(ComposeMessageActivity.BUNDLE_MODE,
-							ComposeMessageActivity.MODE_RETWEET_RT);
-
-					ArrayList<String> participants = findParticipantsInMessage(message);
-					String replyAllString = "";
-					for (String participant : participants) {
-						replyAllString += String.format("%s ", participant);
-					}
-
-					intent.putExtra(ComposeMessageActivity.BUNDLE_STATUS,
-							String.format("%s", replyAllString));
-					intent.putExtra(
-							ComposeMessageActivity.BUNDLE_SOCIAL_NETWORK_ID,
-							socialNetworkMessageId);
-
-					// reply to status
-					intent.putExtra(
-							ComposeMessageActivity.BUNDLE_REPLY_TO_USERNAME,
-							username);
-					intent.putExtra(
-							ComposeMessageActivity.BUNDLE_REPLY_TO_STATUS,
-							message);
-					intent.putExtra(
-							ComposeMessageActivity.BUNDLE_REPLY_TO_POST_DATE,
-							postDate.toLocaleString());
-					intent.putExtra(
-							ComposeMessageActivity.BUNDLE_REPLY_TO_PROFILE_IMAGE_URL,
-							profileImageUrl);
-
-					context.startActivity(intent);
-					quickAction.dismiss();
-				}
-			});
-			break;
-		case QUICI_ACTION_ITEM_RETWEET_RT:
-			actionItem.setTitle("Retweet (RT)");
-			actionItem.setIcon(context.getResources().getDrawable(
-					R.drawable.retweet));
-			actionItem.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					Intent intent = new Intent(context,
-							ComposeMessageActivity.class);
-					intent.putExtra(ComposeMessageActivity.BUNDLE_MODE,
-							ComposeMessageActivity.MODE_RETWEET_RT);
-
-					intent.putExtra(ComposeMessageActivity.BUNDLE_STATUS,
-							String.format("RT @%s: %s", username, message));
-					intent.putExtra(
-							ComposeMessageActivity.BUNDLE_SOCIAL_NETWORK_ID,
-							socialNetworkMessageId);
-
-					// reply to status
-					intent.putExtra(
-							ComposeMessageActivity.BUNDLE_REPLY_TO_USERNAME,
-							username);
-					intent.putExtra(
-							ComposeMessageActivity.BUNDLE_REPLY_TO_STATUS,
-							message);
-					intent.putExtra(
-							ComposeMessageActivity.BUNDLE_REPLY_TO_POST_DATE,
-							postDate.toLocaleString());
-					intent.putExtra(
-							ComposeMessageActivity.BUNDLE_REPLY_TO_PROFILE_IMAGE_URL,
-							profileImageUrl);
-
-					context.startActivity(intent);
-					quickAction.dismiss();
-				}
-			});
-			break;
-		case QUICI_ACTION_ITEM_FAVOURITE:
-			item = manager.getItemByKey(FavouriteStorable.TYPE,
-					FavouriteStorable.getKey(socialNetworkMessageId));
-
-			actionItem.setTitle(item == null ? "Favourite" : "Unfavourite");
-			actionItem.setIcon(context.getResources().getDrawable(
-					R.drawable.heart));
-			actionItem.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					SimpleStorableManager manager = new SimpleStorableManager(
-							context);
-					SimpleStorable item = manager.getItemByKey(
-							FavouriteStorable.TYPE,
-							FavouriteStorable.getKey(socialNetworkMessageId));
-
-					FavouriteTwitterTask task = new FavouriteTwitterTask(
-							socialNetworkMessageId, item == null);
-
-					Intent taskIntent = new Intent(context,
-							CommonTaskService.class);
-					taskIntent.putExtra(CommonTaskService.BUNDLE_TASK, task);
-					context.startService(taskIntent);
-					quickAction.dismiss();
-
-				}
-			});
-			break;
-		case QUICI_ACTION_ITEM_VIEW_PROFILE:
-			actionItem.setTitle("Profile");
-			actionItem.setIcon(context.getResources().getDrawable(
-					R.drawable.profile));
-			actionItem.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					Toast.makeText(context, "username:" + username,
-							Toast.LENGTH_SHORT).show();
-
-					Intent intent = new Intent(context, PersonActivity.class);
-					intent.putExtra(PersonActivity.BUNDLE_SCREEN_NAME, username);
-					context.startActivity(intent);
-					quickAction.dismiss();
-				}
-			});
-			break;
-		case QUICI_ACTION_ITEM_CONVERSATION:
-			actionItem.setTitle("Conversation");
-			actionItem.setIcon(context.getResources().getDrawable(
-					R.drawable.conversation));
-			actionItem.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					Intent intent = new Intent(context,
-							ConversationActivity.class);
-					intent.putExtra(ConversationActivity.BUNDLE_STATUS_ID,
-							socialNetworkMessageId);
-					context.startActivity(intent);
-					quickAction.dismiss();
-				}
-			});
-			break;
-		case QUICI_ACTION_ITEM_DM:
-			actionItem.setTitle("DM");
-			actionItem.setIcon(context.getResources().getDrawable(
-					R.drawable.reply));
-			actionItem.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					Toast.makeText(context, "Dashboard", Toast.LENGTH_SHORT)
-							.show();
-					quickAction.dismiss();
-				}
-			});
-			break;
-		case QUICI_ACTION_ITEM_FOLLOW:
-			item = manager.getItemByKey(FriendStorable.TYPE,
-					FriendStorable.getKey(username));
-
-			actionItem.setTitle(item == null ? "Follow" : "Unfollow");
-			actionItem.setIcon(context.getResources().getDrawable(
-					R.drawable.follow));
-			actionItem.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					SimpleStorableManager manager = new SimpleStorableManager(
-							context);
-					SimpleStorable item = manager.getItemByKey(
-							FriendStorable.TYPE,
-							FriendStorable.getKey(username));
-					FollowUserTask task = new FollowUserTask(username,
-							item == null);
-
-					Intent intent = new Intent(context, CommonTaskService.class);
-					intent.putExtra(CommonTaskService.BUNDLE_TASK, task);
-					context.startService(intent);
-					quickAction.dismiss();
-				}
-			});
-			break;
-		case QUICI_ACTION_ITEM_BLOCK:
-			actionItem.setTitle("Block");
-			actionItem.setIcon(context.getResources().getDrawable(
-					R.drawable.block));
-			actionItem.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					Toast.makeText(context, "Dashboard", Toast.LENGTH_SHORT)
-							.show();
-					quickAction.dismiss();
-				}
-			});
-			break;
-		case QUICI_ACTION_ITEM_LIST:
-			actionItem.setTitle("List");
-			actionItem.setIcon(context.getResources().getDrawable(
-					R.drawable.list));
-			actionItem.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					Toast.makeText(context, "Dashboard", Toast.LENGTH_SHORT)
-							.show();
-					quickAction.dismiss();
-				}
-			});
-			break;
-		case QUICI_ACTION_ITEM_TRANSLATE:
-			actionItem.setTitle("Translate");
-			actionItem.setIcon(context.getResources().getDrawable(
-					R.drawable.translate));
-			actionItem.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-
-					String translatedMessage = TranslationMaster
-							.translate(message);
-					// show dialog
-					AlertDialog.Builder builder;
-					AlertDialog alertDialog;
-
-					builder = new AlertDialog.Builder(context);
-					BubbleMessage bubbleMessage = new BubbleMessage(username,
-							translatedMessage, profileImageUrl, postDate,
-							socialNetwork, socialNetworkMessageId);
-					View view = factory(context, bubbleMessage);
-					builder.setView(view);
-					alertDialog = builder.create();
-					alertDialog.show();
-					quickAction.dismiss();
-				}
-			});
-			break;
-		case QUICI_ACTION_ITEM_USER_TIMELINE:
-			actionItem.setTitle("User Timeline");
-			actionItem.setIcon(context.getResources().getDrawable(
-					R.drawable.profile));
-			actionItem.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					Intent intent = new Intent(context, SearchActivity.class);
-					intent.setAction(Intent.ACTION_SEARCH);
-					intent.putExtra(SearchManager.EXTRA_DATA_KEY,
-							SearchActivity.SEARCH_TYPE_USER_HOME_TIMELINE);
-					intent.putExtra(SearchManager.QUERY, username);
-					context.startActivity(intent);
-					quickAction.dismiss();
-				}
-			});
-			break;
-//		case QUICI_ACTION_MONITOR_CONVERSATION:
-//			actionItem.setTitle("Monitor Conversation");
-//			actionItem.setIcon(context.getResources().getDrawable(
-//					R.drawable.icon));
-//			actionItem.setOnClickListener(new OnClickListener() {
-//				@Override
-//				public void onClick(View v) {
-//					Intent intent = new Intent(context, SearchActivity.class);
-//					intent.setAction(Intent.ACTION_SEARCH);
-//					intent.putExtra(SearchManager.EXTRA_DATA_KEY,
-//							SearchActivity.SEARCH_TYPE_MONITOR_CONVERSATION);
-//					intent.putExtra(SearchManager.QUERY, username);
-//					intent.putExtra(
-//							ComposeMessageActivity.BUNDLE_SOCIAL_NETWORK_ID,
-//							socialNetworkMessageId);
-//					context.startActivity(intent);
-//					quickAction.dismiss();
-//				}
-//			});
-//			break;
-		}
+		// switch (quickActionItemType) {
+		// case QUICI_ACTION_ITEM_REPLY:
+		// actionItem.setTitle("Reply");
+		// actionItem.setIcon(context.getResources().getDrawable(
+		// R.drawable.reply));
+		// actionItem.setOnActionItemClickListener(newQuickAction.OnActionItemClickListener()
+		// {
+		// @Override
+		// public void onItemClick(int pos) {
+		// onActionItemReply();
+		// quickAction.dismiss();
+		// }
+		// });
+		// break;
+		// case QUICI_ACTION_ITEM_RETWEET_RT:
+		// actionItem.setTitle("Retweet (RT)");
+		// actionItem.setIcon(context.getResources().getDrawable(
+		// R.drawable.retweet));
+		// actionItem.setOnClickListener(new OnClickListener() {
+		// @Override
+		// public void onClick(View v) {
+		// Intent intent = new Intent(context,
+		// ComposeMessageActivity.class);
+		// intent.putExtra(ComposeMessageActivity.BUNDLE_MODE,
+		// ComposeMessageActivity.MODE_RETWEET_RT);
+		//
+		// intent.putExtra(ComposeMessageActivity.BUNDLE_STATUS,
+		// String.format("RT @%s: %s", username, message));
+		// intent.putExtra(
+		// ComposeMessageActivity.BUNDLE_SOCIAL_NETWORK_ID,
+		// socialNetworkMessageId);
+		//
+		// // reply to status
+		// intent.putExtra(
+		// ComposeMessageActivity.BUNDLE_REPLY_TO_USERNAME,
+		// username);
+		// intent.putExtra(
+		// ComposeMessageActivity.BUNDLE_REPLY_TO_STATUS,
+		// message);
+		// intent.putExtra(
+		// ComposeMessageActivity.BUNDLE_REPLY_TO_POST_DATE,
+		// postDate.toLocaleString());
+		// intent.putExtra(
+		// ComposeMessageActivity.BUNDLE_REPLY_TO_PROFILE_IMAGE_URL,
+		// profileImageUrl);
+		//
+		// context.startActivity(intent);
+		// quickAction.dismiss();
+		// }
+		// });
+		// break;
+		// case QUICI_ACTION_ITEM_FAVOURITE:
+		// item = manager.getItemByKey(FavouriteStorable.TYPE,
+		// FavouriteStorable.getKey(socialNetworkMessageId));
+		//
+		// actionItem.setTitle(item == null ? "Favourite" : "Unfavourite");
+		// actionItem.setIcon(context.getResources().getDrawable(
+		// R.drawable.heart));
+		// actionItem.setOnClickListener(new OnClickListener() {
+		// @Override
+		// public void onClick(View v) {
+		// SimpleStorableManager manager = new SimpleStorableManager(
+		// context);
+		// SimpleStorable item = manager.getItemByKey(
+		// FavouriteStorable.TYPE,
+		// FavouriteStorable.getKey(socialNetworkMessageId));
+		//
+		// FavouriteTwitterTask task = new FavouriteTwitterTask(
+		// socialNetworkMessageId, item == null);
+		//
+		// Intent taskIntent = new Intent(context,
+		// CommonTaskService.class);
+		// taskIntent.putExtra(CommonTaskService.BUNDLE_TASK, task);
+		// context.startService(taskIntent);
+		// quickAction.dismiss();
+		//
+		// }
+		// });
+		// break;
+		// case QUICI_ACTION_ITEM_VIEW_PROFILE:
+		// actionItem.setTitle("Profile");
+		// actionItem.setIcon(context.getResources().getDrawable(
+		// R.drawable.profile));
+		// actionItem.setOnClickListener(new OnClickListener() {
+		// @Override
+		// public void onClick(View v) {
+		// Toast.makeText(context, "username:" + username,
+		// Toast.LENGTH_SHORT).show();
+		//
+		// Intent intent = new Intent(context, PersonActivity.class);
+		// intent.putExtra(PersonActivity.BUNDLE_SCREEN_NAME, username);
+		// context.startActivity(intent);
+		// quickAction.dismiss();
+		// }
+		// });
+		// break;
+		// case QUICI_ACTION_ITEM_CONVERSATION:
+		// actionItem.setTitle("Conversation");
+		// actionItem.setIcon(context.getResources().getDrawable(
+		// R.drawable.conversation));
+		// actionItem.setOnClickListener(new OnClickListener() {
+		// @Override
+		// public void onClick(View v) {
+		// Intent intent = new Intent(context,
+		// ConversationActivity.class);
+		// intent.putExtra(ConversationActivity.BUNDLE_STATUS_ID,
+		// socialNetworkMessageId);
+		// context.startActivity(intent);
+		// quickAction.dismiss();
+		// }
+		// });
+		// break;
+		// case QUICI_ACTION_ITEM_DM:
+		// actionItem.setTitle("DM");
+		// actionItem.setIcon(context.getResources().getDrawable(
+		// R.drawable.reply));
+		// actionItem.setOnClickListener(new OnClickListener() {
+		// @Override
+		// public void onClick(View v) {
+		// Toast.makeText(context, "Dashboard", Toast.LENGTH_SHORT)
+		// .show();
+		// quickAction.dismiss();
+		// }
+		// });
+		// break;
+		// case QUICI_ACTION_ITEM_FOLLOW:
+		// item = manager.getItemByKey(FriendStorable.TYPE,
+		// FriendStorable.getKey(username));
+		//
+		// actionItem.setTitle(item == null ? "Follow" : "Unfollow");
+		// actionItem.setIcon(context.getResources().getDrawable(
+		// R.drawable.follow));
+		// actionItem.setOnClickListener(new OnClickListener() {
+		// @Override
+		// public void onClick(View v) {
+		// SimpleStorableManager manager = new SimpleStorableManager(
+		// context);
+		// SimpleStorable item = manager.getItemByKey(
+		// FriendStorable.TYPE,
+		// FriendStorable.getKey(username));
+		// FollowUserTask task = new FollowUserTask(username,
+		// item == null);
+		//
+		// Intent intent = new Intent(context, CommonTaskService.class);
+		// intent.putExtra(CommonTaskService.BUNDLE_TASK, task);
+		// context.startService(intent);
+		// quickAction.dismiss();
+		// }
+		// });
+		// break;
+		// case QUICI_ACTION_ITEM_BLOCK:
+		// actionItem.setTitle("Block");
+		// actionItem.setIcon(context.getResources().getDrawable(
+		// R.drawable.block));
+		// actionItem.setOnClickListener(new OnClickListener() {
+		// @Override
+		// public void onClick(View v) {
+		// Toast.makeText(context, "Dashboard", Toast.LENGTH_SHORT)
+		// .show();
+		// quickAction.dismiss();
+		// }
+		// });
+		// break;
+		// case QUICI_ACTION_ITEM_LIST:
+		// actionItem.setTitle("List");
+		// actionItem.setIcon(context.getResources().getDrawable(
+		// R.drawable.list));
+		// actionItem.setOnClickListener(new OnClickListener() {
+		// @Override
+		// public void onClick(View v) {
+		// Toast.makeText(context, "Dashboard", Toast.LENGTH_SHORT)
+		// .show();
+		// quickAction.dismiss();
+		// }
+		// });
+		// break;
+		// case QUICI_ACTION_ITEM_TRANSLATE:
+		// actionItem.setTitle("Translate");
+		// actionItem.setIcon(context.getResources().getDrawable(
+		// R.drawable.translate));
+		// actionItem.setOnClickListener(new OnClickListener() {
+		// @Override
+		// public void onClick(View v) {
+		//
+		// String translatedMessage = TranslationMaster
+		// .translate(message);
+		// // show dialog
+		// AlertDialog.Builder builder;
+		// AlertDialog alertDialog;
+		//
+		// builder = new AlertDialog.Builder(context);
+		// BubbleMessage bubbleMessage = new BubbleMessage(username,
+		// translatedMessage, profileImageUrl, postDate,
+		// socialNetwork, socialNetworkMessageId);
+		// View view = factory(context, bubbleMessage);
+		// builder.setView(view);
+		// alertDialog = builder.create();
+		// alertDialog.show();
+		// quickAction.dismiss();
+		// }
+		// });
+		// break;
+		// case QUICI_ACTION_ITEM_USER_TIMELINE:
+		// actionItem.setTitle("User Timeline");
+		// actionItem.setIcon(context.getResources().getDrawable(
+		// R.drawable.profile));
+		// actionItem.setOnClickListener(new OnClickListener() {
+		// @Override
+		// public void onClick(View v) {
+		// Intent intent = new Intent(context, SearchActivity.class);
+		// intent.setAction(Intent.ACTION_SEARCH);
+		// intent.putExtra(SearchManager.EXTRA_DATA_KEY,
+		// SearchActivity.SEARCH_TYPE_USER_HOME_TIMELINE);
+		// intent.putExtra(SearchManager.QUERY, username);
+		// context.startActivity(intent);
+		// quickAction.dismiss();
+		// }
+		// });
+		// break;
+		// // case QUICI_ACTION_MONITOR_CONVERSATION:
+		// // actionItem.setTitle("Monitor Conversation");
+		// // actionItem.setIcon(context.getResources().getDrawable(
+		// // R.drawable.icon));
+		// // actionItem.setOnClickListener(new OnClickListener() {
+		// // @Override
+		// // public void onClick(View v) {
+		// // Intent intent = new Intent(context, SearchActivity.class);
+		// // intent.setAction(Intent.ACTION_SEARCH);
+		// // intent.putExtra(SearchManager.EXTRA_DATA_KEY,
+		// // SearchActivity.SEARCH_TYPE_MONITOR_CONVERSATION);
+		// // intent.putExtra(SearchManager.QUERY, username);
+		// // intent.putExtra(
+		// // ComposeMessageActivity.BUNDLE_SOCIAL_NETWORK_ID,
+		// // socialNetworkMessageId);
+		// // context.startActivity(intent);
+		// // quickAction.dismiss();
+		// // }
+		// // });
+		// // break;
+		// }
 
 		return actionItem;
 	}
@@ -523,6 +486,35 @@ public class TwitterBubbleMessage extends BubbleMessage {
 	public void setInReplyToStatusId(long inReplyToStatusId) {
 		this.inReplyToStatusId = this.inReplyToStatusId + "";
 		// hasConversation=true;
+	}
+
+	void onActionItemReply(Context context) {
+		Intent intent = new Intent(context, ComposeMessageActivity.class);
+		intent.putExtra(ComposeMessageActivity.BUNDLE_MODE,
+				ComposeMessageActivity.MODE_RETWEET_RT);
+
+		ArrayList<String> participants = findParticipantsInMessage(message);
+		String replyAllString = "";
+		for (String participant : participants) {
+			replyAllString += String.format("%s ", participant);
+		}
+
+		intent.putExtra(ComposeMessageActivity.BUNDLE_STATUS,
+				String.format("%s", replyAllString));
+		intent.putExtra(ComposeMessageActivity.BUNDLE_SOCIAL_NETWORK_ID,
+				socialNetworkMessageId);
+
+		// reply to status
+		intent.putExtra(ComposeMessageActivity.BUNDLE_REPLY_TO_USERNAME,
+				username);
+		intent.putExtra(ComposeMessageActivity.BUNDLE_REPLY_TO_STATUS, message);
+		intent.putExtra(ComposeMessageActivity.BUNDLE_REPLY_TO_POST_DATE,
+				postDate.toLocaleString());
+		intent.putExtra(
+				ComposeMessageActivity.BUNDLE_REPLY_TO_PROFILE_IMAGE_URL,
+				profileImageUrl);
+
+		context.startActivity(intent);
 	}
 
 }

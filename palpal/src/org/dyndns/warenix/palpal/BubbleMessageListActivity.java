@@ -4,6 +4,7 @@ import java.util.Date;
 
 import net.londatiga.android.ActionItem;
 import net.londatiga.android.QuickAction;
+import net.londatiga.android.QuickAction.OnActionItemClickListener;
 
 import org.dyndns.warenix.palpal.bubbleMessage.BubbleMessageListController;
 import org.dyndns.warenix.palpal.service.UpdateMessageService;
@@ -85,7 +86,9 @@ public class BubbleMessageListActivity extends Activity {
 
 		if (PalPal.unreadMessageCount > 0) {
 			View activityTitle = findViewById(R.id.refresh);
-			badge = new BadgeView(this, activityTitle);
+			if (badge == null) {
+				badge = new BadgeView(this, activityTitle);
+			}
 			badge.setText("" + PalPal.unreadMessageCount);
 			badge.show();
 		}
@@ -150,87 +153,63 @@ public class BubbleMessageListActivity extends Activity {
 	}
 
 	void setupAction() {
-		final ActionItem albumActionItem = new ActionItem();
+
+		final QuickAction quickAction = new QuickAction(this);
+
+		String[] titleList = { "Album", "Messages", "Mentions", "Gallery" };
+		int[] iconList = { android.R.drawable.ic_menu_gallery,
+				android.R.drawable.ic_menu_send,
+				R.drawable.ic_menu_notifications,
+				android.R.drawable.ic_menu_gallery };
+
+		ActionItem actionItem = null;
+
+		for (int i = 0; i < titleList.length; ++i) {
+			actionItem = new ActionItem();
+			actionItem.setTitle(titleList[i]);
+			actionItem.setIcon(getResources().getDrawable(iconList[i]));
+			quickAction.addActionItem(actionItem);
+		}
+
+		quickAction
+				.setOnActionItemClickListener(new OnActionItemClickListener() {
+
+					@Override
+					public void onItemClick(int pos) {
+						Intent intent = null;
+
+						switch (pos) {
+						case 0:
+							intent = new Intent(BubbleMessageListActivity.this,
+									ImageAlbumActivity.class);
+							startActivity(intent);
+							break;
+						case 1:
+							intent = new Intent(BubbleMessageListActivity.this,
+									DirectMessageActivity.class);
+							startActivity(intent);
+							break;
+						case 2:
+							intent = new Intent(BubbleMessageListActivity.this,
+									MentionMessageActivity.class);
+							startActivity(intent);
+							break;
+						case 3:
+							intent = new Intent(BubbleMessageListActivity.this,
+									ImageGalleryActivity.class);
+
+							startActivity(intent);
+							break;
+						}
+					}
+				});
 
 		TextView activityTitle = (TextView) findViewById(R.id.activityTitle);
 		activityTitle.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				final QuickAction qa = new QuickAction(v);
-
-				albumActionItem.setTitle("Album");
-				albumActionItem.setIcon(getResources().getDrawable(
-						android.R.drawable.ic_menu_gallery));
-				albumActionItem.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						Intent intent = new Intent(
-								BubbleMessageListActivity.this,
-								ImageAlbumActivity.class);
-						startActivity(intent);
-						qa.dismiss();
-					}
-				});
-
-				final ActionItem directMessageActionItem = new ActionItem();
-
-				directMessageActionItem.setTitle("Messages");
-				directMessageActionItem.setIcon(getResources().getDrawable(
-						android.R.drawable.ic_menu_send));
-				directMessageActionItem
-						.setOnClickListener(new OnClickListener() {
-							@Override
-							public void onClick(View v) {
-								Intent intent = new Intent(
-										BubbleMessageListActivity.this,
-										DirectMessageActivity.class);
-								startActivity(intent);
-								qa.dismiss();
-							}
-						});
-
-				final ActionItem mentionMessageActionItem = new ActionItem();
-
-				mentionMessageActionItem.setTitle("Mentions");
-				mentionMessageActionItem.setIcon(getResources().getDrawable(
-						R.drawable.ic_menu_notifications));
-				mentionMessageActionItem
-						.setOnClickListener(new OnClickListener() {
-							@Override
-							public void onClick(View v) {
-								Intent intent = new Intent(
-										BubbleMessageListActivity.this,
-										MentionMessageActivity.class);
-								startActivity(intent);
-								qa.dismiss();
-							}
-						});
-
-				final ActionItem imageGalleryActionItem = new ActionItem();
-
-				imageGalleryActionItem.setTitle("Gallery");
-				imageGalleryActionItem.setIcon(getResources().getDrawable(
-						android.R.drawable.ic_menu_gallery));
-				imageGalleryActionItem
-						.setOnClickListener(new OnClickListener() {
-							@Override
-							public void onClick(View v) {
-								Intent intent = new Intent(
-										BubbleMessageListActivity.this,
-										ImageGalleryActivity.class);
-
-								startActivity(intent);
-								qa.dismiss();
-							}
-						});
-
-				qa.addActionItem(albumActionItem);
-				qa.addActionItem(directMessageActionItem);
-				qa.addActionItem(mentionMessageActionItem);
-				qa.addActionItem(imageGalleryActionItem);
-				qa.setAnimStyle(QuickAction.ANIM_GROW_FROM_CENTER);
-				qa.show();
+				quickAction.show(v);
 			}
 		});
 
