@@ -14,6 +14,8 @@ import org.dyndns.warenix.db.SimpleStorableManager;
 import org.dyndns.warenix.google.translate.TranslationMaster;
 import org.dyndns.warenix.palpal.bubbleMessage.BubbleMessage;
 import org.dyndns.warenix.palpal.social.twitter.activity.ComposeMessageActivity;
+import org.dyndns.warenix.palpal.social.twitter.activity.ConversationActivity;
+import org.dyndns.warenix.palpal.social.twitter.storable.ConversationStorable;
 import org.dyndns.warenix.palpal.social.twitter.storable.FavouriteStorable;
 import org.dyndns.warenix.palpal.social.twitter.storable.FriendStorable;
 import org.dyndns.warenix.palpaltwitter.R;
@@ -152,7 +154,16 @@ public class TwitterBubbleMessage extends BubbleMessage {
 									onActionItemRetweet(context);
 									break;
 								case 2:
-									onActionItemConversation(context);
+									SimpleStorableManager manager = new SimpleStorableManager(
+											context);
+									SimpleStorable item = manager
+											.getItemByKey(
+													ConversationStorable.TYPE,
+													ConversationStorable
+															.getKey(socialNetworkMessageId));
+									if (item != null) {
+										onActionItemConversation(context);
+									}
 									break;
 								case 3:
 									onActionItemTranslate(context);
@@ -567,14 +578,8 @@ public class TwitterBubbleMessage extends BubbleMessage {
 		intent.putExtra(ComposeMessageActivity.BUNDLE_MODE,
 				ComposeMessageActivity.MODE_RETWEET_RT);
 
-		ArrayList<String> participants = findParticipantsInMessage(message);
-		String replyAllString = "";
-		for (String participant : participants) {
-			replyAllString += String.format("%s ", participant);
-		}
-
 		intent.putExtra(ComposeMessageActivity.BUNDLE_STATUS,
-				String.format("%s", replyAllString));
+				String.format("RT @%s: %s", username, message));
 		intent.putExtra(ComposeMessageActivity.BUNDLE_SOCIAL_NETWORK_ID,
 				socialNetworkMessageId);
 
@@ -587,11 +592,14 @@ public class TwitterBubbleMessage extends BubbleMessage {
 		intent.putExtra(
 				ComposeMessageActivity.BUNDLE_REPLY_TO_PROFILE_IMAGE_URL,
 				profileImageUrl);
-
 		context.startActivity(intent);
 	}
 
 	void onActionItemConversation(Context context) {
+		Intent intent = new Intent(context, ConversationActivity.class);
+		intent.putExtra(ConversationActivity.BUNDLE_STATUS_ID,
+				socialNetworkMessageId);
+		context.startActivity(intent);
 	}
 
 	void onActionItemTranslate(Context context) {
