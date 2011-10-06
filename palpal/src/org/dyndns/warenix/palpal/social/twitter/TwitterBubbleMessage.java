@@ -7,19 +7,23 @@ import java.util.regex.Pattern;
 
 import net.londatiga.android.ActionItem;
 import net.londatiga.android.QuickAction;
+import net.londatiga.android.QuickAction.OnActionItemClickListener;
 
 import org.dyndns.warenix.db.SimpleStorable;
 import org.dyndns.warenix.db.SimpleStorableManager;
+import org.dyndns.warenix.google.translate.TranslationMaster;
 import org.dyndns.warenix.palpal.bubbleMessage.BubbleMessage;
 import org.dyndns.warenix.palpal.social.twitter.activity.ComposeMessageActivity;
-import org.dyndns.warenix.palpal.social.twitter.storable.ConversationStorable;
 import org.dyndns.warenix.palpal.social.twitter.storable.FavouriteStorable;
 import org.dyndns.warenix.palpal.social.twitter.storable.FriendStorable;
 import org.dyndns.warenix.palpaltwitter.R;
 import org.dyndns.warenix.widget.WebImage;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.text.util.Linkify;
 import android.text.util.Linkify.TransformFilter;
 import android.view.View;
@@ -118,27 +122,68 @@ public class TwitterBubbleMessage extends BubbleMessage {
 
 			@Override
 			public void onClick(View v) {
-				QuickAction qa = new QuickAction(context);
-				qa.addActionItem(factoryActionItem(context,
-						QUICI_ACTION_ITEM_REPLY, qa));
-				qa.addActionItem(factoryActionItem(context,
-						QUICI_ACTION_ITEM_RETWEET_RT, qa));
-				SimpleStorableManager manager = new SimpleStorableManager(
-						context);
-				SimpleStorable item = manager.getItemByKey(
-						ConversationStorable.TYPE,
-						ConversationStorable.getKey(socialNetworkMessageId));
-				if (item != null) {
-					qa.addActionItem(factoryActionItem(context,
-							QUICI_ACTION_ITEM_CONVERSATION, qa));
+				final QuickAction quickAction = new QuickAction(context);
+
+				String[] titleList = { "Reply", "Retweet (RT)", "Conversation",
+						"Translate" };
+				int[] iconList = { R.drawable.reply, R.drawable.retweet,
+						R.drawable.conversation, R.drawable.translate };
+
+				ActionItem actionItem = null;
+
+				for (int i = 0; i < titleList.length; ++i) {
+					actionItem = new ActionItem();
+					actionItem.setTitle(titleList[i]);
+					actionItem.setIcon(context.getResources().getDrawable(
+							iconList[i]));
+					quickAction.addActionItem(actionItem);
 				}
-				qa.addActionItem(factoryActionItem(context,
-						QUICI_ACTION_ITEM_FAVOURITE, qa));
-				qa.addActionItem(factoryActionItem(context,
-						QUICI_ACTION_ITEM_TRANSLATE, qa));
-				qa.addActionItem(factoryActionItem(context,
-						QUICI_ACTION_MONITOR_CONVERSATION, qa));
-				qa.show(v);
+
+				quickAction
+						.setOnActionItemClickListener(new OnActionItemClickListener() {
+
+							@Override
+							public void onItemClick(int pos) {
+								switch (pos) {
+								case 0:
+									onActionItemReply(context);
+									break;
+								case 1:
+									onActionItemRetweet(context);
+									break;
+								case 2:
+									onActionItemConversation(context);
+									break;
+								case 3:
+									onActionItemTranslate(context);
+									break;
+								}
+
+							}
+						});
+				quickAction.show(v);
+
+				// QuickAction qa = new QuickAction(context);
+				// qa.addActionItem(factoryActionItem(context,
+				// QUICI_ACTION_ITEM_REPLY, qa));
+				// qa.addActionItem(factoryActionItem(context,
+				// QUICI_ACTION_ITEM_RETWEET_RT, qa));
+				// SimpleStorableManager manager = new SimpleStorableManager(
+				// context);
+				// SimpleStorable item = manager.getItemByKey(
+				// ConversationStorable.TYPE,
+				// ConversationStorable.getKey(socialNetworkMessageId));
+				// if (item != null) {
+				// qa.addActionItem(factoryActionItem(context,
+				// QUICI_ACTION_ITEM_CONVERSATION, qa));
+				// }
+				// qa.addActionItem(factoryActionItem(context,
+				// QUICI_ACTION_ITEM_FAVOURITE, qa));
+				// qa.addActionItem(factoryActionItem(context,
+				// QUICI_ACTION_ITEM_TRANSLATE, qa));
+				// qa.addActionItem(factoryActionItem(context,
+				// QUICI_ACTION_MONITOR_CONVERSATION, qa));
+				// qa.show(v);
 			}
 
 		});
@@ -517,4 +562,101 @@ public class TwitterBubbleMessage extends BubbleMessage {
 		context.startActivity(intent);
 	}
 
+	void onActionItemRetweet(Context context) {
+		Intent intent = new Intent(context, ComposeMessageActivity.class);
+		intent.putExtra(ComposeMessageActivity.BUNDLE_MODE,
+				ComposeMessageActivity.MODE_RETWEET_RT);
+
+		ArrayList<String> participants = findParticipantsInMessage(message);
+		String replyAllString = "";
+		for (String participant : participants) {
+			replyAllString += String.format("%s ", participant);
+		}
+
+		intent.putExtra(ComposeMessageActivity.BUNDLE_STATUS,
+				String.format("%s", replyAllString));
+		intent.putExtra(ComposeMessageActivity.BUNDLE_SOCIAL_NETWORK_ID,
+				socialNetworkMessageId);
+
+		// reply to status
+		intent.putExtra(ComposeMessageActivity.BUNDLE_REPLY_TO_USERNAME,
+				username);
+		intent.putExtra(ComposeMessageActivity.BUNDLE_REPLY_TO_STATUS, message);
+		intent.putExtra(ComposeMessageActivity.BUNDLE_REPLY_TO_POST_DATE,
+				postDate.toLocaleString());
+		intent.putExtra(
+				ComposeMessageActivity.BUNDLE_REPLY_TO_PROFILE_IMAGE_URL,
+				profileImageUrl);
+
+		context.startActivity(intent);
+	}
+
+	void onActionItemConversation(Context context) {
+	}
+
+	void onActionItemTranslate(Context context) {
+		// String translatedMessage = TranslationMaster.translate(message);
+		// // show dialog
+		// AlertDialog.Builder builder;
+		// AlertDialog alertDialog;
+		//
+		// builder = new AlertDialog.Builder(context);
+		// BubbleMessage bubbleMessage = new BubbleMessage(username,
+		// translatedMessage, profileImageUrl, postDate, socialNetwork,
+		// socialNetworkMessageId);
+		// View view = factory(context, bubbleMessage);
+		// builder.setView(view);
+
+		new TranslateMessageTask(this, context).execute();
+
+	}
+
+	static class TranslateMessageTask extends AsyncTask<Void, Void, Void> {
+
+		Context context;
+		TwitterBubbleMessage bubbleMessage = null;
+
+		String translatedMessage;
+
+		ProgressDialog loadingDialog;
+
+		public TranslateMessageTask(TwitterBubbleMessage bubbleMessage,
+				Context context) {
+			this.bubbleMessage = bubbleMessage;
+			this.context = context;
+		}
+
+		protected void onPreExecute() {
+			loadingDialog = ProgressDialog.show(context, "",
+					"Translating. Please wait...", true);
+			loadingDialog.setCancelable(true);
+		}
+
+		@Override
+		protected Void doInBackground(Void... arg0) {
+			translatedMessage = TranslationMaster
+					.translate(bubbleMessage.message);
+			return null;
+		}
+
+		protected void onPostExecute(Void v) {
+			loadingDialog.dismiss();
+			BubbleMessage message = new BubbleMessage(bubbleMessage.username,
+					translatedMessage, bubbleMessage.profileImageUrl,
+					bubbleMessage.postDate, bubbleMessage.socialNetwork,
+					bubbleMessage.socialNetworkMessageId);
+			View view = factory(context, message);
+			AlertDialog.Builder builder = new AlertDialog.Builder(context);
+			builder.setView(view);
+			AlertDialog alertDialog = builder.create();
+			alertDialog.show();
+
+			super.onPostExecute(v);
+		}
+
+		protected void onCancelled(Void v) {
+			loadingDialog.dismiss();
+			super.onCancelled(v);
+		}
+	}
 }
