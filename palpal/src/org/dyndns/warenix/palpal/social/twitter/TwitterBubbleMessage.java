@@ -12,15 +12,24 @@ import net.londatiga.android.QuickAction.OnActionItemClickListener;
 import org.dyndns.warenix.db.SimpleStorable;
 import org.dyndns.warenix.db.SimpleStorableManager;
 import org.dyndns.warenix.google.translate.TranslationMaster;
+import org.dyndns.warenix.palpal.PalPal;
 import org.dyndns.warenix.palpal.bubbleMessage.BubbleMessage;
+import org.dyndns.warenix.palpal.service.CommonTaskService;
 import org.dyndns.warenix.palpal.social.twitter.activity.ComposeMessageActivity;
 import org.dyndns.warenix.palpal.social.twitter.activity.ConversationActivity;
+import org.dyndns.warenix.palpal.social.twitter.activity.PersonActivity;
+import org.dyndns.warenix.palpal.social.twitter.commonTask.FavouriteTwitterTask;
 import org.dyndns.warenix.palpal.social.twitter.storable.ConversationStorable;
 import org.dyndns.warenix.palpal.social.twitter.storable.FavouriteStorable;
 import org.dyndns.warenix.palpal.social.twitter.storable.FriendStorable;
 import org.dyndns.warenix.palpaltwitter.R;
+import org.dyndns.warenix.util.ToastUtil;
 import org.dyndns.warenix.widget.WebImage;
 
+import twitter4j.Relationship;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.User;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -33,6 +42,7 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class TwitterBubbleMessage extends BubbleMessage {
 	public TwitterBubbleMessage(String message) {
@@ -127,9 +137,10 @@ public class TwitterBubbleMessage extends BubbleMessage {
 				final QuickAction quickAction = new QuickAction(context);
 
 				String[] titleList = { "Reply", "Retweet (RT)", "Conversation",
-						"Translate" };
+						"Translate", "Favourite" };
 				int[] iconList = { R.drawable.reply, R.drawable.retweet,
-						R.drawable.conversation, R.drawable.translate };
+						R.drawable.conversation, R.drawable.translate,
+						R.drawable.heart };
 
 				ActionItem actionItem = null;
 
@@ -167,6 +178,9 @@ public class TwitterBubbleMessage extends BubbleMessage {
 									break;
 								case 3:
 									onActionItemTranslate(context);
+									break;
+								case 4:
+									onActionItemFavourite(context);
 									break;
 								}
 
@@ -208,33 +222,67 @@ public class TwitterBubbleMessage extends BubbleMessage {
 
 			@Override
 			public void onClick(View v) {
-				QuickAction qa = new QuickAction(context);
-				qa.addActionItem(factoryActionItem(context,
-						QUICI_ACTION_ITEM_VIEW_PROFILE, qa));
-				// boolean isUserfollowingMe = PalPal.getTwitterClient()
-				// .existsFriendship(username, "warenix");
-
-				SimpleStorableManager db = new SimpleStorableManager(context);
-
-				SimpleStorable isUserFoolowingMe = db.getItemByKey(
-						FriendStorable.TYPE, FriendStorable.getKey(username));
-
-				if (isUserFoolowingMe != null) {
-					qa.addActionItem(factoryActionItem(context,
-							QUICI_ACTION_ITEM_DM, qa));
-				} else {
-				}
+				// QuickAction qa = new QuickAction(context);
+				// qa.addActionItem(factoryActionItem(context,
+				// QUICI_ACTION_ITEM_VIEW_PROFILE, qa));
+				// // boolean isUserfollowingMe = PalPal.getTwitterClient()
+				// // .existsFriendship(username, "warenix");
+				//
+				// SimpleStorableManager db = new
+				// SimpleStorableManager(context);
+				//
+				// SimpleStorable isUserFoolowingMe = db.getItemByKey(
+				// FriendStorable.TYPE, FriendStorable.getKey(username));
+				//
+				// if (isUserFoolowingMe != null) {
 				// qa.addActionItem(factoryActionItem(context,
 				// QUICI_ACTION_ITEM_DM, qa));
-				qa.addActionItem(factoryActionItem(context,
-						QUICI_ACTION_ITEM_FOLLOW, qa));
+				// } else {
+				// }
+				// // qa.addActionItem(factoryActionItem(context,
+				// // QUICI_ACTION_ITEM_DM, qa));
 				// qa.addActionItem(factoryActionItem(context,
-				// QUICI_ACTION_ITEM_BLOCK, qa));
+				// QUICI_ACTION_ITEM_FOLLOW, qa));
+				// // qa.addActionItem(factoryActionItem(context,
+				// // QUICI_ACTION_ITEM_BLOCK, qa));
+				// // qa.addActionItem(factoryActionItem(context,
+				// // QUICI_ACTION_ITEM_LIST, qa));
 				// qa.addActionItem(factoryActionItem(context,
-				// QUICI_ACTION_ITEM_LIST, qa));
-				qa.addActionItem(factoryActionItem(context,
-						QUICI_ACTION_ITEM_USER_TIMELINE, qa));
-				qa.show(v);
+				// QUICI_ACTION_ITEM_USER_TIMELINE, qa));
+				// qa.show(v);
+
+				String[] titleList = { "Profile", "DM" };
+				int[] iconList = { R.drawable.reply, R.drawable.retweet,
+						R.drawable.conversation, R.drawable.translate };
+
+				final QuickAction quickAction = new QuickAction(context);
+				ActionItem actionItem = null;
+				for (int i = 0; i < titleList.length; ++i) {
+					actionItem = new ActionItem();
+					actionItem.setTitle(titleList[i]);
+					actionItem.setIcon(context.getResources().getDrawable(
+							iconList[i]));
+					quickAction.addActionItem(actionItem);
+				}
+
+				quickAction
+						.setOnActionItemClickListener(new OnActionItemClickListener() {
+
+							@Override
+							public void onItemClick(int pos) {
+								switch (pos) {
+								case 0:
+									onActionItemProfile(context);
+									break;
+								case 1:
+									onActionItemDM(context);
+								}
+
+							}
+
+						});
+				quickAction.show(v);
+
 			}
 
 		});
@@ -666,5 +714,48 @@ public class TwitterBubbleMessage extends BubbleMessage {
 			loadingDialog.dismiss();
 			super.onCancelled(v);
 		}
+	}
+
+	void onActionItemFavourite(Context context) {
+		SimpleStorableManager manager = new SimpleStorableManager(context);
+		SimpleStorable item = manager.getItemByKey(FavouriteStorable.TYPE,
+				FavouriteStorable.getKey(socialNetworkMessageId));
+
+		FavouriteTwitterTask task = new FavouriteTwitterTask(
+				socialNetworkMessageId, item == null);
+
+		Intent taskIntent = new Intent(context, CommonTaskService.class);
+		taskIntent.putExtra(CommonTaskService.BUNDLE_TASK, task);
+		context.startService(taskIntent);
+	}
+
+	void onActionItemProfile(Context context) {
+		Toast.makeText(context, "username:" + username, Toast.LENGTH_SHORT)
+				.show();
+
+		Intent intent = new Intent(context, PersonActivity.class);
+		intent.putExtra(PersonActivity.BUNDLE_SCREEN_NAME, username);
+		context.startActivity(intent);
+	}
+
+	void onActionItemDM(Context context) {
+		SimpleStorableManager manager = new SimpleStorableManager(context);
+		SimpleStorable item = manager.getItemByKey(FriendStorable.TYPE,
+				FriendStorable.getKey(username));
+
+		Twitter twitter = PalPal.getTwitterClient();
+		try {
+			Relationship isUserFollwedMe = twitter.showFriendship(
+					twitter.getScreenName(), username);
+			if (isUserFollwedMe.isSourceFollowedByTarget()) {
+				ToastUtil.showQuickToast(context, "you can send dm");
+			} else {
+				ToastUtil.showQuickToast(context, "user didn't follow you");
+			}
+
+		} catch (TwitterException e) {
+			e.printStackTrace();
+		}
+
 	}
 }
