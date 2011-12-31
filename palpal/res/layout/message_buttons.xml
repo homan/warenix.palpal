@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <!-- <LinearLayout -->
+    <!-- xmlns:android="http://schemas.android.com/apk/res/android" -->
+    <!-- android:layout_width="match_parent" -->
+    <!-- android:layout_height="wrap_content" -->
+    <!-- android:orientation="horizontal" > -->
+
+
+    <!-- <Button -->
+    <!-- android:layout_width="fill_parent" -->
+    <!-- android:layout_height="wrap_content" -->
+    <!-- android:layout_margin="5dip" -->
+    <!-- android:layout_weight="1" -->
+    <!-- android:background="@drawable/tab_bg_selected" -->
+    <!-- android:height="32dip" -->
+    <!-- android:text="Location" /> -->
+
+
+    <!-- <Button -->
+    <!-- android:id="@+id/image" -->
+    <!-- android:layout_width="fill_parent" -->
+    <!-- android:layout_height="wrap_content" -->
+    <!-- android:layout_margin="5dip" -->
+    <!-- android:layout_weight="1" -->
+    <!-- android:background="@drawable/tab_bg_selected" -->
+    <!-- android:height="32dip" -->
+    <!-- android:text="Images" /> -->
+
+
+    <!-- <Button -->
+    <!-- android:layout_width="fill_parent" -->
+    <!-- android:layout_height="wrap_content" -->
+    <!-- android:layout_margin="5dip" -->
+    <!-- android:layout_weight="1" -->
+    <!-- android:background="@drawable/tab_bg_selected" -->
+    <!-- android:height="32dip" -->
+    <!-- android:text="Hashtags" /> -->
+
+
+    <!-- <Button -->
+    <!-- android:layout_width="fill_parent" -->
+    <!-- android:layout_height="wrap_content" -->
+    <!-- android:layout_margin="5dip" -->
+    <!-- android:layout_weight="1" -->
+    <!-- android:background="@drawable/tab_bg_selected" -->
+    <!-- android:height="32dip" -->
+    <!-- android:text="People" /> -->
+    <!-- </LinearLayout> -->
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <AutoCompleteTextView
+            android:id="@+id/comment"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="What&apos;s in your mind?"
+            android:maxLines="3"
+            android:singleLine="false"
+            android:textColor="@android:color/black" />
+
+        <!-- <ImageButton -->
+        <!-- android:layout_width="wrap_content" -->
+        <!-- android:layout_height="wrap_content" -->
+        <!-- android:layout_weight="0" -->
+        <!-- android:singleLine="true" -->
+        <!-- android:src="@drawable/ic_conversation" /> -->
+    </LinearLayout>
+
+</LinearLayout>

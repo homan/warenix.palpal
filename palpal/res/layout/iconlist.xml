@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<org.dyndns.warenix.mission.ui.IconListView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/iconList"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="right"
+    android:orientation="horizontal"
+    android:padding="4dip" >
+
+    <ImageView
+        android:id="@+id/map"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dip"
+        android:src="@drawable/ic_map" />
+
+    <ImageView
+        android:id="@+id/favourite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dip"
+        android:src="@drawable/ic_heart" />
+
+    <ImageView
+        android:id="@+id/reply"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dip"
+        android:src="@drawable/ic_conversation" />
+
+    <TextView
+        android:id="@+id/replyCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="123"
+        android:textColor="@color/textColor" />
+
+    <ImageView
+        android:id="@+id/like"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dip"
+        android:src="@drawable/ic_thumb_up" />
+
+    <TextView
+        android:id="@+id/likeCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="456"
+        android:textColor="@color/textColor" />
+
+    <ImageView
+        android:id="@+id/alert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dip"
+        android:src="@drawable/ic_alert" />
+
+</org.dyndns.warenix.mission.ui.IconListView>

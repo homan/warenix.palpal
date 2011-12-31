@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <!-- <ListView -->
+    <!-- android:id="@android:id/list" -->
+    <!-- android:layout_width="match_parent" -->
+    <!-- android:layout_height="fill_parent" -->
+    <!-- android:divider="@drawable/actionbar_shadow" -->
+    <!-- android:fastScrollEnabled="true" /> -->
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/comment"
+        android:cacheColorHint="#ffffff"
+        android:fastScrollEnabled="true" />
+
+    <EditText
+        android:id="@+id/comment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:maxLines="3"
+        android:singleLine="false" />
+
+</RelativeLayout>

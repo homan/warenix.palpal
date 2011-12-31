@@ -1,0 +1,139 @@
+<!--
+  Copyright 2011 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/send"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <include
+                android:id="@+id/messageButtons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                layout="@layout/message_buttons" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <EditText
+                    android:id="@+id/album"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:editable="false"
+                    android:hint="Mobile Uploads"
+                    android:maxLines="1"
+                    android:singleLine="true" />
+
+                <EditText
+                    android:id="@+id/link"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:editable="true"
+                    android:hint="link"
+                    android:maxLines="1"
+                    android:singleLine="true" />
+
+                <EditText
+                    android:id="@+id/name"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:editable="true"
+                    android:hint="name"
+                    android:maxLines="1"
+                    android:singleLine="false" />
+
+                <EditText
+                    android:id="@+id/caption"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:editable="true"
+                    android:hint="caption"
+                    android:maxLines="1"
+                    android:singleLine="false" />
+
+                <EditText
+                    android:id="@+id/description"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:editable="true"
+                    android:hint="description"
+                    android:maxLines="1"
+                    android:singleLine="false" />
+
+                <EditText
+                    android:id="@+id/source"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:editable="true"
+                    android:hint="source"
+                    android:maxLines="1"
+                    android:singleLine="false" />
+            </LinearLayout>
+
+            <Gallery
+                android:id="@+id/imageQueue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" >
+
+                <CheckBox
+                    android:id="@+id/sendFacebook"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:text="Facebook" />
+
+                <CheckBox
+                    android:id="@+id/sendTwitter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:text="Twitter" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- <Button -->
+    <!-- android:id="@+id/send" -->
+    <!-- android:layout_width="match_parent" -->
+    <!-- android:layout_height="wrap_content" -->
+    <!-- android:layout_alignParentBottom="true" -->
+    <!-- android:layout_margin="5dip" -->
+    <!-- android:background="@drawable/rectangle_border" -->
+    <!-- android:padding="10dip" -->
+    <!-- android:text="Send" > -->
+    <!-- </Button> -->
+
+</RelativeLayout>

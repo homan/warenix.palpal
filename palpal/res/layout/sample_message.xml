@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/list_bg_selector"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="5dip" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="1dip"
+        android:background="@color/messageItemColorTop"
+        android:padding="7dip" >
+
+        <include
+            android:id="@+id/iconList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            layout="@layout/iconlist" />
+
+        <TextView
+            android:id="@+id/postDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="Oct 27,2011 10:17:04 PM"
+            android:textColor="@color/textColor"
+            android:textSize="12dip" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/profileList"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/iconList"
+        android:orientation="horizontal" >
+
+        <include
+            android:id="@+id/user1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/conversationMode"
+            layout="@layout/sample_profile_image" />
+
+        <ImageView
+            android:id="@+id/conversationMode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/ic_retweet"
+            android:textSize="20dip"
+            android:visibility="visible" />
+
+        <include
+            android:id="@+id/user2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/conversationMode"
+            layout="@layout/sample_profile_image"
+            android:visibility="visible" />
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:src="@drawable/sample_image"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dip"
+        android:background="@color/messageItemColorBottom"
+        android:padding="7dip"
+        android:text="RT @hkxforce: &apos;那些年...一變成廣東話&apos;個期我地一齊溝過的女&apos;，馬上由純愛變成mk夜場味"
+        android:textColor="@color/textColor"
+        android:textColorLink="@color/palpalColor"
+        android:textSize="16dip" />
+
+</LinearLayout>

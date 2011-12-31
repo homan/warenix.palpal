@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="GOOGLE_MAP_API_KEY">0_cWl-jtG4ifsfwYfwiabJwUOMjZLs1od_gSb6A</string>
+    <string name="JTWITTER_OAUTH_KEY">zmSG7FZFWZadc7V73G0g</string>
+    <string name="JTWITTER_OAUTH_SECRET">vUGNI8MW6HQc88F11arfOWNfW7UyufrNuOEIrZF840</string>
+
+</resources>

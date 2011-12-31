@@ -1,11 +1,25 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-	<string name="app_name">PalPal</string>
+<!--
+  Copyright 2011 The Android Open Source Project
 
-	<string name="KEY_FACEBOOK_NUMBER_OF_WALL_POSTS">KEY_FACEBOOK_NUMBER_OF_WALL_POSTS</string>
-	<string name="KEY_FACEBOOK_NUMBER_OF_ALBUMS">KEY_FACEBOOK_NUMBER_OF_ALBUMS</string>
-	<string name="KEY_FACEBOOK_NUMBER_OF_ALBUM_PHOTOS">KEY_FACEBOOK_NUMBER_OF_ALBUM_PHOTOS</string>
-	<string name="KEY_FACEBOOK_NUMBER_OF_COMMENTS">KEY_FACEBOOK_NUMBER_OF_COMMENTS</string>
-	<string name="KEY_FACEBOOK_NUMBER_OF_RECENT_CHECKINS">KEY_FACEBOOK_NUMBER_OF_RECENT_CHECKINS</string>
-	<string name="KEY_TWITTER_NUMBER_OF_TWEETS">KEY_TWITTER_NUMBER_OF_TWEETS</string>
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<resources>
+    <string name="app_name">PalPal</string>
+    <string name="alternate_title">An alternate title that is long</string>
+    <string name="toggle_title">Toggle title</string>
+
+    <string name="menu_refresh">Refresh</string>
+    <string name="menu_search">Search</string>
+    <string name="menu_share">Share</string>
 </resources>
