@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 
 import org.dyndns.warenix.lab.compat1.util.AndroidUtil;
 import org.dyndns.warenix.lab.compat1.util.Memory;
@@ -61,14 +62,65 @@ public class StreamAdapter extends ListViewAdapter {
 	// }
 	// }
 
+	private Object lock = new Object();
+
 	class AsyncRefreshTask extends AsyncTask<Void, Void, Void> {
 
 		ArrayList<TimelineMessageListViewItem> dataList = new ArrayList<TimelineMessageListViewItem>();
 
 		@Override
 		protected Void doInBackground(Void... params) {
-			getFacebookFeed("me/home", "50");
-			getTwitterFeed(1, 50);
+			Runnable facebook = new Runnable() {
+				public void run() {
+					System.out.println((new Date()).toLocaleString()
+							+ " facebook is running");
+					getFacebookFeed("me/home", "50");
+					System.out.println((new Date()).toLocaleString()
+							+ " facebook is done");
+					synchronized (lock) {
+						lock.notify();
+					}
+
+				}
+			};
+
+			Runnable twitter = new Runnable() {
+				public void run() {
+					System.out.println((new Date()).toLocaleString()
+							+ " twitter is running");
+					getTwitterFeed(1, 50);
+					System.out.println((new Date()).toLocaleString()
+							+ " twitter is done");
+					synchronized (lock) {
+						lock.notify();
+					}
+				}
+			};
+
+			new Thread(facebook).start();
+			new Thread(twitter).start();
+
+			int count = 2;
+			while (count > 0) {
+				System.out.println((new Date()).toLocaleString()
+						+ " refreshing " + count);
+				try {
+					synchronized (lock) {
+						lock.wait();
+						count--;
+					}
+
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					break;
+				}
+
+			}
+
+			System.out.println((new Date()).toLocaleString()
+					+ " refreshing done");
+
 			return null;
 		}
 
@@ -79,7 +131,7 @@ public class StreamAdapter extends ListViewAdapter {
 			notifyDataSetChanged();
 
 			isRefreshing = false;
-			
+
 			AndroidUtil.playListAnimation(listView);
 		}
 
