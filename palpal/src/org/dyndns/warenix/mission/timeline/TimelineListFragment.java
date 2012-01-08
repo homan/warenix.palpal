@@ -1,12 +1,11 @@
 package org.dyndns.warenix.mission.timeline;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 
 import org.dyndns.warenix.lab.compat1.R;
 import org.dyndns.warenix.mission.facebook.FacebookHomeAdapter;
 import org.dyndns.warenix.mission.sample.SampleListAdapter;
 import org.dyndns.warenix.pattern.baseListView.ListViewAdapter;
-import org.dyndns.warenix.pattern.baseListView.ListViewItem;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -105,7 +104,7 @@ public class TimelineListFragment extends ListFragment {
 	public void onSaveInstanceState(Bundle outState) {
 		Log.d("warenix", "timelineListFragment onSaveInstanceState()");
 
-		ArrayList<ListViewItem> itemListCopy = adapter.getItemList();
+		Serializable itemListCopy = adapter.getItemList();
 		outState.putSerializable(ITEM_LIST, itemListCopy);
 		super.onSaveInstanceState(outState);
 	}
@@ -150,14 +149,14 @@ public class TimelineListFragment extends ListFragment {
 	 * @param savedInstanceState
 	 */
 	private void restoreOrRefreshItemList(Bundle savedInstanceState) {
-		ArrayList<ListViewItem> itemListCopy = null;
+		Serializable itemListCopy = null;
 
 		if (savedInstanceState != null) {
-			itemListCopy = (ArrayList<ListViewItem>) savedInstanceState
+			itemListCopy = (Serializable) savedInstanceState
 					.getSerializable(ITEM_LIST);
 		}
 
-		if (itemListCopy != null && itemListCopy.size() > 0) {
+		if (itemListCopy != null) {
 			adapter.setItemList(itemListCopy);
 		} else {
 			refresh();
