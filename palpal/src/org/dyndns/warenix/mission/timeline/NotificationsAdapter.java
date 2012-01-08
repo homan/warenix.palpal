@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 
 import org.dyndns.warenix.lab.compat1.util.AndroidUtil;
 import org.dyndns.warenix.lab.compat1.util.Memory;
@@ -59,14 +60,66 @@ public class NotificationsAdapter extends ListViewAdapter {
 	// }
 	// }
 
+	private Object lock = new Object();
+
 	class AsyncRefreshTask extends AsyncTask<Void, Void, Void> {
 
 		ArrayList<TimelineMessageListViewItem> dataList = new ArrayList<TimelineMessageListViewItem>();
 
 		@Override
 		protected Void doInBackground(Void... params) {
-			getFacebookNotifications("10", true);
-			getTwitterMentions(1, 10);
+
+			Runnable facebook = new Runnable() {
+				public void run() {
+					System.out.println((new Date()).toLocaleString()
+							+ " facebook is running");
+					getFacebookNotifications("10", true);
+					System.out.println((new Date()).toLocaleString()
+							+ " facebook is done");
+					synchronized (lock) {
+						lock.notify();
+					}
+
+				}
+			};
+
+			Runnable twitter = new Runnable() {
+				public void run() {
+					System.out.println((new Date()).toLocaleString()
+							+ " twitter is running");
+					getTwitterMentions(1, 10);
+					System.out.println((new Date()).toLocaleString()
+							+ " twitter is done");
+					synchronized (lock) {
+						lock.notify();
+					}
+				}
+			};
+
+			new Thread(facebook).start();
+			new Thread(twitter).start();
+
+			int count = 2;
+			while (count > 0) {
+				System.out.println((new Date()).toLocaleString()
+						+ " refreshing " + count);
+				try {
+					synchronized (lock) {
+						lock.wait();
+						count--;
+					}
+
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					break;
+				}
+
+			}
+
+			System.out.println((new Date()).toLocaleString()
+					+ " refreshing done");
+
 			return null;
 		}
 
