@@ -1,10 +1,12 @@
 package org.dyndns.warenix.mission.timeline;
 
+import java.util.ArrayList;
+
 import org.dyndns.warenix.lab.compat1.R;
-import org.dyndns.warenix.lab.compat1.util.AndroidUtil;
 import org.dyndns.warenix.mission.facebook.FacebookHomeAdapter;
 import org.dyndns.warenix.mission.sample.SampleListAdapter;
 import org.dyndns.warenix.pattern.baseListView.ListViewAdapter;
+import org.dyndns.warenix.pattern.baseListView.ListViewItem;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -23,6 +25,7 @@ import android.widget.ListView;
  * 
  */
 public class TimelineListFragment extends ListFragment {
+	public static String ITEM_LIST = "item_list";
 	int num;
 
 	ListViewAdapter adapter;
@@ -78,7 +81,9 @@ public class TimelineListFragment extends ListFragment {
 		}
 		setListAdapter(adapter);
 		// }
-		refresh();
+
+		restoreOrRefreshItemList(savedInstanceState);
+
 	}
 
 	public void onDestroyView() {
@@ -95,6 +100,14 @@ public class TimelineListFragment extends ListFragment {
 	public void onDetach() {
 		super.onDetach();
 		Log.d("warenix", "timelineListFragment onDetach()");
+	}
+
+	public void onSaveInstanceState(Bundle outState) {
+		Log.d("warenix", "timelineListFragment onSaveInstanceState()");
+
+		ArrayList<ListViewItem> itemListCopy = adapter.getItemList();
+		outState.putSerializable(ITEM_LIST, itemListCopy);
+		super.onSaveInstanceState(outState);
 	}
 
 	public void refresh() {
@@ -128,6 +141,27 @@ public class TimelineListFragment extends ListFragment {
 		// LayoutAnimationController controller = new LayoutAnimationController(
 		// set, 0.25f);
 		// getListView().setLayoutAnimation(controller);
+
+	}
+
+	/**
+	 * try to restore saved item list if the list contains items
+	 * 
+	 * @param savedInstanceState
+	 */
+	private void restoreOrRefreshItemList(Bundle savedInstanceState) {
+		ArrayList<ListViewItem> itemListCopy = null;
+
+		if (savedInstanceState != null) {
+			itemListCopy = (ArrayList<ListViewItem>) savedInstanceState
+					.getSerializable(ITEM_LIST);
+		}
+
+		if (itemListCopy != null && itemListCopy.size() > 0) {
+			adapter.setItemList(itemListCopy);
+		} else {
+			refresh();
+		}
 
 	}
 
