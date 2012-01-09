@@ -202,16 +202,27 @@ public class StreamAdapter extends ListViewAdapter {
 	 */
 	public void setItemList(Serializable newItemList) {
 		Object[] savedItemList = (Object[]) newItemList;
-		String responseString = (String) savedItemList[0];
 
-		ArrayList<TimelineMessageListViewItem> dataList = new ArrayList<TimelineMessageListViewItem>();
-		constructFacebookListItem(responseString, dataList);
+		final String responseString = (String) savedItemList[0];
+		final ResponseList<twitter4j.Status> statusList = (ResponseList<Status>) savedItemList[1];
 
-		ResponseList<twitter4j.Status> statusList = (ResponseList<Status>) savedItemList[1];
-		constructTwitterListItem(statusList, dataList);
+		if (savedItemList[0] instanceof String
+				&& savedItemList[1] instanceof ArrayList) {
+			new Thread(new Runnable() {
+				public void run() {
 
-		combineListItem(dataList);
+					ArrayList<TimelineMessageListViewItem> dataList = new ArrayList<TimelineMessageListViewItem>();
+					constructFacebookListItem(responseString, dataList);
 
+					constructTwitterListItem(statusList, dataList);
+
+					combineListItem(dataList);
+
+				}
+			}).start();
+		} else {
+			asyncRefresh();
+		}
 	}
 
 	void constructFacebookListItem(String responseString,
@@ -238,14 +249,18 @@ public class StreamAdapter extends ListViewAdapter {
 		}
 	}
 
-	void combineListItem(ArrayList<TimelineMessageListViewItem> dataList) {
-		itemList.clear();
-		Collections.sort(dataList);
-		itemList.addAll(dataList);
-		notifyDataSetChanged();
+	void combineListItem(final ArrayList<TimelineMessageListViewItem> dataList) {
+		listView.post(new Runnable() {
+			public void run() {
+				itemList.clear();
+				Collections.sort(dataList);
+				itemList.addAll(dataList);
+				notifyDataSetChanged();
 
-		isRefreshing = false;
+				isRefreshing = false;
+				AndroidUtil.playListAnimation(listView);
+			}
+		});
 
-		AndroidUtil.playListAnimation(listView);
 	}
 }
