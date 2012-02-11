@@ -115,31 +115,31 @@ public class FacebookObject implements Serializable {
 			try {
 				message = jsonObject.getString("message");
 			} catch (JSONException e) {
-				e.printStackTrace();
+
 			}
 			try {
 				story = jsonObject.getString("story");
 			} catch (JSONException e) {
-				e.printStackTrace();
+
 			}
 			try {
 				title = jsonObject.getString("title");
 			} catch (JSONException e) {
-				e.printStackTrace();
+
 			}
 			try {
 				type = jsonObject.getString("type");
 			} catch (JSONException e) {
-				e.printStackTrace();
+
 			}
 			try {
 				String created_timeString = jsonObject
 						.getString("created_time");
 				created_time = DateUtil.parseISODate(created_timeString);
 			} catch (ParseException e) {
-				e.printStackTrace();
+
 			} catch (JSONException e) {
-				e.printStackTrace();
+
 			}
 			try {
 				String updated_timeString = jsonObject
@@ -147,11 +147,11 @@ public class FacebookObject implements Serializable {
 				try {
 					updated_time = DateUtil.parseISODate(updated_timeString);
 				} catch (ParseException e) {
-					e.printStackTrace();
+
 				}
 			} catch (JSONException e) {
 				updated_time = created_time;
-				e.printStackTrace();
+
 			}
 
 			// Post object may not always have created_time
@@ -161,40 +161,40 @@ public class FacebookObject implements Serializable {
 			try {
 				name = jsonObject.getString("name");
 			} catch (JSONException e) {
-				e.printStackTrace();
+
 			}
 
 			try {
 				caption = jsonObject.getString("caption");
 			} catch (JSONException e) {
-				e.printStackTrace();
+
 			}
 
 			try {
 				description = jsonObject.getString("description");
 			} catch (JSONException e) {
-				e.printStackTrace();
+
 			}
 			try {
 				picture = jsonObject.getString("picture");
 			} catch (JSONException e) {
-				e.printStackTrace();
+
 			}
 			try {
 				link = jsonObject.getString("link");
 			} catch (JSONException e) {
-				e.printStackTrace();
+
 			}
 
 			try {
 				setComment(jsonObject);
 			} catch (JSONException e) {
-				e.printStackTrace();
+
 			}
 			try {
 				setLike(jsonObject);
 			} catch (JSONException e) {
-				e.printStackTrace();
+
 			}
 
 			try {
@@ -204,24 +204,24 @@ public class FacebookObject implements Serializable {
 			try {
 				setPlace(jsonObject);
 			} catch (JSONException e) {
-				e.printStackTrace();
+
 			}
 
 			try {
 				setToUserList(jsonObject);
 			} catch (JSONException e) {
-				e.printStackTrace();
+
 			}
 
 			try {
 				setStoryTagsList(jsonObject);
 			} catch (JSONException e) {
-				e.printStackTrace();
+
 			}
 
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+
 		}
 	}
 
@@ -263,7 +263,7 @@ public class FacebookObject implements Serializable {
 					comment.created_time = DateUtil.parseISODate(commentJSON
 							.getString("created_time"));
 				} catch (ParseException e) {
-					e.printStackTrace();
+
 				}
 				try {
 					comment.likeTotalCount = commentJSON.getLong("likes");
@@ -319,27 +319,22 @@ public class FacebookObject implements Serializable {
 		try {
 			location.city = locationJSON.getString("city");
 		} catch (JSONException e) {
-			e.printStackTrace();
 		}
 		try {
 			location.country = locationJSON.getString("country");
 		} catch (JSONException e) {
-			e.printStackTrace();
 		}
 		try {
 			location.zip = locationJSON.getString("zip");
 		} catch (JSONException e) {
-			e.printStackTrace();
 		}
 		try {
 			location.latitude = locationJSON.getString("latitude");
 		} catch (JSONException e) {
-			e.printStackTrace();
 		}
 		try {
 			location.longitude = locationJSON.getString("longitude");
 		} catch (JSONException e) {
-			e.printStackTrace();
 		}
 
 		return location;
