@@ -2,6 +2,7 @@ package org.dyndns.warenix.lab.compat1.app;
 
 import java.util.ArrayList;
 
+import org.dyndns.warenix.image.CachedWebImage;
 import org.dyndns.warenix.lab.compat1.R;
 import org.dyndns.warenix.lab.compat1.app.facebook.AuthenFacebookActivity;
 import org.dyndns.warenix.lab.compat1.app.twitter.AuthenTwitterActivity;
@@ -38,6 +39,10 @@ public class Compat1Activity extends ActionBarActivity {
 	TabsAdapter mTabsAdapter;
 	ViewPager mViewPager;
 	Toast toast;
+
+	static {
+		CachedWebImage.setCacheDir("mission");
+	}
 
 	/** Called when the activity is first created. */
 	@Override

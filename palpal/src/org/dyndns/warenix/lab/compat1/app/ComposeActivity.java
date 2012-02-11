@@ -13,6 +13,7 @@ import org.dyndns.warenix.mission.facebook.backgroundtask.LinkPreviewBackgroundT
 import org.dyndns.warenix.mission.facebook.backgroundtask.ShareLinkBackgroundTask;
 import org.dyndns.warenix.mission.facebook.backgroundtask.ShareMessageBackgroundTask;
 import org.dyndns.warenix.mission.facebook.backgroundtask.SharePhotoBackgroundTask;
+import org.dyndns.warenix.mission.twitter.backgroundtask.UpdateStatusBackgroundTask;
 import org.dyndns.warenix.util.ImageUtil;
 
 import android.content.Intent;
@@ -127,6 +128,12 @@ public class ComposeActivity extends ActionBarActivity {
 									ComposeActivity.this,
 									imageQueueAdapter.getCount()
 											+ " photos are shared!",
+									Toast.LENGTH_SHORT).show();
+						} else if (task instanceof UpdateStatusBackgroundTask) {
+							Toast.makeText(
+									ComposeActivity.this,
+									imageQueueAdapter.getCount()
+											+ "Twitter status is updated!",
 									Toast.LENGTH_SHORT).show();
 						}
 					}
@@ -356,6 +363,15 @@ public class ComposeActivity extends ActionBarActivity {
 
 	void onShareTwitter(String message) {
 		Log.d("ComposeActivity", String.format("sending message: to Twitter"));
+
+		BackgroundTask task = null;
+		switch (mShareMode) {
+		case PARAM_SHARE_MODE_MESSAGE:
+			task = new UpdateStatusBackgroundTask(message);
+			addBackgroundTask(task);
+			break;
+		}
+
 	}
 
 	void onShareMessage() {
