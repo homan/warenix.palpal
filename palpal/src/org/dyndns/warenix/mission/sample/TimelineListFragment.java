@@ -74,11 +74,11 @@ public class TimelineListFragment extends ListFragment {
 
 	@Override
 	public void onStop() {
-		super.onStop();
 		Log.d("warenix", "timelineListFragment onStop()");
 		if (adapter != null) {
 			// adapter.cleanup();
 		}
+		super.onStop();
 	}
 
 	public void refresh() {

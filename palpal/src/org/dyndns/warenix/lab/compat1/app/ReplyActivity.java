@@ -8,6 +8,7 @@ import org.dyndns.warenix.mission.facebook.FacebookPostAdapter;
 import org.dyndns.warenix.mission.facebook.backgroundtask.CommentPostBackgroundTask;
 import org.dyndns.warenix.mission.twitter.TwitterConversationAdapter;
 import org.dyndns.warenix.mission.twitter.backgroundtask.ReplyStatusBackgroundTask;
+import org.dyndns.warenix.mission.twitter.util.TwitterMaster;
 import org.dyndns.warenix.pattern.baseListView.ListViewAdapter;
 
 import twitter4j.Twitter;
@@ -71,13 +72,15 @@ public class ReplyActivity extends ActionBarActivity {
 					.getUserMentionEntities();
 			try {
 				Twitter twitter = Memory.getTwitterClient();
+				// String myScreenname = twitter.getScreenName();
+				String myScreenname = TwitterMaster
+						.getScreenName(getApplicationContext());
 
 				// default reply to poster
 				String message = "@"
 						+ twitterMessageObject.getUser().getScreenName() + " ";
 
 				// // remove mentions self
-				String myScreenname = "";// twitter.getScreenName();
 				UserMentionEntity mentionedScreenname = null;
 				for (int i = 0; i < userMentionEntity.length; ++i) {
 					mentionedScreenname = userMentionEntity[i];

@@ -86,19 +86,20 @@ public class TimelineListFragment extends ListFragment {
 	}
 
 	public void onDestroyView() {
-		super.onDestroyView();
 		Log.d("warenix", "timelineListFragment onDestroyView()");
 		if (adapter != null) {
 			adapter.clear();
 			adapter = null;
 			listView = null;
 		}
+		super.onDestroyView();
 	}
 
 	@Override
 	public void onDetach() {
-		super.onDetach();
 		Log.d("warenix", "timelineListFragment onDetach()");
+		// adapter.cancelAsyncRefresh();
+		super.onDetach();
 	}
 
 	public void onSaveInstanceState(Bundle outState) {

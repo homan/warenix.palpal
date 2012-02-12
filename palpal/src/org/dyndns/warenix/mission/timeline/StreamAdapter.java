@@ -35,6 +35,7 @@ public class StreamAdapter extends ListViewAdapter {
 	public static int MESSAGE_TYPE_FACEBOOK = 2;
 
 	boolean isRefreshing;
+	AsyncRefreshTask mAsyncRefreshTask;
 
 	public StreamAdapter(Context context, ListView listView) {
 		super(context, listView);
@@ -51,10 +52,20 @@ public class StreamAdapter extends ListViewAdapter {
 				}
 
 			});
+			// cancelAsyncRefresh();
+
 			isRefreshing = true;
-			new AsyncRefreshTask().execute();
+			mAsyncRefreshTask = new AsyncRefreshTask();
+			mAsyncRefreshTask.execute();
 		}
 
+	}
+
+	public void cancelAsyncRefresh() {
+		if (mAsyncRefreshTask != null && !mAsyncRefreshTask.isCancelled()) {
+			mAsyncRefreshTask.cancel(true);
+		}
+		isRefreshing = false;
 	}
 
 	// public void refresh() {
@@ -99,10 +110,14 @@ public class StreamAdapter extends ListViewAdapter {
 				}
 			};
 
-			new Thread(facebook).start();
-			new Thread(twitter).start();
+			ArrayList<Runnable> runnableList = new ArrayList<Runnable>();
+			runnableList.add(facebook);
+			runnableList.add(twitter);
 
-			int count = 2;
+			int count = runnableList.size();
+			for (int i = 0; i < count; ++i) {
+				new Thread(runnableList.remove(0)).start();
+			}
 			while (count > 0) {
 				System.out.println((new Date()).toLocaleString()
 						+ " refreshing " + count);

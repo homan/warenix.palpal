@@ -46,7 +46,7 @@ public class Compat1Activity extends ActionBarActivity {
 	Toast toast;
 
 	static {
-		CachedWebImage.setCacheDir("mission");
+		CachedWebImage.setCacheDir("palpal");
 	}
 
 	/** Called when the activity is first created. */
@@ -57,7 +57,10 @@ public class Compat1Activity extends ActionBarActivity {
 
 		AndroidUtil.hideSoftwareKeyboard(this);
 
-		restoreClients();
+		// restoreClients();
+
+		restoreClientsToMemory();
+		onReady();
 	}
 
 	public void onResume() {
@@ -215,6 +218,10 @@ public class Compat1Activity extends ActionBarActivity {
 
 		case R.id.menu_share:
 			intent = new Intent(this, ComposeActivity.class);
+			startActivity(intent);
+			break;
+		case R.id.menu_accounts:
+			intent = new Intent(this, AccountsActivity.class);
 			startActivity(intent);
 			break;
 		}
@@ -402,4 +409,11 @@ public class Compat1Activity extends ActionBarActivity {
 		return view;
 	}
 
+	void restoreClientsToMemory() {
+		Log.d("warenix", "restoreClientsToMemory");
+		boolean isTwitterOk = TwitterMaster
+				.restoreTwitterClient(getApplicationContext());
+		boolean isFacebookOk = FacebookMaster
+				.restoreFacebook(getApplicationContext());
+	}
 }

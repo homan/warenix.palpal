@@ -5,7 +5,7 @@
 	Unless required by applicable law or agreed to in writing, software distributed 
 	under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES 
 	OR CONDITIONS OF ANY KIND, either express or implied. See the License for 
-	the specific language governing permissions and limitations under the License.
+	the specific language governing permissions and limitations under the License.
 -->
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
@@ -16,21 +16,18 @@
         android:orderInCategory="1"
         android:showAsAction="always"
         android:title="compose"/>
-
     <item
         android:id="@+id/menu_search"
         android:icon="@drawable/ic_search"
         android:orderInCategory="0"
         android:showAsAction="always"
         android:title="@string/menu_search"/>
-
     <item
-        android:id="@+id/menu_settings"
+        android:id="@+id/menu_accounts"
         android:icon="@android:drawable/ic_menu_preferences"
         android:orderInCategory="1"
         android:showAsAction="never"
-        android:title="Settings"/>
-
+        android:title="Accounts"/>
     <item
         android:id="@+id/menu_refresh"
         android:icon="@drawable/ic_refresh"

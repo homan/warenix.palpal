@@ -96,10 +96,11 @@ public class NotificationsAdapter extends ListViewAdapter {
 				}
 			};
 
-			new Thread(facebook).start();
-			new Thread(twitter).start();
+			ArrayList<Runnable> runnableList = new ArrayList<Runnable>();
+			runnableList.add(facebook);
+			runnableList.add(twitter);
 
-			int count = 2;
+			int count = runnableList.size();
 			while (count > 0) {
 				System.out.println((new Date()).toLocaleString()
 						+ " refreshing " + count);

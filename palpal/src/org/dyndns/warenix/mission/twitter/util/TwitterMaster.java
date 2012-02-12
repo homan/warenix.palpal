@@ -15,6 +15,7 @@ public class TwitterMaster {
 	public static final String PREF_NAME = "twitter_pref";
 	public static final String ACCESS_TOKEN0 = "access_token0";
 	public static final String ACCESS_TOKEN1 = "access_token1";
+	public static final String SCREEN_NAME = "screen_name";
 
 	/**
 	 * 
@@ -43,6 +44,10 @@ public class TwitterMaster {
 			return true;
 		}
 		return false;
+	}
+
+	public static String getScreenName(Context context) {
+		return PreferenceMaster.load(context, PREF_NAME, SCREEN_NAME, "");
 	}
 
 }

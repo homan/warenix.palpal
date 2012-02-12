@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    android:installLocation="auto"
     package="org.dyndns.warenix.lab.compat1"
     android:versionCode="5"
-    android:versionName="2.0 dev"
-    android:installLocation="auto">
+    android:versionName="2.0 dev" >
 
     <uses-sdk
         android:minSdkVersion="4"
@@ -17,9 +17,9 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:label="@string/app_name"
-            android:name=".app.Compat1Activity" >
-            <intent-filter >
+            android:name=".app.Compat1Activity"
+            android:label="@string/app_name" >
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -29,14 +29,18 @@
                 android:name="android.app.default_searchable"
                 android:value=".app.SearchActivity" />
 
-            <intent-filter >
+            <intent-filter>
             </intent-filter>
         </activity>
         <activity
+            android:name=".app.AccountsActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".app.SearchActivity"
             android:label="@string/app_name"
-            android:launchMode="singleTop"
-            android:name=".app.SearchActivity" >
-            <intent-filter >
+            android:launchMode="singleTop" >
+            <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
 
@@ -45,16 +49,16 @@
                 android:resource="@xml/quick_search" />
         </activity>
         <activity
-            android:label="@string/app_name"
-            android:name=".app.facebook.PostDetailActivity" >
+            android:name=".app.facebook.PostDetailActivity"
+            android:label="@string/app_name" >
         </activity>
         <activity
-            android:label="@string/app_name"
-            android:name=".app.twitter.AuthenTwitterActivity" >
+            android:name=".app.twitter.AuthenTwitterActivity"
+            android:label="@string/app_name" >
         </activity>
         <activity
-            android:label="@string/app_name"
-            android:name=".app.facebook.AuthenFacebookActivity" >
+            android:name=".app.facebook.AuthenFacebookActivity"
+            android:label="@string/app_name" >
 
             <!-- <intent-filter > -->
             <!-- <action android:name="android.intent.action.MAIN" /> -->
@@ -64,10 +68,10 @@
             <!-- </intent-filter> -->
         </activity>
         <activity
+            android:name=".app.ComposeActivity"
             android:label="@string/app_name"
-            android:launchMode="singleTop"
-            android:name=".app.ComposeActivity" >
-            <intent-filter >
+            android:launchMode="singleTop" >
+            <intent-filter>
                 <action android:name="android.intent.action.SEND_MULTIPLE" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -76,7 +80,7 @@
             </intent-filter>
 
             <!-- share link -->
-            <intent-filter >
+            <intent-filter>
                 <action android:name="android.intent.action.SEND" />
 
                 <data android:mimeType="text/plain" />
@@ -85,8 +89,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:label="@string/app_name"
-            android:name=".app.ReplyActivity" >
+            android:name=".app.ReplyActivity"
+            android:label="@string/app_name" >
         </activity>
 
         <service android:name="org.dyndns.warenix.lab.taskservice.TaskService" />
