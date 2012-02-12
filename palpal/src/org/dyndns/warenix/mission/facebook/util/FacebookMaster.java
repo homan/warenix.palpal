@@ -354,4 +354,65 @@ public class FacebookMaster {
 		return false;
 	}
 
+	/**
+	 * user graph api to comment a facebook object
+	 * 
+	 * @param post_id
+	 * @param comment
+	 * @return
+	 * @throws FacebookException
+	 */
+	public static boolean addComment(String post_id, String comment)
+			throws Exception {
+		String url = String.format("https://graph.facebook.com/%s/comments",
+				post_id);
+		String access_token = Memory.getAccessToken();
+
+		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+		nameValuePairs
+				.add(new BasicNameValuePair("access_token", access_token));
+		nameValuePairs.add(new BasicNameValuePair("format", "json"));
+		nameValuePairs.add(new BasicNameValuePair("message", comment));
+
+		// return "true" if ok
+		String responseString = callHTTPS(url, nameValuePairs);
+
+		if (responseString != null) {
+			checkFacebookException(responseString);
+			String id = "";
+			try {
+				JSONObject json = new JSONObject(responseString);
+				id = json.getString("id");
+			} catch (JSONException e) {
+
+			}
+			Log.d("palpal", String.format("comment (graph) response [%s]",
+					responseString));
+			return id.equals("") == false;
+		}
+		return false;
+	}
+
+	/**
+	 * given a json resposne string, check if the string contains error
+	 */
+	public static void checkFacebookException(String responseString)
+			throws Exception {
+		JSONObject json = null;
+		try {
+			json = new JSONObject(responseString);
+			JSONObject errorJSON = json.getJSONObject("error");
+			String errorType = errorJSON.getString("type");
+			String errorMessage = errorJSON.getString("message");
+			throw new Exception(errorJSON.toString());
+		} catch (JSONException e) {
+			try {
+				json = new JSONObject(responseString);
+				String errorType = json.getString("error_code");
+				String errorMessage = json.getString("error_msg");
+				throw new Exception(json.toString());
+			} catch (JSONException e1) {
+			}
+		}
+	}
 }

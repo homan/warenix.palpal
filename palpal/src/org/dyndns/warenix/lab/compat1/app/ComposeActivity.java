@@ -173,7 +173,7 @@ public class ComposeActivity extends ActionBarActivity {
 
 					@Override
 					public void run() {
-						Toast.makeText(ComposeActivity.this,
+						Toast.makeText(getApplicationContext(),
 								"executing " + task.toString(),
 								Toast.LENGTH_SHORT).show();
 					}

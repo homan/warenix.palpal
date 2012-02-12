@@ -291,7 +291,6 @@ public class FacebookMessageListItem extends TimelineMessageListViewItem {
 										// 1);
 										TaskService.addBackgroundTask(context,
 												new LikePostBackgroundTask(
-														context,
 														messageObject.id));
 									}
 								});

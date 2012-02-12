@@ -3,20 +3,27 @@ package org.dyndns.warenix.lab.compat1.app;
 import org.dyndns.warenix.lab.compat1.R;
 import org.dyndns.warenix.lab.compat1.util.AndroidUtil;
 import org.dyndns.warenix.lab.compat1.util.Memory;
+import org.dyndns.warenix.lab.taskservice.BackgroundTask;
+import org.dyndns.warenix.lab.taskservice.TaskService;
+import org.dyndns.warenix.lab.taskservice.TaskServiceStateListener;
 import org.dyndns.warenix.mission.facebook.FacebookPostAdapter;
+import org.dyndns.warenix.mission.facebook.backgroundtask.CommentPostBackgroundTask;
 import org.dyndns.warenix.mission.twitter.TwitterConversationAdapter;
 import org.dyndns.warenix.pattern.baseListView.ListViewAdapter;
 
 import twitter4j.Twitter;
-import twitter4j.TwitterException;
 import twitter4j.UserMentionEntity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Gallery;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.android.actionbarcompat.ActionBarActivity;
 
@@ -35,6 +42,8 @@ public class ReplyActivity extends ActionBarActivity {
 	Gallery imageQueue;
 	AutoCompleteTextView commentTextView;
 
+	int adapterType;
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -51,7 +60,7 @@ public class ReplyActivity extends ActionBarActivity {
 		Bundle bundle = getIntent().getExtras();
 
 		twitter4j.Status twitterMessageObject = null;
-		int adapterType = bundle.getInt(BUNDLE_LIST_VIEW_ADAPTER);
+		adapterType = bundle.getInt(BUNDLE_LIST_VIEW_ADAPTER);
 		switch (adapterType) {
 		case PARAM_TWITTER_CONVERSATION_ADAPTER:
 			twitterMessageObject = (twitter4j.Status) bundle
@@ -136,6 +145,10 @@ public class ReplyActivity extends ActionBarActivity {
 
 	}
 
+	public void onResume(){
+		super.onResume();
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater menuInflater = getMenuInflater();
@@ -147,4 +160,37 @@ public class ReplyActivity extends ActionBarActivity {
 		return super.onCreateOptionsMenu(menu);
 	}
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		Intent intent = null;
+		switch (item.getItemId()) {
+		case R.id.menu_compose:
+			// construct and send message
+			Toast.makeText(this, "(fake) queued message for posting",
+					Toast.LENGTH_SHORT).show();
+
+			onReply();
+			break;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	void onReply() {
+		switch (adapterType) {
+		case PARAM_TWITTER_CONVERSATION_ADAPTER:
+			break;
+		case PARAM_FACEBOOK_POST_ADAPTER:
+
+			String comment = commentTextView.getText().toString().trim();
+
+			if (comment != "") {
+				String graphId = getIntent().getStringExtra(
+						BUNDLE_FACEBOOK_GRAPH_ID);
+				Log.i("palpal", "reply graph id:" + graphId);
+				TaskService.addBackgroundTask(getApplicationContext(),
+						new CommentPostBackgroundTask(graphId, comment));
+			}
+			break;
+		}
+	}
 }

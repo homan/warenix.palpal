@@ -11,6 +11,7 @@ import org.dyndns.warenix.lab.compat1.util.AndroidUtil;
 import org.dyndns.warenix.lab.taskservice.BackgroundTask;
 import org.dyndns.warenix.lab.taskservice.TaskService;
 import org.dyndns.warenix.lab.taskservice.TaskServiceStateListener;
+import org.dyndns.warenix.mission.facebook.backgroundtask.CommentPostBackgroundTask;
 import org.dyndns.warenix.mission.facebook.backgroundtask.LikePostBackgroundTask;
 import org.dyndns.warenix.mission.facebook.util.FacebookMaster;
 import org.dyndns.warenix.mission.timeline.TimelineListFragment;
@@ -69,25 +70,38 @@ public class Compat1Activity extends ActionBarActivity {
 			}
 
 			@Override
-			public void onBackgroundTaskRemoved(BackgroundTask task) {
-			}
-
-			@Override
-			public void onBackgroundTaskExecuted(BackgroundTask task) {
-
-			}
-
-			@Override
-			public void onBackgroundTaskAdded(final BackgroundTask task) {
+			public void onBackgroundTaskRemoved(final BackgroundTask task) {
 				runOnUiThread(new Runnable() {
 					public void run() {
 						if (task instanceof LikePostBackgroundTask) {
+							Toast.makeText(getApplicationContext(), "Like +1",
+									Toast.LENGTH_SHORT).show();
+						} else if (task instanceof CommentPostBackgroundTask) {
 							Toast.makeText(getApplicationContext(),
-									"You've liked a post", Toast.LENGTH_SHORT)
+									"Comment posted", Toast.LENGTH_SHORT)
 									.show();
 						}
 					}
 				});
+			}
+
+			@Override
+			public void onBackgroundTaskExecuted(final BackgroundTask task) {
+				runOnUiThread(new Runnable() {
+
+					@Override
+					public void run() {
+						Toast.makeText(getApplicationContext(),
+								"executing " + task.toString(),
+								Toast.LENGTH_SHORT).show();
+					}
+				});
+
+			}
+
+			@Override
+			public void onBackgroundTaskAdded(BackgroundTask task) {
+
 			}
 		});
 	}
