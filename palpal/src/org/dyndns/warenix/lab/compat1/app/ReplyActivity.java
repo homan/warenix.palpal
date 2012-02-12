@@ -1,7 +1,6 @@
 package org.dyndns.warenix.lab.compat1.app;
 
 import org.dyndns.warenix.lab.compat1.R;
-import org.dyndns.warenix.lab.compat1.R.id;
 import org.dyndns.warenix.lab.compat1.util.AndroidUtil;
 import org.dyndns.warenix.lab.compat1.util.Memory;
 import org.dyndns.warenix.mission.facebook.FacebookPostAdapter;
@@ -64,27 +63,25 @@ public class ReplyActivity extends ActionBarActivity {
 					.getUserMentionEntities();
 			try {
 				Twitter twitter = Memory.getTwitterClient();
-				String myScreenname = twitter.getScreenName();
 
 				// default reply to poster
 				String message = "@"
 						+ twitterMessageObject.getUser().getScreenName() + " ";
 
-				// remove mentions self
-				UserMentionEntity mentionedScreenname = null;
-				for (int i = 0; i < userMentionEntity.length; ++i) {
-					mentionedScreenname = userMentionEntity[i];
-					if (!mentionedScreenname.getScreenName().equals(
-							myScreenname)) {
-						message += "@" + mentionedScreenname.getScreenName()
-								+ " ";
-					}
-				}
+				// // remove mentions self
+				// String myScreenname = twitter.getScreenName();
+				// UserMentionEntity mentionedScreenname = null;
+				// for (int i = 0; i < userMentionEntity.length; ++i) {
+				// mentionedScreenname = userMentionEntity[i];
+				// if (!mentionedScreenname.getScreenName().equals(
+				// myScreenname)) {
+				// message += "@" + mentionedScreenname.getScreenName()
+				// + " ";
+				// }
+				// }
 
 				commentTextView.setText(message);
 			} catch (IllegalStateException e) {
-				e.printStackTrace();
-			} catch (TwitterException e) {
 				e.printStackTrace();
 			}
 			break;
