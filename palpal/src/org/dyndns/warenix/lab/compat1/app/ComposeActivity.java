@@ -84,6 +84,33 @@ public class ComposeActivity extends ActionBarActivity {
 
 		setupUI();
 
+		Intent imageReturnedIntent = getIntent();
+		if (imageReturnedIntent != null) {
+			if (Intent.ACTION_SEND_MULTIPLE.equals(imageReturnedIntent
+					.getAction())
+					&& imageReturnedIntent.hasExtra(Intent.EXTRA_STREAM)) {
+				ArrayList<Parcelable> list = imageReturnedIntent
+						.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
+				for (Parcelable p : list) {
+					Uri uri = (Uri) p;
+					imageQueueAdapter.addImageUri(uri);
+					Log.d("lab", "onActivityResult:" + uri);
+				}
+				onSharePhoto();
+			} else if (Intent.ACTION_SEND.equals(imageReturnedIntent
+					.getAction())) {
+				Bundle bundle = imageReturnedIntent.getExtras();
+				onShareLink(bundle.getString(Intent.EXTRA_TEXT));
+			}
+		} else {
+			// show default share message UI
+			onShareMessage();
+		}
+	}
+
+	public void onResume() {
+		super.onResume();
+
 		TaskService.setStateListener(new TaskServiceStateListener() {
 
 			@Override
@@ -158,29 +185,6 @@ public class ComposeActivity extends ActionBarActivity {
 
 			}
 		});
-
-		Intent imageReturnedIntent = getIntent();
-		if (imageReturnedIntent != null) {
-			if (Intent.ACTION_SEND_MULTIPLE.equals(imageReturnedIntent
-					.getAction())
-					&& imageReturnedIntent.hasExtra(Intent.EXTRA_STREAM)) {
-				ArrayList<Parcelable> list = imageReturnedIntent
-						.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
-				for (Parcelable p : list) {
-					Uri uri = (Uri) p;
-					imageQueueAdapter.addImageUri(uri);
-					Log.d("lab", "onActivityResult:" + uri);
-				}
-				onSharePhoto();
-			} else if (Intent.ACTION_SEND.equals(imageReturnedIntent
-					.getAction())) {
-				Bundle bundle = imageReturnedIntent.getExtras();
-				onShareLink(bundle.getString(Intent.EXTRA_TEXT));
-			}
-		} else {
-			// show default share message UI
-			onShareMessage();
-		}
 	}
 
 	@Override
@@ -298,11 +302,11 @@ public class ComposeActivity extends ActionBarActivity {
 		return imageQueueAdapter.getImageQueue();
 	}
 
-	void addBackgroundTask(BackgroundTask task) {
-		Intent intent = new Intent(this, TaskService.class);
-		intent.putExtra("task", task);
-		startService(intent);
-	}
+	// void addBackgroundTask(BackgroundTask task) {
+	// Intent intent = new Intent(this, TaskService.class);
+	// intent.putExtra("task", task);
+	// startService(intent);
+	// }
 
 	void onShareFacebook(String message) {
 		Log.d("ComposeActivity", String.format("sending message: to facebook"));
@@ -334,12 +338,12 @@ public class ComposeActivity extends ActionBarActivity {
 			}
 			// send link
 			task = new ShareLinkBackgroundTask(graphPath, message, mLinkPreview);
-			addBackgroundTask(task);
+			TaskService.addBackgroundTask(getApplicationContext(), task);
 			break;
 		case PARAM_SHARE_MODE_MESSAGE:
 			// send link
 			task = new ShareMessageBackgroundTask(graphPath, message);
-			addBackgroundTask(task);
+			TaskService.addBackgroundTask(getApplicationContext(), task);
 			break;
 		case PARAM_SHARE_MODE_PHOTO:
 			ArrayList<Uri> imageQueue = imageQueueAdapter.getImageQueue();
@@ -356,7 +360,7 @@ public class ComposeActivity extends ActionBarActivity {
 			}
 			task = new SharePhotoBackgroundTask(graphPath, message,
 					imageFileList);
-			addBackgroundTask(task);
+			TaskService.addBackgroundTask(getApplicationContext(), task);
 			break;
 		}
 	}
@@ -368,7 +372,7 @@ public class ComposeActivity extends ActionBarActivity {
 		switch (mShareMode) {
 		case PARAM_SHARE_MODE_MESSAGE:
 			task = new UpdateStatusBackgroundTask(message);
-			addBackgroundTask(task);
+			TaskService.addBackgroundTask(getApplicationContext(), task);
 			break;
 		}
 
@@ -396,7 +400,7 @@ public class ComposeActivity extends ActionBarActivity {
 
 		BackgroundTask task = null;
 		task = new LinkPreviewBackgroundTask(mSharedLink);
-		addBackgroundTask(task);
+		TaskService.addBackgroundTask(getApplicationContext(), task);
 	}
 
 	void showShareLinkUI() {

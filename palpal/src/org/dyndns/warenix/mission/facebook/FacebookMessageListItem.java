@@ -6,6 +6,8 @@ import org.dyndns.warenix.image.CachedWebImage;
 import org.dyndns.warenix.image.WebImage.WebImageListener;
 import org.dyndns.warenix.lab.compat1.R;
 import org.dyndns.warenix.lab.compat1.app.ReplyActivity;
+import org.dyndns.warenix.lab.taskservice.TaskService;
+import org.dyndns.warenix.mission.facebook.backgroundtask.LikePostBackgroundTask;
 import org.dyndns.warenix.mission.facebook.util.FacebookMaster;
 import org.dyndns.warenix.mission.timeline.StreamAdapter;
 import org.dyndns.warenix.mission.timeline.TimelineMessageListViewItem;
@@ -287,6 +289,10 @@ public class FacebookMessageListItem extends TimelineMessageListViewItem {
 									public void onClick(View v) {
 										// viewHolder.iconList.showLike(true,
 										// 1);
+										TaskService.addBackgroundTask(context,
+												new LikePostBackgroundTask(
+														context,
+														messageObject.id));
 									}
 								});
 						actionPopup.addAction(context, "Comment", null);

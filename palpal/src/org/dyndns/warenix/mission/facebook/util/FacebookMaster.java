@@ -326,4 +326,32 @@ public class FacebookMaster {
 		return null;
 	}
 
+	/**
+	 * user graph api to like a facbeook object
+	 * 
+	 * @param post_id
+	 * @return
+	 * @throws Exception
+	 * @throws FacebookException
+	 */
+	public static boolean addLike(String post_id) throws Exception {
+		String url = String.format("https://graph.facebook.com/%s/likes",
+				post_id);
+		String access_token = Memory.getAccessToken();
+
+		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+		nameValuePairs
+				.add(new BasicNameValuePair("access_token", access_token));
+		nameValuePairs.add(new BasicNameValuePair("format", "json"));
+
+		// return "true" if ok
+		String responseString = callHTTPS(url, nameValuePairs);
+		Log.d("palpal",
+				String.format("like (graph) response [%s]", responseString));
+		if (responseString != null) {
+			return responseString.equals("true");
+		}
+		return false;
+	}
+
 }

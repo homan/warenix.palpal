@@ -8,7 +8,10 @@ import org.dyndns.warenix.lab.compat1.app.facebook.AuthenFacebookActivity;
 import org.dyndns.warenix.lab.compat1.app.twitter.AuthenTwitterActivity;
 import org.dyndns.warenix.lab.compat1.fragment.BFragment;
 import org.dyndns.warenix.lab.compat1.util.AndroidUtil;
+import org.dyndns.warenix.lab.taskservice.BackgroundTask;
 import org.dyndns.warenix.lab.taskservice.TaskService;
+import org.dyndns.warenix.lab.taskservice.TaskServiceStateListener;
+import org.dyndns.warenix.mission.facebook.backgroundtask.LikePostBackgroundTask;
 import org.dyndns.warenix.mission.facebook.util.FacebookMaster;
 import org.dyndns.warenix.mission.timeline.TimelineListFragment;
 import org.dyndns.warenix.mission.twitter.util.TwitterMaster;
@@ -53,6 +56,40 @@ public class Compat1Activity extends ActionBarActivity {
 		AndroidUtil.hideSoftwareKeyboard(this);
 
 		restoreClients();
+	}
+
+	public void onResume() {
+		super.onResume();
+
+		TaskService.setStateListener(new TaskServiceStateListener() {
+
+			@Override
+			public void onQueueSizeChanged(int newQueueSize) {
+
+			}
+
+			@Override
+			public void onBackgroundTaskRemoved(BackgroundTask task) {
+			}
+
+			@Override
+			public void onBackgroundTaskExecuted(BackgroundTask task) {
+
+			}
+
+			@Override
+			public void onBackgroundTaskAdded(final BackgroundTask task) {
+				runOnUiThread(new Runnable() {
+					public void run() {
+						if (task instanceof LikePostBackgroundTask) {
+							Toast.makeText(getApplicationContext(),
+									"You've liked a post", Toast.LENGTH_SHORT)
+									.show();
+						}
+					}
+				});
+			}
+		});
 	}
 
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
