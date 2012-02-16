@@ -15,6 +15,7 @@ import org.dyndns.warenix.mission.facebook.backgroundtask.CommentPostBackgroundT
 import org.dyndns.warenix.mission.facebook.backgroundtask.LikePostBackgroundTask;
 import org.dyndns.warenix.mission.facebook.util.FacebookMaster;
 import org.dyndns.warenix.mission.timeline.TimelineListFragment;
+import org.dyndns.warenix.mission.twitter.backgroundtask.ReplyStatusBackgroundTask;
 import org.dyndns.warenix.mission.twitter.util.TwitterMaster;
 
 import android.content.Context;
@@ -79,6 +80,10 @@ public class Compat1Activity extends ActionBarActivity {
 						} else if (task instanceof CommentPostBackgroundTask) {
 							Toast.makeText(getApplicationContext(),
 									"Comment posted", Toast.LENGTH_SHORT)
+									.show();
+						} else if (task instanceof ReplyStatusBackgroundTask) {
+							Toast.makeText(getApplicationContext(),
+									"Status replied", Toast.LENGTH_SHORT)
 									.show();
 						}
 					}

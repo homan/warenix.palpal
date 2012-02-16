@@ -3,12 +3,11 @@ package org.dyndns.warenix.lab.compat1.app;
 import org.dyndns.warenix.lab.compat1.R;
 import org.dyndns.warenix.lab.compat1.util.AndroidUtil;
 import org.dyndns.warenix.lab.compat1.util.Memory;
-import org.dyndns.warenix.lab.taskservice.BackgroundTask;
 import org.dyndns.warenix.lab.taskservice.TaskService;
-import org.dyndns.warenix.lab.taskservice.TaskServiceStateListener;
 import org.dyndns.warenix.mission.facebook.FacebookPostAdapter;
 import org.dyndns.warenix.mission.facebook.backgroundtask.CommentPostBackgroundTask;
 import org.dyndns.warenix.mission.twitter.TwitterConversationAdapter;
+import org.dyndns.warenix.mission.twitter.backgroundtask.ReplyStatusBackgroundTask;
 import org.dyndns.warenix.pattern.baseListView.ListViewAdapter;
 
 import twitter4j.Twitter;
@@ -78,16 +77,16 @@ public class ReplyActivity extends ActionBarActivity {
 						+ twitterMessageObject.getUser().getScreenName() + " ";
 
 				// // remove mentions self
-				// String myScreenname = twitter.getScreenName();
-				// UserMentionEntity mentionedScreenname = null;
-				// for (int i = 0; i < userMentionEntity.length; ++i) {
-				// mentionedScreenname = userMentionEntity[i];
-				// if (!mentionedScreenname.getScreenName().equals(
-				// myScreenname)) {
-				// message += "@" + mentionedScreenname.getScreenName()
-				// + " ";
-				// }
-				// }
+				String myScreenname = "";// twitter.getScreenName();
+				UserMentionEntity mentionedScreenname = null;
+				for (int i = 0; i < userMentionEntity.length; ++i) {
+					mentionedScreenname = userMentionEntity[i];
+					if (!mentionedScreenname.getScreenName().equals(
+							myScreenname)) {
+						message += "@" + mentionedScreenname.getScreenName()
+								+ " ";
+					}
+				}
 
 				commentTextView.setText(message);
 			} catch (IllegalStateException e) {
@@ -145,7 +144,7 @@ public class ReplyActivity extends ActionBarActivity {
 
 	}
 
-	public void onResume(){
+	public void onResume() {
 		super.onResume();
 	}
 
@@ -176,12 +175,21 @@ public class ReplyActivity extends ActionBarActivity {
 	}
 
 	void onReply() {
+		String comment = commentTextView.getText().toString().trim();
+
 		switch (adapterType) {
 		case PARAM_TWITTER_CONVERSATION_ADAPTER:
+
+			twitter4j.Status twitterMessageObject = (twitter4j.Status) getIntent()
+					.getExtras().get(BUNDLE_MESSAGE_OBJECT);
+			long id = twitterMessageObject.getId();
+
+			Log.d("palpal",
+					String.format("replying twitter status %d %s", id, comment));
+			TaskService.addBackgroundTask(getApplicationContext(),
+					new ReplyStatusBackgroundTask(id, comment));
 			break;
 		case PARAM_FACEBOOK_POST_ADAPTER:
-
-			String comment = commentTextView.getText().toString().trim();
 
 			if (comment != "") {
 				String graphId = getIntent().getStringExtra(
