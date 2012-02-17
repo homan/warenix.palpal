@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="ext_src"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
@@ -14,5 +13,6 @@
 	<classpathentry kind="lib" path="/warenixlib/lib/twitter4j/twitter4j-core-android-2.2.6-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="/warenixlib/lib/twitter4j/twitter4j-media-support-android-2.2.6-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="/warenixlib/lib/twitter4j/twitter4j-stream-android-2.2.6-SNAPSHOT.jar"/>
+	<classpathentry kind="src" path="/ActionbarLib"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

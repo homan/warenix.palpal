@@ -2,8 +2,8 @@ package org.dyndns.warenix.lab.compat1.app;
 
 import java.util.ArrayList;
 
+import org.dyndns.warenix.actionbar.R;
 import org.dyndns.warenix.image.CachedWebImage;
-import org.dyndns.warenix.lab.compat1.R;
 import org.dyndns.warenix.lab.compat1.app.facebook.AuthenFacebookActivity;
 import org.dyndns.warenix.lab.compat1.app.twitter.AuthenTwitterActivity;
 import org.dyndns.warenix.lab.compat1.fragment.BFragment;
