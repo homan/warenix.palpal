@@ -56,11 +56,12 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
 
-        <AutoCompleteTextView
+        <MultiAutoCompleteTextView
             android:id="@+id/comment"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:completionThreshold="1"
             android:hint="What&apos;s in your mind?"
             android:maxLines="3"
             android:singleLine="false"

@@ -2,11 +2,14 @@ package org.dyndns.warenix.lab.compat1.app;
 
 import org.dyndns.warenix.lab.compat1.R;
 import org.dyndns.warenix.lab.compat1.util.AndroidUtil;
+import org.dyndns.warenix.lab.compat1.util.IndicatorTokenizer;
 import org.dyndns.warenix.lab.compat1.util.Memory;
 import org.dyndns.warenix.lab.taskservice.TaskService;
 import org.dyndns.warenix.mission.facebook.FacebookPostAdapter;
 import org.dyndns.warenix.mission.facebook.backgroundtask.CommentPostBackgroundTask;
+import org.dyndns.warenix.mission.twitter.TwitterUserAutoCompleteAdapter;
 import org.dyndns.warenix.mission.twitter.TwitterConversationAdapter;
+import org.dyndns.warenix.mission.twitter.TwitterUserFilterQueryProvider;
 import org.dyndns.warenix.mission.twitter.backgroundtask.ReplyStatusBackgroundTask;
 import org.dyndns.warenix.mission.twitter.util.TwitterMaster;
 import org.dyndns.warenix.pattern.baseListView.ListViewAdapter;
@@ -19,10 +22,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Gallery;
 import android.widget.ListView;
+import android.widget.MultiAutoCompleteTextView;
 import android.widget.Toast;
 
 import com.example.android.actionbarcompat.ActionBarActivity;
@@ -40,7 +43,7 @@ public class ReplyActivity extends ActionBarActivity {
 
 	Button compose;
 	Gallery imageQueue;
-	AutoCompleteTextView commentTextView;
+	MultiAutoCompleteTextView commentTextView;
 
 	int adapterType;
 
@@ -53,7 +56,18 @@ public class ReplyActivity extends ActionBarActivity {
 		setTitle("Reply");
 		AndroidUtil.hideSoftwareKeyboard(this);
 
-		commentTextView = (AutoCompleteTextView) findViewById(R.id.comment);
+		commentTextView = (MultiAutoCompleteTextView) findViewById(R.id.comment);
+		commentTextView.setTokenizer(new IndicatorTokenizer('@'));
+
+		// final String[] COUNTRIES = new String[] { "wayway",
+		// "France", "Italy", "Germany", "warenix", "wong" };
+		// ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+		// android.R.layout.simple_dropdown_item_1line, COUNTRIES);
+
+		TwitterUserAutoCompleteAdapter adapter = new TwitterUserAutoCompleteAdapter(this,
+				null);
+		adapter.setFilterQueryProvider(new TwitterUserFilterQueryProvider());
+		commentTextView.setAdapter(adapter);
 
 		ListView listView = (ListView) findViewById(android.R.id.list);
 
