@@ -101,6 +101,9 @@ public class NotificationsAdapter extends ListViewAdapter {
 			runnableList.add(twitter);
 
 			int count = runnableList.size();
+			for (int i = 0; i < count; ++i) {
+				new Thread(runnableList.remove(0)).start();
+			}
 			while (count > 0) {
 				System.out.println((new Date()).toLocaleString()
 						+ " refreshing " + count);
