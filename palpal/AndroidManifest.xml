@@ -88,6 +88,13 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
 
+            <!-- Reshare post -->
+            <intent-filter>
+                <action android:name="org.dyndns.warenix.palpal.facebook.ACTION_RESHARE_POST" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
             <!-- Quote Tweet -->
             <intent-filter>
                 <action android:name="org.dyndns.warenix.palpal.twitter.ACTION_QUOTE_TWEET" />
