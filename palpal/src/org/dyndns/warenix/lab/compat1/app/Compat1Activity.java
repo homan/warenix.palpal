@@ -17,6 +17,7 @@ import org.dyndns.warenix.mission.facebook.util.FacebookMaster;
 import org.dyndns.warenix.mission.timeline.TimelineListFragment;
 import org.dyndns.warenix.mission.twitter.backgroundtask.ReplyStatusBackgroundTask;
 import org.dyndns.warenix.mission.twitter.util.TwitterMaster;
+import org.dyndns.warenix.util.WLog;
 
 import android.content.Context;
 import android.content.Intent;
@@ -47,6 +48,7 @@ public class Compat1Activity extends ActionBarActivity {
 
 	static {
 		CachedWebImage.setCacheDir("palpal");
+		WLog.setAppName("palpal");
 	}
 
 	/** Called when the activity is first created. */

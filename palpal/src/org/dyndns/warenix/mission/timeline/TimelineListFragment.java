@@ -5,9 +5,10 @@ import java.io.Serializable;
 import org.dyndns.warenix.lab.compat1.R;
 import org.dyndns.warenix.mission.facebook.FacebookHomeAdapter;
 import org.dyndns.warenix.mission.sample.SampleListAdapter;
+import org.dyndns.warenix.pattern.baseListView.AsyncListAdapter.AsyncRefreshListener;
 import org.dyndns.warenix.pattern.baseListView.ListViewAdapter;
+import org.dyndns.warenix.util.WLog;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ListView;
+import android.widget.TextView;
 
 /**
  * Display items in a vertical timeline view
@@ -23,14 +25,18 @@ import android.widget.ListView;
  * @author warenix
  * 
  */
-public class TimelineListFragment extends ListFragment {
+public class TimelineListFragment extends ListFragment implements
+		AsyncRefreshListener {
+	private static final String TAG = "TimelineListFragment";
+	boolean isRefreshing = false;
 	public static String ITEM_LIST = "item_list";
 	int num;
 
 	ListViewAdapter adapter;
-	boolean isRefreshing = false;
 
 	ListView listView;
+	View mProgressBar;
+	TextView mProgressText;
 
 	public static TimelineListFragment newInstance(int num) {
 		TimelineListFragment f = new TimelineListFragment();
@@ -55,6 +61,8 @@ public class TimelineListFragment extends ListFragment {
 			Bundle savedInstanceState) {
 		Log.d("warenix", "onCreateView");
 		View v = inflater.inflate(R.layout.message_timeline, container, false);
+		mProgressBar = v.findViewById(R.id.progress_bar);
+		mProgressText = (TextView) v.findViewById(R.id.progress_text);
 		return v;
 	}
 
@@ -71,8 +79,10 @@ public class TimelineListFragment extends ListFragment {
 		// if (adapter == null) {
 		if (num == 0) {
 			adapter = new StreamAdapter(getActivity(), listView);
+			((StreamAdapter) adapter).setAsyncRefreshListener(this);
 		} else if (num == 1) {
 			adapter = new NotificationsAdapter(getActivity(), listView);
+			((NotificationsAdapter) adapter).setAsyncRefreshListener(this);
 		} else if (num == 2) {
 			adapter = new SampleListAdapter(getActivity(), listView);
 		} else if (num == 3) {
@@ -112,12 +122,15 @@ public class TimelineListFragment extends ListFragment {
 
 	public void refresh() {
 		if (!isRefreshing) {
-			// isRefreshing = true;
+			mProgressBar.setVisibility(View.VISIBLE);
+			mProgressText.setVisibility(View.VISIBLE);
+			mProgressText.setText("We're preparing to load messages.");
+
 			adapter.asyncRefresh();
-			// adapter.refresh();
-			// new RefreshTimelineAsyncTask().execute();
-			// adapter.asyncRefresh();
 		}
+		// adapter.refresh();
+		// new RefreshTimelineAsyncTask().execute();
+		// adapter.asyncRefresh();
 		// if (adapter == null) {
 		// adapter = new TimelineListAdapter(getListView());
 		// setListAdapter(adapter);
@@ -165,42 +178,39 @@ public class TimelineListFragment extends ListFragment {
 
 	}
 
-	class RefreshTimelineAsyncTask extends AsyncTask<Void, Void, Void> {
+	@Override
+	public void onAysncRefreshStarted() {
+		WLog.i(TAG, "onAysncRefreshStarted");
+		getView().post(new Runnable() {
 
-		@Override
-		protected Void doInBackground(Void... arg0) {
-			adapter.asyncRefresh();
-			return null;
-		}
+			@Override
+			public void run() {
+				mProgressBar.setVisibility(View.VISIBLE);
+				mProgressText.setVisibility(View.VISIBLE);
+				mProgressText
+						.setText("We're loading messages from social networks.");
+			}
+		});
+	}
 
-		@Override
-		protected void onPostExecute(Void v) {
-			// adapter.notifyDataSetChanged();
+	@Override
+	public void onAysncRefreshEnded() {
+		WLog.i(TAG, "onAysncRefreshEnded");
 
-			// listView.setSelectionAfterHeaderView();
-			// /*
-			// * Setting up Animation
-			// */
-			// AnimationSet set = new AnimationSet(true);
-			//
-			// Animation animation = new AlphaAnimation(0.0f, 1.0f);
-			// animation.setDuration(500);
-			// set.addAnimation(animation);
-			//
-			// animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF,
-			// 0.0f, Animation.RELATIVE_TO_SELF, 0.0f,
-			// Animation.RELATIVE_TO_SELF, 1.0f,
-			// Animation.RELATIVE_TO_SELF, 0.0f);
-			// animation.setDuration(500);
-			// set.addAnimation(animation);
-			//
-			// LayoutAnimationController controller = new
-			// LayoutAnimationController(
-			// set, 0.25f);
-			// listView.setLayoutAnimation(controller);
-			isRefreshing = false;
-		}
+		getView().post(new Runnable() {
 
+			@Override
+			public void run() {
+				mProgressBar.setVisibility(View.GONE);
+				if (adapter.getCount() > 0) {
+					mProgressText.setVisibility(View.GONE);
+				} else {
+					mProgressText.setText("No message is found.");
+				}
+			}
+		});
+
+		isRefreshing = false;
 	}
 
 }
