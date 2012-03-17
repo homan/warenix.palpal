@@ -14,6 +14,7 @@ import org.dyndns.warenix.mission.facebook.backgroundtask.ShareLinkBackgroundTas
 import org.dyndns.warenix.mission.facebook.backgroundtask.ShareMessageBackgroundTask;
 import org.dyndns.warenix.mission.facebook.backgroundtask.SharePhotoBackgroundTask;
 import org.dyndns.warenix.mission.twitter.backgroundtask.UpdateStatusBackgroundTask;
+import org.dyndns.warenix.mission.twitter.backgroundtask.UploadPhotoBackgroundTask;
 import org.dyndns.warenix.util.ImageUtil;
 
 import android.content.Intent;
@@ -374,8 +375,23 @@ public class ComposeActivity extends ActionBarActivity {
 			task = new UpdateStatusBackgroundTask(message);
 			TaskService.addBackgroundTask(getApplicationContext(), task);
 			break;
-		}
+		case PARAM_SHARE_MODE_PHOTO:
+			ArrayList<Uri> imageQueue = imageQueueAdapter.getImageQueue();
 
+			ArrayList<String> imageFileList = new ArrayList<String>(
+					imageQueue.size());
+			String fullFilePath = null;
+			Object[] fields = null;
+			for (int i = 0; i < imageQueue.size(); ++i) {
+				fields = ImageUtil
+						.convertUriToFullPath(this, imageQueue.get(i));
+				fullFilePath = (String) fields[ImageUtil.FIELD_IMAGE_FILE_PATH];
+				imageFileList.add(fullFilePath);
+			}
+			task = new UploadPhotoBackgroundTask(message, imageFileList);
+			TaskService.addBackgroundTask(getApplicationContext(), task);
+			break;
+		}
 	}
 
 	void onShareMessage() {

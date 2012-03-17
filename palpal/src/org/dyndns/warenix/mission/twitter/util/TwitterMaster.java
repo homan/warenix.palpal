@@ -1,5 +1,8 @@
 package org.dyndns.warenix.mission.twitter.util;
 
+import java.io.File;
+import java.io.FileInputStream;
+
 import org.dyndns.warenix.lab.compat1.R;
 import org.dyndns.warenix.lab.compat1.util.Memory;
 import org.dyndns.warenix.lab.compat1.util.PreferenceMaster;
@@ -7,6 +10,9 @@ import org.dyndns.warenix.lab.compat1.util.PreferenceMaster;
 import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
 import twitter4j.auth.AccessToken;
+import twitter4j.media.ImageUpload;
+import twitter4j.media.ImageUploadFactory;
+import twitter4j.media.MediaProvider;
 import android.content.Context;
 import android.util.Log;
 
@@ -50,4 +56,30 @@ public class TwitterMaster {
 		return PreferenceMaster.load(context, PREF_NAME, SCREEN_NAME, "");
 	}
 
+	/**
+	 * update status with photo uploaded to twitter
+	 * 
+	 * @param fullLocalImagePath
+	 * @param message
+	 * @return
+	 * @throws Exception
+	 */
+	public static String uploadPhotoFromFileToTwitter(
+			String fullLocalImagePath, String message) throws Exception {
+
+		String url = null;
+		FileInputStream fin = null;
+		try {
+			File input = new File(fullLocalImagePath);
+			fin = new FileInputStream(input);
+			ImageUploadFactory factory = new ImageUploadFactory();
+			ImageUpload upload = factory.getInstance(MediaProvider.TWITTER,
+					Memory.getTwitterClient().getAuthorization());
+			url = upload.upload(fullLocalImagePath, fin, message);
+		} finally {
+			fin.close();
+		}
+
+		return url;
+	}
 }
