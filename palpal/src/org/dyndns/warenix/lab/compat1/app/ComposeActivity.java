@@ -19,12 +19,12 @@ import org.dyndns.warenix.mission.twitter.backgroundtask.UploadPhotoBackgroundTa
 import org.dyndns.warenix.mission.twitter.util.TwitterMaster;
 import org.dyndns.warenix.palpal.intent.PalPalIntent;
 import org.dyndns.warenix.util.ImageUtil;
+import org.dyndns.warenix.util.WLog;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -41,7 +41,7 @@ import android.widget.Toast;
 import com.example.android.actionbarcompat.ActionBarActivity;
 
 public class ComposeActivity extends ActionBarActivity {
-
+	private static final String TAG = "ComposeActivity";
 	public static final String BUNDLE_GRAPH_ID = "graphId";
 
 	public static final String BUNDLE_MESSAGE_OBJECT = "messageObject";
@@ -101,7 +101,7 @@ public class ComposeActivity extends ActionBarActivity {
 				for (Parcelable p : list) {
 					Uri uri = (Uri) p;
 					imageQueueAdapter.addImageUri(uri);
-					Log.d("lab", "onActivityResult:" + uri);
+					WLog.d(TAG, "onActivityResult:" + uri);
 				}
 				onSharePhoto();
 			} else if (Intent.ACTION_SEND.equals(intentAction)) {
@@ -114,7 +114,7 @@ public class ComposeActivity extends ActionBarActivity {
 				displayFacebookMessage(messageObject);
 			} else if (PalPalIntent.ACTION_TWITTER_QUOTE_TWEET
 					.equals(intentAction)) {
-				Log.d("lab", "palpal quote tweet received");
+				WLog.d(TAG, "palpal quote tweet received");
 				commentTextView.setText(TwitterMaster
 						.createQuoteTweetStatus((twitter4j.Status) getIntent()
 								.getExtras().get("message")));
@@ -133,7 +133,7 @@ public class ComposeActivity extends ActionBarActivity {
 
 			@Override
 			public void onQueueSizeChanged(int newQueueSize) {
-				Log.d("taskservice", "onQueueSizeChanged " + newQueueSize);
+				WLog.d("taskservice", "onQueueSizeChanged " + newQueueSize);
 			}
 
 			@Override
@@ -281,7 +281,7 @@ public class ComposeActivity extends ActionBarActivity {
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				Log.d("lab", "" + position);
+				WLog.d(TAG, "" + position);
 				imageQueueAdapter.removeImageUri((Uri) imageQueueAdapter
 						.getItem(position));
 				return false;
@@ -304,8 +304,7 @@ public class ComposeActivity extends ActionBarActivity {
 
 	void onShare() {
 		String message = getComment();
-		Log.d("ComposeActivity",
-				String.format("sending message: [%s]", message.toString()));
+		WLog.d(TAG, String.format("sending message: [%s]", message.toString()));
 
 		if (sendFacebook.isChecked()) {
 			onShareFacebook(message);
@@ -336,7 +335,7 @@ public class ComposeActivity extends ActionBarActivity {
 	// }
 
 	void onShareFacebook(String message) {
-		Log.d("ComposeActivity", String.format("sending message: to facebook"));
+		WLog.d(TAG, String.format("sending message: to facebook"));
 
 		String graphPath = "me/feed";
 		String picture = "";
@@ -393,7 +392,7 @@ public class ComposeActivity extends ActionBarActivity {
 	}
 
 	void onShareTwitter(String message) {
-		Log.d("ComposeActivity", String.format("sending message: to Twitter"));
+		WLog.d(TAG, String.format("sending message: to Twitter"));
 
 		BackgroundTask task = null;
 		switch (mShareMode) {

@@ -17,6 +17,7 @@ import org.dyndns.warenix.palpal.intent.PalPalIntent;
 import org.dyndns.warenix.pattern.baseListView.IViewHolder;
 import org.dyndns.warenix.pattern.baseListView.ListViewAdapter;
 import org.dyndns.warenix.util.ImageUtil;
+import org.dyndns.warenix.util.WLog;
 import org.dyndns.warenix.widget.actionpopup.ActionPopup;
 
 import android.content.Context;
@@ -25,7 +26,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.View;
 import android.view.View.OnLongClickListener;
@@ -34,7 +34,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class FacebookMessageListItem extends TimelineMessageListViewItem {
-
+	private static final String TAG = "FacebookMessageListItem";
 	ListViewAdapter adapter;
 	FacebookObject messageObject;
 
@@ -101,7 +101,7 @@ public class FacebookMessageListItem extends TimelineMessageListViewItem {
 	@Override
 	protected View fillViewWithContent(Context context, final View view,
 			final int position, int type) {
-		Log.d("warenix", "fillViewWithContent " + position);
+		WLog.d(TAG, "fillViewWithContent " + position);
 		final ViewHolder viewHolder = (ViewHolder) view.getTag();
 		// init
 		viewHolder.iconList.hideAll();
@@ -352,7 +352,7 @@ public class FacebookMessageListItem extends TimelineMessageListViewItem {
 	@Override
 	public void showContextMenu(ContextMenu menu) {
 		// TODO Auto-generated method stub
-		Log.d("lab", "showContextMenu()");
+		WLog.d(TAG, "showContextMenu()");
 
 	}
 
@@ -366,12 +366,12 @@ public class FacebookMessageListItem extends TimelineMessageListViewItem {
 			@Override
 			public void onImageSet(ImageView image, Bitmap bitmap) {
 				if (adapter.isChildVisible(position)) {
-					Log.d("warenix", "onImageSet for position " + position
+					WLog.d(TAG, "onImageSet for position " + position
 							+ " set bitmap");
 					imageView.setImageBitmap(bitmap);
 
 				} else {
-					Log.d("warenix", "onImageSet for position " + position
+					WLog.d(TAG, "onImageSet for position " + position
 							+ " recycle bitmap");
 					ImageUtil.recycleBitmap(bitmap);
 				}

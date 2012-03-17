@@ -11,7 +11,6 @@ import org.dyndns.warenix.util.WLog;
 
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,13 +52,13 @@ public class TimelineListFragment extends ListFragment implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Log.d("warenix", "onCreate");
+		WLog.d(TAG, "onCreate");
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		Log.d("warenix", "onCreateView");
+		WLog.d(TAG, "onCreateView");
 		View v = inflater.inflate(R.layout.message_timeline, container, false);
 		mProgressBar = v.findViewById(R.id.progress_bar);
 		mProgressText = (TextView) v.findViewById(R.id.progress_text);
@@ -69,7 +68,7 @@ public class TimelineListFragment extends ListFragment implements
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		Log.d("warenix", "onActivityCreated");
+		WLog.d(TAG, "onActivityCreated");
 		// hide keyboard until user click textfield
 		getActivity().getWindow().setSoftInputMode(
 				WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
@@ -96,7 +95,7 @@ public class TimelineListFragment extends ListFragment implements
 	}
 
 	public void onDestroyView() {
-		Log.d("warenix", "timelineListFragment onDestroyView()");
+		WLog.d(TAG, "timelineListFragment onDestroyView()");
 		if (adapter != null) {
 			adapter.clear();
 			adapter = null;
@@ -107,13 +106,13 @@ public class TimelineListFragment extends ListFragment implements
 
 	@Override
 	public void onDetach() {
-		Log.d("warenix", "timelineListFragment onDetach()");
+		WLog.d(TAG, "timelineListFragment onDetach()");
 		// adapter.cancelAsyncRefresh();
 		super.onDetach();
 	}
 
 	public void onSaveInstanceState(Bundle outState) {
-		Log.d("warenix", "timelineListFragment onSaveInstanceState()");
+		WLog.d(TAG, "timelineListFragment onSaveInstanceState()");
 
 		Serializable itemListCopy = adapter.getItemList();
 		outState.putSerializable(ITEM_LIST, itemListCopy);

@@ -4,8 +4,7 @@ import java.util.ArrayList;
 
 import org.dyndns.warenix.lab.taskservice.BackgroundTask;
 import org.dyndns.warenix.mission.twitter.util.TwitterMaster;
-
-import android.util.Log;
+import org.dyndns.warenix.util.WLog;
 
 public class UploadPhotoBackgroundTask implements BackgroundTask {
 	String message;
@@ -28,7 +27,7 @@ public class UploadPhotoBackgroundTask implements BackgroundTask {
 
 			String url = TwitterMaster.uploadPhotoFromFileToTwitter(
 					imageFileList.get(i), message);
-			Log.i("palpal", "uploaded photo to " + url);
+			WLog.i("palpal", "uploaded photo to " + url);
 			Thread.sleep(500);
 		}
 

@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import org.dyndns.warenix.lab.compat1.R;
 import org.dyndns.warenix.lab.compat1.util.Memory;
 import org.dyndns.warenix.lab.compat1.util.PreferenceMaster;
+import org.dyndns.warenix.util.WLog;
 
 import twitter4j.Status;
 import twitter4j.Twitter;
@@ -15,10 +16,9 @@ import twitter4j.media.ImageUpload;
 import twitter4j.media.ImageUploadFactory;
 import twitter4j.media.MediaProvider;
 import android.content.Context;
-import android.util.Log;
 
 public class TwitterMaster {
-
+	private static final String TAG = "TwitterMaster";
 	public static final String PREF_NAME = "twitter_pref";
 	public static final String ACCESS_TOKEN0 = "access_token0";
 	public static final String ACCESS_TOKEN1 = "access_token1";
@@ -47,7 +47,7 @@ public class TwitterMaster {
 			twitter.setOAuthAccessToken(accessToken);
 
 			Memory.setTwitterClient(twitter);
-			Log.d("palpal", "setTwitter()");
+			WLog.i(TAG, "setTwitter()");
 			return true;
 		}
 		return false;

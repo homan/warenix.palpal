@@ -3,11 +3,11 @@ package org.dyndns.warenix.lab.compat1.app.facebook;
 import org.dyndns.warenix.lab.compat1.R;
 import org.dyndns.warenix.lab.compat1.util.PreferenceMaster;
 import org.dyndns.warenix.mission.facebook.util.FacebookMaster;
+import org.dyndns.warenix.util.WLog;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.example.android.actionbarcompat.ActionBarActivity;
 import com.facebook.android.DialogError;
@@ -16,7 +16,7 @@ import com.facebook.android.Facebook.DialogListener;
 import com.facebook.android.FacebookError;
 
 public class AuthenFacebookActivity extends ActionBarActivity {
-
+	private static final String TAG = "AuthenFacebookActivity";
 	static final String[] permissions = new String[] { "user_about_me",
 			"friends_about_me", "user_activities", "friends_activities",
 			"user_birthday", "friends_birthday", "user_checkins",
@@ -81,7 +81,7 @@ public class AuthenFacebookActivity extends ActionBarActivity {
 			facebook.authorize(this, permissions, new DialogListener() {
 				@Override
 				public void onComplete(Bundle values) {
-					Log.d("warenix", "Facebook authorize onComplete");
+					WLog.d(TAG, "Facebook authorize onComplete");
 					// SharedPreferences.Editor editor = mPrefs.edit();
 					// editor.putString("access_token",
 					// facebook.getAccessToken());
@@ -148,7 +148,7 @@ public class AuthenFacebookActivity extends ActionBarActivity {
 	}
 
 	void onReady() {
-		Log.d("warenix", "Facebook onReady");
+		WLog.d(TAG, "Facebook onReady");
 		setResult(RESULT_OK);
 		finish();
 	}

@@ -1,11 +1,11 @@
 package org.dyndns.warenix.mission.sample;
 
 import org.dyndns.warenix.lab.compat1.R;
+import org.dyndns.warenix.util.WLog;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +24,7 @@ import android.widget.ListView;
  * 
  */
 public class TimelineListFragment extends ListFragment {
-
+	private static final String TAG = "TimelineListFragment";
 	SampleListAdapter adapter;
 	boolean isRefreshing = false;
 
@@ -44,13 +44,13 @@ public class TimelineListFragment extends ListFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Log.d("warenix", "onCreate");
+		WLog.d(TAG, "onCreate");
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		Log.d("warenix", "onCreateView");
+		WLog.d(TAG, "onCreateView");
 		View v = inflater.inflate(R.layout.message_timeline, container, false);
 		return v;
 	}
@@ -58,7 +58,7 @@ public class TimelineListFragment extends ListFragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		Log.d("warenix", "onActivityCreated");
+		WLog.d(TAG, "onActivityCreated");
 		// hide keyboard until user click textfield
 		getActivity().getWindow().setSoftInputMode(
 				WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
@@ -74,7 +74,7 @@ public class TimelineListFragment extends ListFragment {
 
 	@Override
 	public void onStop() {
-		Log.d("warenix", "timelineListFragment onStop()");
+		WLog.d(TAG, "timelineListFragment onStop()");
 		if (adapter != null) {
 			// adapter.cleanup();
 		}

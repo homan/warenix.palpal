@@ -1,9 +1,10 @@
 package org.dyndns.warenix.lab.compat1.fragment;
 
+import org.dyndns.warenix.util.WLog;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -24,7 +25,7 @@ public class BFragment extends ListFragment {
 
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		Log.i("ArrayListFragment", "Item clicked: " + id);
+		WLog.i("ArrayListFragment", "Item clicked: " + id);
 	}
 
 }

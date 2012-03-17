@@ -26,7 +26,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -41,6 +40,7 @@ import android.widget.Toast;
 import com.example.android.actionbarcompat.ActionBarActivity;
 
 public class Compat1Activity extends ActionBarActivity {
+	private static final String TAG = "Compat1Activity";
 	TabHost mTabHost;
 	TabsAdapter mTabsAdapter;
 	ViewPager mViewPager;
@@ -151,7 +151,7 @@ public class Compat1Activity extends ActionBarActivity {
 	int restoreState = RESTORE_STATE_TWITTER;
 
 	void restoreClients() {
-		Log.d("warenix", "restoreClients() restoreState:" + restoreState);
+		WLog.d(TAG, "restoreClients() restoreState:" + restoreState);
 		Intent intent = null;
 		if (restoreState >= 0) {
 			switch (restoreState) {
@@ -386,7 +386,7 @@ public class Compat1Activity extends ActionBarActivity {
 
 		@Override
 		public void onPageSelected(int position) {
-			Log.d("warenix", "page selceted at " + position);
+			WLog.d(TAG, "page selceted at " + position);
 			mTabHost.setCurrentTab(position);
 		}
 
@@ -412,7 +412,7 @@ public class Compat1Activity extends ActionBarActivity {
 	}
 
 	void restoreClientsToMemory() {
-		Log.d("warenix", "restoreClientsToMemory");
+		WLog.d(TAG, "restoreClientsToMemory");
 		boolean isTwitterOk = TwitterMaster
 				.restoreTwitterClient(getApplicationContext());
 		boolean isFacebookOk = FacebookMaster

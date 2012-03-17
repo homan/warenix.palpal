@@ -24,16 +24,17 @@ import org.dyndns.warenix.lab.compat1.R;
 import org.dyndns.warenix.lab.compat1.util.Memory;
 import org.dyndns.warenix.lab.compat1.util.PreferenceMaster;
 import org.dyndns.warenix.mission.facebook.FacebookObject;
+import org.dyndns.warenix.util.WLog;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.facebook.android.Facebook;
 
 public class FacebookMaster {
+	private static final String TAG = "FacebookMaster";
 	public static final String PREF_NAME = "facebook_pref";
 	public static final String ACCESS_TOKEN = "access_token";
 	public static final String ACCESS_EXPIRES = "access_expires";
@@ -247,7 +248,7 @@ public class FacebookMaster {
 			HttpEntity entity = response.getEntity();
 			// return true or false
 			String responseString = EntityUtils.toString(entity);
-			Log.d("palpal", "response json: " + responseString);
+			WLog.d(TAG, "response json: " + responseString);
 			return responseString;
 
 		} catch (Exception e) {
@@ -268,7 +269,7 @@ public class FacebookMaster {
 		String responseString;
 		try {
 			responseString = callHTTPS(url, nameValuePairs);
-			Log.d("palpal",
+			WLog.d(TAG,
 					String.format("received links.preview %s", responseString));
 			return responseString;
 		} catch (Exception e) {
@@ -288,7 +289,7 @@ public class FacebookMaster {
 	public static String uploadPhotoFromFile(String fullLocalImagePath,
 			String message, String albumId) {
 
-		Log.v("palpal", String.format("start upload photo source [%s]",
+		WLog.d(TAG, String.format("start upload photo source [%s]",
 				fullLocalImagePath));
 
 		try {
@@ -319,7 +320,7 @@ public class FacebookMaster {
 
 				String responseString = facebook.request(graphPath, params,
 						"POST");
-				Log.v("palpal", String.format("upload photo response [%s]",
+				WLog.d(TAG, String.format("upload photo response [%s]",
 						responseString));
 				return responseString;
 			} catch (FileNotFoundException e) {
@@ -357,8 +358,7 @@ public class FacebookMaster {
 
 		// return "true" if ok
 		String responseString = callHTTPS(url, nameValuePairs);
-		Log.d("palpal",
-				String.format("like (graph) response [%s]", responseString));
+		WLog.d(TAG, String.format("like (graph) response [%s]", responseString));
 		if (responseString != null) {
 			return responseString.equals("true");
 		}
@@ -397,7 +397,7 @@ public class FacebookMaster {
 			} catch (JSONException e) {
 
 			}
-			Log.d("palpal", String.format("comment (graph) response [%s]",
+			WLog.d(TAG, String.format("comment (graph) response [%s]",
 					responseString));
 			return id.equals("") == false;
 		}

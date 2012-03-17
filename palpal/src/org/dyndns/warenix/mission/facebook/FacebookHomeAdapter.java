@@ -82,7 +82,7 @@ public class FacebookHomeAdapter extends ListViewAdapter {
 //					} catch (JSONException e) {
 //						e.printStackTrace();
 //					}
-					// Log.d("warenix", responseString);
+					// WLog.d("warenix", responseString);
 				} catch (MalformedURLException e) {
 					e.printStackTrace();
 				} catch (IOException e) {

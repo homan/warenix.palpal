@@ -3,6 +3,7 @@ package org.dyndns.warenix.lab.compat1.app.twitter;
 import org.dyndns.warenix.lab.compat1.R;
 import org.dyndns.warenix.lab.compat1.util.Memory;
 import org.dyndns.warenix.lab.compat1.util.PreferenceMaster;
+import org.dyndns.warenix.util.WLog;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -15,7 +16,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
@@ -27,6 +27,7 @@ import android.widget.EditText;
 import com.example.android.actionbarcompat.ActionBarActivity;
 
 public class AuthenTwitterActivity extends ActionBarActivity {
+	private static final String TAG = "AuthenTwitterActivity";
 	public static final String PREF_NAME = "twitter_pref";
 	public static final String ACCESS_TOKEN0 = "access_token0";
 	public static final String ACCESS_TOKEN1 = "access_token1";
@@ -50,7 +51,7 @@ public class AuthenTwitterActivity extends ActionBarActivity {
 		browser.setWebViewClient(new WebViewClient() {
 			@Override
 			public void onPageFinished(WebView view, String url) {
-				Log.d("palpal", "loaded url: " + url);
+				WLog.d(TAG, "loaded url: " + url);
 				if (url.equals("https://api.twitter.com/oauth/authorize")) {
 					showPinInput(true);
 				} else {
@@ -76,8 +77,7 @@ public class AuthenTwitterActivity extends ActionBarActivity {
 				pd = ProgressDialog.show(AuthenTwitterActivity.this,
 						"Authenticating Twitter", "Please wait");
 
-				Log.d("palpal", "login twitter with "
-						+ pin.getText().toString());
+				WLog.d(TAG, "login twitter with " + pin.getText().toString());
 
 				// new
 				// AuthenTwitterAsyncTask(pin.getText().toString()).execute();
@@ -121,7 +121,7 @@ public class AuthenTwitterActivity extends ActionBarActivity {
 
 		new Thread() {
 			public void run() {
-				Log.d("palpal", "SetupWebViewAsyncTask do in background");
+				WLog.d(TAG, "SetupWebViewAsyncTask do in background");
 				twitter = new TwitterFactory().getInstance();
 				twitter.setOAuthConsumer(
 						getResources().getText(R.string.JTWITTER_OAUTH_KEY)
@@ -193,7 +193,7 @@ public class AuthenTwitterActivity extends ActionBarActivity {
 
 		@Override
 		protected Void doInBackground(Void... arg0) {
-			Log.d("palpal", "SetupWebViewAsyncTask do in background");
+			WLog.d(TAG, "SetupWebViewAsyncTask do in background");
 			twitter = new TwitterFactory().getInstance();
 			twitter.setOAuthConsumer(
 					getResources().getText(R.string.JTWITTER_OAUTH_KEY)
@@ -213,7 +213,7 @@ public class AuthenTwitterActivity extends ActionBarActivity {
 		}
 
 		protected void onPostExecute(Void v) {
-			Log.d("palpal", "trying to authen twitter at " + authorizationUrl);
+			WLog.d(TAG, "trying to authen twitter at " + authorizationUrl);
 			browser.loadUrl(authorizationUrl);
 		}
 
@@ -263,7 +263,7 @@ public class AuthenTwitterActivity extends ActionBarActivity {
 				setResult(RESULT_OK, i);
 				finish();
 			} else {
-				Log.d("warenix", "Fail to login");
+				WLog.d("warenix", "Fail to login");
 
 				try {
 					onReady();

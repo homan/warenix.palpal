@@ -14,6 +14,7 @@ import org.dyndns.warenix.palpal.intent.PalPalIntent;
 import org.dyndns.warenix.pattern.baseListView.IViewHolder;
 import org.dyndns.warenix.pattern.baseListView.ListViewAdapter;
 import org.dyndns.warenix.util.ImageUtil;
+import org.dyndns.warenix.util.WLog;
 import org.dyndns.warenix.widget.actionpopup.ActionPopup;
 
 import twitter4j.Status;
@@ -21,7 +22,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.View;
 import android.widget.ImageView;
@@ -29,6 +29,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class TwitterMessageListItem extends TimelineMessageListViewItem {
+	private static final String TAG = "TwitterMessageListItem";
 
 	ListViewAdapter adapter;
 	twitter4j.Status messageObject;
@@ -222,7 +223,7 @@ public class TwitterMessageListItem extends TimelineMessageListViewItem {
 	@Override
 	public void showContextMenu(ContextMenu menu) {
 		// TODO Auto-generated method stub
-		Log.d("lab", "showContextMenu()");
+		WLog.d(TAG, "showContextMenu()");
 
 	}
 
@@ -235,11 +236,11 @@ public class TwitterMessageListItem extends TimelineMessageListViewItem {
 			@Override
 			public void onImageSet(ImageView image, Bitmap bitmap) {
 				if (adapter.isChildVisible(position)) {
-					Log.d("warenix", "onImageSet for position " + position
+					WLog.d(TAG, "onImageSet for position " + position
 							+ " set bitmap");
 					imageView.setImageBitmap(bitmap);
 				} else {
-					Log.d("warenix", "onImageSet for position " + position
+					WLog.d(TAG, "onImageSet for position " + position
 							+ " recycle bitmap");
 					ImageUtil.recycleBitmap(bitmap);
 				}

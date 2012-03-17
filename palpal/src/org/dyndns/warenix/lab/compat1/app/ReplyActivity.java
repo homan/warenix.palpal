@@ -7,18 +7,18 @@ import org.dyndns.warenix.lab.compat1.util.Memory;
 import org.dyndns.warenix.lab.taskservice.TaskService;
 import org.dyndns.warenix.mission.facebook.FacebookPostAdapter;
 import org.dyndns.warenix.mission.facebook.backgroundtask.CommentPostBackgroundTask;
-import org.dyndns.warenix.mission.twitter.TwitterUserAutoCompleteAdapter;
 import org.dyndns.warenix.mission.twitter.TwitterConversationAdapter;
+import org.dyndns.warenix.mission.twitter.TwitterUserAutoCompleteAdapter;
 import org.dyndns.warenix.mission.twitter.TwitterUserFilterQueryProvider;
 import org.dyndns.warenix.mission.twitter.backgroundtask.ReplyStatusBackgroundTask;
 import org.dyndns.warenix.mission.twitter.util.TwitterMaster;
 import org.dyndns.warenix.pattern.baseListView.ListViewAdapter;
+import org.dyndns.warenix.util.WLog;
 
 import twitter4j.Twitter;
 import twitter4j.UserMentionEntity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -31,7 +31,7 @@ import android.widget.Toast;
 import com.example.android.actionbarcompat.ActionBarActivity;
 
 public class ReplyActivity extends ActionBarActivity {
-
+	private static final String TAG = "ReplyActivity";
 	public static String BUNDLE_MESSAGE_OBJECT = "messageObject";
 	public static String BUNDLE_FACEBOOK_GRAPH_ID = "facebookGraphId";
 
@@ -64,8 +64,8 @@ public class ReplyActivity extends ActionBarActivity {
 		// ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 		// android.R.layout.simple_dropdown_item_1line, COUNTRIES);
 
-		TwitterUserAutoCompleteAdapter adapter = new TwitterUserAutoCompleteAdapter(this,
-				null);
+		TwitterUserAutoCompleteAdapter adapter = new TwitterUserAutoCompleteAdapter(
+				this, null);
 		adapter.setFilterQueryProvider(new TwitterUserFilterQueryProvider());
 		commentTextView.setAdapter(adapter);
 
@@ -137,7 +137,7 @@ public class ReplyActivity extends ActionBarActivity {
 		// @Override
 		// public boolean onItemLongClick(AdapterView<?> parent, View view,
 		// int position, long id) {
-		// Log.d("lab", "" + position);
+		// WLog.d(TAG, "" + position);
 		// imageQueueAdapter.removeImageUri((Uri) imageQueueAdapter
 		// .getItem(position));
 		// return false;
@@ -154,7 +154,7 @@ public class ReplyActivity extends ActionBarActivity {
 		// for (Parcelable p : list) {
 		// Uri uri = (Uri) p;
 		// imageQueueAdapter.addImageUri(uri);
-		// Log.d("lab", "onActivityResult:" + uri);
+		// WLog.d(TAG, "onActivityResult:" + uri);
 		// }
 		// }
 		// }
@@ -201,7 +201,7 @@ public class ReplyActivity extends ActionBarActivity {
 					.getExtras().get(BUNDLE_MESSAGE_OBJECT);
 			long id = twitterMessageObject.getId();
 
-			Log.d("palpal",
+			WLog.d(TAG,
 					String.format("replying twitter status %d %s", id, comment));
 			TaskService.addBackgroundTask(getApplicationContext(),
 					new ReplyStatusBackgroundTask(id, comment));
@@ -211,7 +211,7 @@ public class ReplyActivity extends ActionBarActivity {
 			if (comment != "") {
 				String graphId = getIntent().getStringExtra(
 						BUNDLE_FACEBOOK_GRAPH_ID);
-				Log.i("palpal", "reply graph id:" + graphId);
+				WLog.i(TAG, "reply graph id:" + graphId);
 				TaskService.addBackgroundTask(getApplicationContext(),
 						new CommentPostBackgroundTask(graphId, comment));
 			}

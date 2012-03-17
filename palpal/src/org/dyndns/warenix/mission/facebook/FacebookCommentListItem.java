@@ -12,10 +12,10 @@ import org.dyndns.warenix.mission.ui.IconListView;
 import org.dyndns.warenix.pattern.baseListView.IViewHolder;
 import org.dyndns.warenix.pattern.baseListView.ListViewAdapter;
 import org.dyndns.warenix.util.ImageUtil;
+import org.dyndns.warenix.util.WLog;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,7 +24,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class FacebookCommentListItem extends TimelineMessageListViewItem {
-
+	private static final String TAG = "FacebookCommentListItem";
 	ListViewAdapter adapter;
 	FacebookObject.Comment messageObject;
 
@@ -91,7 +91,7 @@ public class FacebookCommentListItem extends TimelineMessageListViewItem {
 	@Override
 	protected View fillViewWithContent(Context context, View view,
 			final int position, int type) {
-		Log.d("warenix", "fillViewWithContent " + position);
+		WLog.d(TAG, "fillViewWithContent " + position);
 		final ViewHolder viewHolder = (ViewHolder) view.getTag();
 		// init
 		viewHolder.iconList.hideAll();
@@ -121,7 +121,7 @@ public class FacebookCommentListItem extends TimelineMessageListViewItem {
 
 			@Override
 			public void onClick(View v) {
-				Log.d("lab", "onClick " + messageObject.id);
+				WLog.d(TAG, "onClick " + messageObject.id);
 			}
 		});
 		return view;
@@ -130,7 +130,7 @@ public class FacebookCommentListItem extends TimelineMessageListViewItem {
 	@Override
 	public void showContextMenu(ContextMenu menu) {
 		// TODO Auto-generated method stub
-		Log.d("lab", "showContextMenu()");
+		WLog.d(TAG, "showContextMenu()");
 
 	}
 
@@ -144,12 +144,12 @@ public class FacebookCommentListItem extends TimelineMessageListViewItem {
 			@Override
 			public void onImageSet(ImageView image, Bitmap bitmap) {
 				if (adapter.isChildVisible(position)) {
-					Log.d("warenix", "onImageSet for position " + position
+					WLog.d(TAG, "onImageSet for position " + position
 							+ " set bitmap");
 					imageView.setImageBitmap(bitmap);
 
 				} else {
-					Log.d("warenix", "onImageSet for position " + position
+					WLog.d(TAG, "onImageSet for position " + position
 							+ " recycle bitmap");
 					ImageUtil.recycleBitmap(bitmap);
 				}
