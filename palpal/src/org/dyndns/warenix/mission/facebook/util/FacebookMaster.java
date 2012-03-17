@@ -198,11 +198,22 @@ public class FacebookMaster {
 		nameValuePairs.add(new BasicNameValuePair("format", "json"));
 
 		nameValuePairs.add(new BasicNameValuePair("message", message));
-		nameValuePairs.add(new BasicNameValuePair("picture", picture));
-		nameValuePairs.add(new BasicNameValuePair("link", link));
-		nameValuePairs.add(new BasicNameValuePair("name", name));
-		nameValuePairs.add(new BasicNameValuePair("caption", caption));
-		nameValuePairs.add(new BasicNameValuePair("source", source));
+
+		if (!picture.equals("")) {
+			nameValuePairs.add(new BasicNameValuePair("picture", picture));
+		}
+		if (!link.equals("")) {
+			nameValuePairs.add(new BasicNameValuePair("link", link));
+		}
+		if (!name.equals("")) {
+			nameValuePairs.add(new BasicNameValuePair("name", name));
+		}
+		if (!caption.equals("")) {
+			nameValuePairs.add(new BasicNameValuePair("caption", caption));
+		}
+		if (!source.equals("")) {
+			nameValuePairs.add(new BasicNameValuePair("source", source));
+		}
 		if (!link.equals("")) {
 			nameValuePairs.add(new BasicNameValuePair("actions", String.format(
 					"{\"name\": \"PalPalShare\", \"link\": \"%s\"}", link)));

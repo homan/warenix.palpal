@@ -38,29 +38,29 @@ public class FacebookObject implements Serializable {
 
 	public Error error;
 
-	public static class User {
+	public static class User implements Serializable {
 		public String name;
 		public String id;
 	}
 
-	public static class Action {
+	public static class Action implements Serializable {
 		public String name;
 		public String id;
 	}
 
-	public static class Privacy {
+	public static class Privacy implements Serializable {
 		public String description;
 		public String value;
 		public String allow;
 		public String deny;
 	}
 
-	public static class Application {
+	public static class Application implements Serializable {
 		public String name;
 		public String id;
 	}
 
-	public static class Comment {
+	public static class Comment implements Serializable {
 		public String id;
 		public User fromUser;
 		public String message;
@@ -68,18 +68,18 @@ public class FacebookObject implements Serializable {
 		public long likeTotalCount;
 	}
 
-	public static class Like {
+	public static class Like implements Serializable {
 		public String id;
 		public String name;
 	}
 
-	public static class Place {
+	public static class Place implements Serializable {
 		public String id;
 		public String name;
 		public Location location;
 	}
 
-	public static class Location {
+	public static class Location implements Serializable {
 		public String city;
 		public String country;
 		public String latitude;
@@ -87,14 +87,14 @@ public class FacebookObject implements Serializable {
 		public String zip;
 	}
 
-	public static class StoryTag {
+	public static class StoryTag implements Serializable {
 		public String id;
 		public String name;
 		public long offset;
 		public long length;
 	}
 
-	public static class Error {
+	public static class Error implements Serializable {
 		public String message;
 		public String type;
 	}

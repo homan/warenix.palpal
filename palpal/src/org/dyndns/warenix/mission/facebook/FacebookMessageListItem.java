@@ -13,6 +13,7 @@ import org.dyndns.warenix.mission.timeline.StreamAdapter;
 import org.dyndns.warenix.mission.timeline.TimelineMessageListViewItem;
 import org.dyndns.warenix.mission.twitter.util.TwitterLinkify;
 import org.dyndns.warenix.mission.ui.IconListView;
+import org.dyndns.warenix.palpal.intent.PalPalIntent;
 import org.dyndns.warenix.pattern.baseListView.IViewHolder;
 import org.dyndns.warenix.pattern.baseListView.ListViewAdapter;
 import org.dyndns.warenix.util.ImageUtil;
@@ -306,7 +307,16 @@ public class FacebookMessageListItem extends TimelineMessageListViewItem {
 							actionPopup.addAction(context, "View Location",
 									null);
 						}
-						actionPopup.addAction(context, "Share", null);
+						actionPopup.addAction(context, "Share",
+								new View.OnClickListener() {
+									public void onClick(View v) {
+										Intent intent = new Intent(
+												PalPalIntent.ACTION_FACEBOOK_RESHARE_POST);
+										intent.putExtra("message",
+												messageObject);
+										context.startActivity(intent);
+									}
+								});
 						actionPopup.showPopupInScreenCenter(v);
 					}
 				};

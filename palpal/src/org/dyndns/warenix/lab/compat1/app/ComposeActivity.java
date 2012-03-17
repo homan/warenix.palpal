@@ -8,6 +8,7 @@ import org.dyndns.warenix.lab.compat1.util.AndroidUtil;
 import org.dyndns.warenix.lab.taskservice.BackgroundTask;
 import org.dyndns.warenix.lab.taskservice.TaskService;
 import org.dyndns.warenix.lab.taskservice.TaskServiceStateListener;
+import org.dyndns.warenix.mission.facebook.FacebookObject;
 import org.dyndns.warenix.mission.facebook.LinkPreview;
 import org.dyndns.warenix.mission.facebook.backgroundtask.LinkPreviewBackgroundTask;
 import org.dyndns.warenix.mission.facebook.backgroundtask.ShareLinkBackgroundTask;
@@ -106,6 +107,11 @@ public class ComposeActivity extends ActionBarActivity {
 			} else if (Intent.ACTION_SEND.equals(intentAction)) {
 				Bundle bundle = intent.getExtras();
 				onShareLink(bundle.getString(Intent.EXTRA_TEXT));
+			} else if (PalPalIntent.ACTION_FACEBOOK_RESHARE_POST
+					.equals(intentAction)) {
+				FacebookObject messageObject = (FacebookObject) getIntent()
+						.getExtras().get("message");
+				displayFacebookMessage(messageObject);
 			} else if (PalPalIntent.ACTION_TWITTER_QUOTE_TWEET
 					.equals(intentAction)) {
 				Log.d("lab", "palpal quote tweet received");
@@ -140,12 +146,21 @@ public class ComposeActivity extends ActionBarActivity {
 						if (task instanceof LinkPreviewBackgroundTask) {
 							mLinkPreview = (LinkPreview) task.getResult();
 
+							String tempImageLink = null;
 							if (mLinkPreview.previewImageList != null) {
 								for (int i = 0; i < mLinkPreview.previewImageList
 										.size(); ++i) {
-									imageQueueAdapter.addImageUri(Uri
-											.parse(mLinkPreview.previewImageList
-													.get(i)));
+									tempImageLink = mLinkPreview.previewImageList
+											.get(i);
+									// workaround for error (#100) FBCDN image
+									// is not allowed in stream
+									// fbcn.net images are not allowed
+									// so skip fetching image preview using
+									// facebook engine
+									if (!tempImageLink.contains("fbcdn.net"))
+										imageQueueAdapter.addImageUri(Uri
+												.parse(mLinkPreview.previewImageList
+														.get(i)));
 								}
 							}
 
@@ -455,5 +470,11 @@ public class ComposeActivity extends ActionBarActivity {
 		descriptionText.setVisibility(View.GONE);
 		linkText.setVisibility(View.GONE);
 		sourceText.setVisibility(View.GONE);
+	}
+
+	private void displayFacebookMessage(FacebookObject messageObject) {
+		if (messageObject.link != null) {
+			onShareLink(messageObject.link);
+		}
 	}
 }
