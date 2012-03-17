@@ -5,12 +5,12 @@ import java.util.Date;
 import org.dyndns.warenix.image.CachedWebImage;
 import org.dyndns.warenix.image.WebImage.WebImageListener;
 import org.dyndns.warenix.lab.compat1.R;
-import org.dyndns.warenix.lab.compat1.app.ComposeActivity;
 import org.dyndns.warenix.lab.compat1.app.ReplyActivity;
 import org.dyndns.warenix.mission.timeline.StreamAdapter;
 import org.dyndns.warenix.mission.timeline.TimelineMessageListViewItem;
 import org.dyndns.warenix.mission.twitter.util.TwitterLinkify;
 import org.dyndns.warenix.mission.ui.IconListView;
+import org.dyndns.warenix.palpal.intent.PalPalIntent;
 import org.dyndns.warenix.pattern.baseListView.IViewHolder;
 import org.dyndns.warenix.pattern.baseListView.ListViewAdapter;
 import org.dyndns.warenix.util.ImageUtil;
@@ -162,8 +162,10 @@ public class TwitterMessageListItem extends TimelineMessageListViewItem {
 						new View.OnClickListener() {
 							@Override
 							public void onClick(View v) {
-								Intent intent = new Intent(context,
-										ComposeActivity.class);
+								// Intent intent = new Intent(context,
+								// ComposeActivity.class);
+								Intent intent = new Intent(
+										PalPalIntent.ACTION_TWITTER_QUOTE_TWEET);
 								intent.putExtra("message", messageObject);
 
 								context.startActivity(intent);

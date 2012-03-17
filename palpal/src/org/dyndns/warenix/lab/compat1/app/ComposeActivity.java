@@ -15,6 +15,8 @@ import org.dyndns.warenix.mission.facebook.backgroundtask.ShareMessageBackground
 import org.dyndns.warenix.mission.facebook.backgroundtask.SharePhotoBackgroundTask;
 import org.dyndns.warenix.mission.twitter.backgroundtask.UpdateStatusBackgroundTask;
 import org.dyndns.warenix.mission.twitter.backgroundtask.UploadPhotoBackgroundTask;
+import org.dyndns.warenix.mission.twitter.util.TwitterMaster;
+import org.dyndns.warenix.palpal.intent.PalPalIntent;
 import org.dyndns.warenix.util.ImageUtil;
 
 import android.content.Intent;
@@ -85,12 +87,15 @@ public class ComposeActivity extends ActionBarActivity {
 
 		setupUI();
 
-		Intent imageReturnedIntent = getIntent();
-		if (imageReturnedIntent != null) {
-			if (Intent.ACTION_SEND_MULTIPLE.equals(imageReturnedIntent
-					.getAction())
-					&& imageReturnedIntent.hasExtra(Intent.EXTRA_STREAM)) {
-				ArrayList<Parcelable> list = imageReturnedIntent
+		onNewIntent(getIntent());
+	}
+
+	public void onNewIntent(Intent intent) {
+		if (intent != null) {
+			String intentAction = intent.getAction();
+			if (Intent.ACTION_SEND_MULTIPLE.equals(intentAction)
+					&& intent.hasExtra(Intent.EXTRA_STREAM)) {
+				ArrayList<Parcelable> list = intent
 						.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
 				for (Parcelable p : list) {
 					Uri uri = (Uri) p;
@@ -98,10 +103,16 @@ public class ComposeActivity extends ActionBarActivity {
 					Log.d("lab", "onActivityResult:" + uri);
 				}
 				onSharePhoto();
-			} else if (Intent.ACTION_SEND.equals(imageReturnedIntent
-					.getAction())) {
-				Bundle bundle = imageReturnedIntent.getExtras();
+			} else if (Intent.ACTION_SEND.equals(intentAction)) {
+				Bundle bundle = intent.getExtras();
 				onShareLink(bundle.getString(Intent.EXTRA_TEXT));
+			} else if (PalPalIntent.ACTION_TWITTER_QUOTE_TWEET
+					.equals(intentAction)) {
+				Log.d("lab", "palpal quote tweet received");
+				commentTextView.setText(TwitterMaster
+						.createQuoteTweetStatus((twitter4j.Status) getIntent()
+								.getExtras().get("message")));
+				onShareMessage();
 			}
 		} else {
 			// show default share message UI

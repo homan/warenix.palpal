@@ -7,6 +7,7 @@ import org.dyndns.warenix.lab.compat1.R;
 import org.dyndns.warenix.lab.compat1.util.Memory;
 import org.dyndns.warenix.lab.compat1.util.PreferenceMaster;
 
+import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
 import twitter4j.auth.AccessToken;
@@ -81,5 +82,10 @@ public class TwitterMaster {
 		}
 
 		return url;
+	}
+
+	public static String createQuoteTweetStatus(Status message) {
+		return String.format("RT @%s: %s", message.getUser().getScreenName(),
+				message.getText());
 	}
 }
