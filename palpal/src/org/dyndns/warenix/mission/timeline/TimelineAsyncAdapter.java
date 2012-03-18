@@ -88,9 +88,11 @@ public class TimelineAsyncAdapter extends AsyncListAdapter implements
 	public Object doInBackground() {
 		WLog.i(TAG, "doInBackground");
 		mRefreshState = RefreshState.NOT_STARTED;
+		dataList.clear();
+		
 		int count = runnableList.size();
 		for (int i = 0; i < count; ++i) {
-			new Thread(runnableList.remove(0)).start();
+			new Thread(runnableList.get(i)).start();
 		}
 		while (count > 0) {
 			WLog.d(TAG, new Date().toLocaleString() + " " + count
