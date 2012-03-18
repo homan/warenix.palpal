@@ -3,6 +3,7 @@ package org.dyndns.warenix.mission.twitter.util;
 import java.io.File;
 import java.io.FileInputStream;
 
+import org.dyndns.warenix.image.ImageUtil;
 import org.dyndns.warenix.lab.compat1.R;
 import org.dyndns.warenix.lab.compat1.util.Memory;
 import org.dyndns.warenix.lab.compat1.util.PreferenceMaster;
@@ -72,6 +73,7 @@ public class TwitterMaster {
 		FileInputStream fin = null;
 		try {
 			File input = new File(fullLocalImagePath);
+			input = createResizedPhotoIfNeeded(fullLocalImagePath);
 			fin = new FileInputStream(input);
 			ImageUploadFactory factory = new ImageUploadFactory();
 			ImageUpload upload = factory.getInstance(MediaProvider.TWITTER,
@@ -82,6 +84,13 @@ public class TwitterMaster {
 		}
 
 		return url;
+	}
+
+	private static File createResizedPhotoIfNeeded(String fullLocalFilePath) {
+		int maxWidth = 1024;
+		int maxHeight = 2048;
+		return ImageUtil.createResizedPhotoIfNeeded(fullLocalFilePath,
+				maxWidth, maxHeight);
 	}
 
 	public static String createQuoteTweetStatus(Status message) {
