@@ -19,10 +19,9 @@
     <color name="palpalGreen">#AADF00</color>
     <color name="palpalColor">#00CCEE</color>
     <color name="textColor">#f8f8f8</color>
-    <color name="messageItemColorTop">#191700</color>
-    <color name="messageItemColorBottom">#191700</color>
+    <color name="messageItemColorTop">#000000</color>
+    <color name="messageItemColorBottom">#000000</color>
     <color name="actionbar_title_color">@color/palpalColor</color>
     <color name="tab_pressed">#222222</color>
     <color name="tab_text_color_normal">#f8f8f8</color>
-
 </resources>

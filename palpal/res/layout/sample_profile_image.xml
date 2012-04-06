@@ -17,6 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/profileImage"
         android:gravity="center_horizontal"
+        android:textColor="@color/textColor"
         android:text="warenix (Wong Chi Fung)"
         android:textSize="20dip" />
 
