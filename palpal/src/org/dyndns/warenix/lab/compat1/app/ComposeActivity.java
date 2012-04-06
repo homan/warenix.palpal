@@ -119,6 +119,9 @@ public class ComposeActivity extends ActionBarActivity {
 						.createQuoteTweetStatus((twitter4j.Status) getIntent()
 								.getExtras().get("message")));
 				onShareMessage();
+			} else {
+				// show default share message UI
+				onShareMessage();
 			}
 		} else {
 			// show default share message UI
