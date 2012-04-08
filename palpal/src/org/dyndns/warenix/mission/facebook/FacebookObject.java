@@ -109,7 +109,11 @@ public class FacebookObject implements Serializable {
 			} catch (JSONException e) {
 
 			}
-			setFromUser(jsonObject);
+			try {
+				setFromUser(jsonObject);
+			} catch (JSONException e) {
+
+			}
 
 			id = jsonObject.getString("id");
 			try {

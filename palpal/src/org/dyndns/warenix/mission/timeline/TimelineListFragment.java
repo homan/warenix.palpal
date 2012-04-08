@@ -3,6 +3,7 @@ package org.dyndns.warenix.mission.timeline;
 import java.io.Serializable;
 
 import org.dyndns.warenix.lab.compat1.R;
+import org.dyndns.warenix.mission.facebook.FacebookAlbumPhotoAdapter;
 import org.dyndns.warenix.mission.facebook.FacebookHomeAdapter;
 import org.dyndns.warenix.mission.sample.SampleListAdapter;
 import org.dyndns.warenix.pattern.baseListView.AsyncListAdapter.AsyncRefreshListener;
@@ -27,13 +28,13 @@ import android.widget.TextView;
 public class TimelineListFragment extends ListFragment implements
 		AsyncRefreshListener {
 	private static final String TAG = "TimelineListFragment";
-	boolean isRefreshing = false;
+	protected boolean isRefreshing = false;
 	public static String ITEM_LIST = "item_list";
 	int num;
 
-	ListViewAdapter adapter;
+	protected ListViewAdapter adapter;
 
-	ListView listView;
+	protected ListView listView;
 	View mProgressBar;
 	TextView mProgressText;
 
@@ -76,16 +77,26 @@ public class TimelineListFragment extends ListFragment implements
 		// adapter = new TimelineListAdapter(listView, new
 		// StreamDataProvider());
 		// if (adapter == null) {
-		if (num == 0) {
+		switch (num) {
+		case 0:
 			adapter = new StreamAdapter(getActivity(), listView);
-			((StreamAdapter) adapter).setAsyncRefreshListener(this);
-		} else if (num == 1) {
+			((TimelineAsyncAdapter) adapter).setAsyncRefreshListener(this);
+			break;
+		case 1:
 			adapter = new NotificationsAdapter(getActivity(), listView);
-			((NotificationsAdapter) adapter).setAsyncRefreshListener(this);
-		} else if (num == 2) {
+			((TimelineAsyncAdapter) adapter).setAsyncRefreshListener(this);
+			break;
+		case 2:
 			adapter = new SampleListAdapter(getActivity(), listView);
-		} else if (num == 3) {
+			break;
+		case 3:
 			adapter = new FacebookHomeAdapter(getActivity(), listView);
+			break;
+		case 4:
+			adapter = new FacebookAlbumPhotoAdapter(getActivity(), listView,
+					getArguments());
+			((TimelineAsyncAdapter) adapter).setAsyncRefreshListener(this);
+			break;
 		}
 		setListAdapter(adapter);
 		// }
@@ -161,7 +172,7 @@ public class TimelineListFragment extends ListFragment implements
 	 * 
 	 * @param savedInstanceState
 	 */
-	private void restoreOrRefreshItemList(Bundle savedInstanceState) {
+	protected void restoreOrRefreshItemList(Bundle savedInstanceState) {
 		Serializable itemListCopy = null;
 
 		if (savedInstanceState != null) {
@@ -180,35 +191,38 @@ public class TimelineListFragment extends ListFragment implements
 	@Override
 	public void onAysncRefreshStarted() {
 		WLog.i(TAG, "onAysncRefreshStarted");
-		getView().post(new Runnable() {
+		if (getView() != null) {
+			getView().post(new Runnable() {
 
-			@Override
-			public void run() {
-				mProgressBar.setVisibility(View.VISIBLE);
-				mProgressText.setVisibility(View.VISIBLE);
-				mProgressText
-						.setText("We're loading messages from social networks.");
-			}
-		});
+				@Override
+				public void run() {
+					mProgressBar.setVisibility(View.VISIBLE);
+					mProgressText.setVisibility(View.VISIBLE);
+					mProgressText
+							.setText("We're loading messages from social networks.");
+				}
+			});
+		}
 	}
 
 	@Override
 	public void onAysncRefreshEnded() {
 		WLog.i(TAG, "onAysncRefreshEnded");
 
-		getView().post(new Runnable() {
+		if (getView() != null) {
+			getView().post(new Runnable() {
 
-			@Override
-			public void run() {
-				mProgressBar.setVisibility(View.GONE);
-				if (adapter.getCount() > 0) {
-					mProgressText.setVisibility(View.GONE);
-				} else {
-					mProgressText.setText("No message is found.");
+				@Override
+				public void run() {
+					mProgressBar.setVisibility(View.GONE);
+					if (adapter.getCount() > 0) {
+						mProgressText.setVisibility(View.GONE);
+					} else {
+						mProgressText.setText("No message is found.");
+					}
 				}
-			}
-		});
-
+			});
+		}
 		isRefreshing = false;
 	}
 

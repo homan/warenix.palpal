@@ -115,7 +115,9 @@ public class FacebookMessageListItem extends TimelineMessageListViewItem {
 			return view;
 		}
 
-		viewHolder.username.setText(messageObject.fromUser.name);
+		if (messageObject.fromUser != null) {
+			viewHolder.username.setText(messageObject.fromUser.name);
+		}
 
 		String message = "";
 		if (messageObject.message != null) {
@@ -135,8 +137,10 @@ public class FacebookMessageListItem extends TimelineMessageListViewItem {
 		}
 		viewHolder.message.setText(message);
 		TwitterLinkify.addTwitterLinkify(viewHolder.message);
-		viewHolder.postDate
-				.setText(messageObject.updated_time.toLocaleString());
+		if (messageObject.updated_time != null) {
+			viewHolder.postDate.setText(messageObject.updated_time
+					.toLocaleString());
+		}
 
 		if (messageObject.commentTotalCount > 0) {
 			viewHolder.iconList
@@ -211,10 +215,13 @@ public class FacebookMessageListItem extends TimelineMessageListViewItem {
 		// profileImageUrlBig);
 		// }
 		//
-		String profileImageUrlBig = String.format(
-				"https://graph.facebook.com/%s/picture?type=normal",
-				messageObject.fromUser.id);
-		setProfileImage(viewHolder.profileImage, position, profileImageUrlBig);
+		if (messageObject.fromUser != null) {
+			String profileImageUrlBig = String.format(
+					"https://graph.facebook.com/%s/picture?type=normal",
+					messageObject.fromUser.id);
+			setProfileImage(viewHolder.profileImage, position,
+					profileImageUrlBig);
+		}
 
 		view.setOnClickListener(new View.OnClickListener() {
 
