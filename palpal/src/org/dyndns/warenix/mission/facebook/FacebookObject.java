@@ -33,6 +33,8 @@ public class FacebookObject implements Serializable {
 	public String picture;
 	public String link;
 	public long unread;
+	public long count;
+	public String coverPhoto;
 
 	public Place place;
 
@@ -207,6 +209,17 @@ public class FacebookObject implements Serializable {
 			}
 			try {
 				setPlace(jsonObject);
+			} catch (JSONException e) {
+
+			}
+
+			try {
+				coverPhoto = jsonObject.getString("cover_photo");
+			} catch (JSONException e) {
+
+			}
+			try {
+				count = jsonObject.getLong("count");
 			} catch (JSONException e) {
 
 			}

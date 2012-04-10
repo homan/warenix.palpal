@@ -5,7 +5,9 @@ import java.util.Date;
 import org.dyndns.warenix.image.CachedWebImage;
 import org.dyndns.warenix.image.WebImage.WebImageListener;
 import org.dyndns.warenix.lab.compat1.R;
+import org.dyndns.warenix.lab.compat1.app.PhotoActivity;
 import org.dyndns.warenix.lab.compat1.app.ReplyActivity;
+import org.dyndns.warenix.lab.compat1.util.Memory;
 import org.dyndns.warenix.lab.taskservice.TaskService;
 import org.dyndns.warenix.mission.facebook.backgroundtask.LikePostBackgroundTask;
 import org.dyndns.warenix.mission.facebook.util.FacebookMaster;
@@ -135,6 +137,9 @@ public class FacebookMessageListItem extends TimelineMessageListViewItem {
 		if (messageObject.caption != null) {
 			message += messageObject.caption + "\n";
 		}
+		if (messageObject.count != 0) {
+			message += "x" + messageObject.count + "\n";
+		}
 		viewHolder.message.setText(message);
 		TwitterLinkify.addTwitterLinkify(viewHolder.message);
 		if (messageObject.updated_time != null) {
@@ -159,6 +164,16 @@ public class FacebookMessageListItem extends TimelineMessageListViewItem {
 			viewHolder.image.setVisibility(View.VISIBLE);
 			setProfileImage(viewHolder.image, position,
 					FacebookMaster.getLargeImage(messageObject.picture));
+		} else if (messageObject.coverPhoto != null) {
+			viewHolder.image.setVisibility(View.VISIBLE);
+			setProfileImage(
+					viewHolder.image,
+					position,
+					FacebookMaster.getLargeImage(String
+							.format("https://graph.facebook.com/%s/picture?access_token=%s",
+									messageObject.coverPhoto, Memory
+											.getFacebookClient()
+											.getAccessToken())));
 		} else {
 			viewHolder.image.setVisibility(View.GONE);
 		}
@@ -291,6 +306,27 @@ public class FacebookMessageListItem extends TimelineMessageListViewItem {
 											context.startActivity(intent);
 										}
 									});
+
+							actionPopup.addAction(context, "View Album",
+									new View.OnClickListener() {
+
+										@Override
+										public void onClick(View v) {
+											String albumGraphId = FacebookMaster
+													.determineAlbumGraphIdFromLink(messageObject);
+
+											Intent intent = new Intent(context,
+													PhotoActivity.class);
+											intent.putExtra(
+													PhotoActivity.BUNDLE_GRAPH_ID,
+													albumGraphId);
+											intent.putExtra(
+													PhotoActivity.BUNDLE_PAGE_COUNT,
+													10);
+
+											context.startActivity(intent);
+										}
+									});
 						}
 						actionPopup.addAction(context, "Like",
 								new View.OnClickListener() {
@@ -324,6 +360,7 @@ public class FacebookMessageListItem extends TimelineMessageListViewItem {
 										context.startActivity(intent);
 									}
 								});
+
 						actionPopup.showPopupInScreenCenter(v);
 					}
 				};

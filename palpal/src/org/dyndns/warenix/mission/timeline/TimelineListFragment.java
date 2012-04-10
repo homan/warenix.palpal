@@ -3,6 +3,7 @@ package org.dyndns.warenix.mission.timeline;
 import java.io.Serializable;
 
 import org.dyndns.warenix.lab.compat1.R;
+import org.dyndns.warenix.mission.facebook.FacebookAlbumAdapter;
 import org.dyndns.warenix.mission.facebook.FacebookAlbumPhotoAdapter;
 import org.dyndns.warenix.mission.facebook.FacebookHomeAdapter;
 import org.dyndns.warenix.mission.sample.SampleListAdapter;
@@ -94,6 +95,11 @@ public class TimelineListFragment extends ListFragment implements
 			break;
 		case 4:
 			adapter = new FacebookAlbumPhotoAdapter(getActivity(), listView,
+					getArguments());
+			((TimelineAsyncAdapter) adapter).setAsyncRefreshListener(this);
+			break;
+		case 5:
+			adapter = new FacebookAlbumAdapter(getActivity(), listView,
 					getArguments());
 			((TimelineAsyncAdapter) adapter).setAsyncRefreshListener(this);
 			break;
@@ -215,10 +221,12 @@ public class TimelineListFragment extends ListFragment implements
 				@Override
 				public void run() {
 					mProgressBar.setVisibility(View.GONE);
-					if (adapter.getCount() > 0) {
-						mProgressText.setVisibility(View.GONE);
-					} else {
-						mProgressText.setText("No message is found.");
+					if (adapter != null) {
+						if (adapter.getCount() > 0) {
+							mProgressText.setVisibility(View.GONE);
+						} else {
+							mProgressText.setText("No message is found.");
+						}
 					}
 				}
 			});

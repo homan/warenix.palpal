@@ -29,6 +29,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.facebook.android.Facebook;
@@ -186,6 +187,30 @@ public class FacebookMaster {
 			}
 		}
 		return messageObject.id;
+	}
+
+	public static String determineAlbumGraphIdFromLink(
+			FacebookObject messageObject) {
+		String link = messageObject.link;
+		if (link != null) {
+			if (messageObject.link
+					.startsWith("http://www.facebook.com/photo.php")) {
+				// get the photo graph id
+				String set = getParameterValueByName(messageObject.link, "set");
+				return set.split("\\.")[1];
+			} else if (messageObject.link
+					.startsWith("http://www.facebook.com/album.php")) {
+				return getParameterValueByName(messageObject.link, "fbid");
+			} else {
+				String lastPath = Uri.parse(link).getLastPathSegment();
+				String[] toks = lastPath.split("_");
+				if (toks.length >= 4) {
+					return toks[1];
+				}
+			}
+		}
+		return null;
+
 	}
 
 	public static boolean post(String graphPath, String message,
