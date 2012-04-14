@@ -180,7 +180,7 @@ public class PhotoActivity extends ActionBarActivity implements
 	}
 
 	void updateAlbumPager() {
-		mPagingCount = (int) Math.ceil((mAlbum.count + 0.5) / mPageCount);
+		mPagingCount = (int) Math.ceil(mAlbum.count * 1.0 / mPageCount);
 		mPagerAdapter.notifyDataSetChanged();
 	}
 
