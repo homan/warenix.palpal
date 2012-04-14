@@ -51,7 +51,8 @@
                     android:hint="Mobile Uploads"
                     android:maxLines="1"
                     android:singleLine="true"
-                    android:textColor="@color/textColor" />
+                    android:textColor="@color/textColor"
+                    android:textCursorDrawable="@null" />
 
                 <EditText
                     android:id="@+id/link"
@@ -61,7 +62,8 @@
                     android:hint="link"
                     android:maxLines="1"
                     android:singleLine="true"
-                    android:textColor="@color/textColor" />
+                    android:textColor="@color/textColor"
+                    android:textCursorDrawable="@null" />
 
                 <EditText
                     android:id="@+id/name"
@@ -71,7 +73,8 @@
                     android:hint="name"
                     android:maxLines="1"
                     android:singleLine="false"
-                    android:textColor="@color/textColor" />
+                    android:textColor="@color/textColor"
+                    android:textCursorDrawable="@null" />
 
                 <EditText
                     android:id="@+id/caption"
@@ -81,7 +84,8 @@
                     android:hint="caption"
                     android:maxLines="1"
                     android:singleLine="false"
-                    android:textColor="@color/textColor" />
+                    android:textColor="@color/textColor"
+                    android:textCursorDrawable="@null" />
 
                 <EditText
                     android:id="@+id/description"
@@ -91,7 +95,8 @@
                     android:hint="description"
                     android:maxLines="1"
                     android:singleLine="false"
-                    android:textColor="@color/textColor" />
+                    android:textColor="@color/textColor"
+                    android:textCursorDrawable="@null" />
 
                 <EditText
                     android:id="@+id/source"
@@ -101,7 +106,8 @@
                     android:hint="source"
                     android:maxLines="1"
                     android:singleLine="false"
-                    android:textColor="@color/textColor" />
+                    android:textColor="@color/textColor"
+                    android:textCursorDrawable="@null" />
             </LinearLayout>
 
             <Gallery

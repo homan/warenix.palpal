@@ -308,7 +308,8 @@ public class FacebookMessageListItem extends TimelineMessageListViewItem {
 										}
 									});
 
-							if (messageObject.type.equals("photo")) {
+							if (messageObject.type != null
+									&& messageObject.type.equals("photo")) {
 								actionPopup.addAction(context, "View Album",
 										new View.OnClickListener() {
 
