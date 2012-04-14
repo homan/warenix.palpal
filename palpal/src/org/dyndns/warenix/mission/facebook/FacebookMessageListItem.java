@@ -271,7 +271,7 @@ public class FacebookMessageListItem extends TimelineMessageListViewItem {
 
 						final String graphId = (String) message.obj;
 
-						if (graphId != null) {
+						if (graphId != null && graphId != messageObject.id) {
 							actionPopup.addAction(context, "Read Post",
 									new View.OnClickListener() {
 
