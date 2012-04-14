@@ -6,24 +6,37 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="5"
+        android:layout_height="wrap_content"
         android:background="#000000" >
 
         <android.support.v4.view.ViewPager
             android:id="@+id/album_gallery"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#000000" />
+            android:background="#000000"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/album_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/album_paging"
             android:background="@color/palpalColor"
-            android:text="PalPal (Dev)"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:text=""
+            android:textColor="@color/textColor"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/album_paging"
+            android:layout_width="120dip"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@color/palpalColor"
+            android:text=""
             android:textColor="@color/textColor"
             android:textSize="24sp"
             android:textStyle="bold" />
@@ -32,7 +45,6 @@
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
-        android:layout_weight="1" />
+        android:layout_height="fill_parent" />
 
 </LinearLayout>

@@ -4,16 +4,14 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 
-import org.dyndns.warenix.lab.compat1.util.AndroidUtil;
 import org.dyndns.warenix.lab.compat1.util.Memory;
 import org.dyndns.warenix.mission.facebook.FacebookObject.Comment;
+import org.dyndns.warenix.mission.timeline.TimelineAsyncAdapter;
 import org.dyndns.warenix.mission.timeline.TimelineMessageListViewItem;
-import org.dyndns.warenix.pattern.baseListView.ListViewAdapter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.ListView;
 
@@ -25,7 +23,7 @@ import com.facebook.android.Facebook;
  * @author warenix
  * 
  */
-public class FacebookPostAdapter extends ListViewAdapter {
+public class FacebookPostAdapter extends TimelineAsyncAdapter {
 
 	String graphId;
 	boolean isRefreshing;
@@ -34,77 +32,59 @@ public class FacebookPostAdapter extends ListViewAdapter {
 			String graphId) {
 		super(context, listView);
 		this.graphId = graphId;
+		
+		setNeedSortingByTime(false);
+
+		Runnable facebook = new Runnable() {
+			public void run() {
+				getFacebookFeed(FacebookPostAdapter.this.graphId, "" + 25,
+						"" + 0);
+				notifyRunnableDone();
+			}
+		};
+
+		addRunnable(facebook);
 	}
 
-	public void asyncRefresh() {
-		if (!isRefreshing) {
-			isRefreshing = true;
-			new AsyncRefreshTask().execute();
+	void getFacebookFeed(String graphPath, String pageLimit, String offset) {
+		Facebook facebook = Memory.getFacebookClient();
+		if (facebook != null) {
+
+			try {
+				// graphPath = "128982007419_10150375358527420";
+				Bundle parameters = new Bundle();
+				parameters.putString("limit", pageLimit);
+				parameters.putString("offset", offset);
+				String responseString = facebook.request(graphPath, parameters);
+
+				constructFacebookListItem(responseString, dataList);
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
-
 	}
 
-	// public void refresh() {
-	// if (!isRefreshing) {
-	// isRefreshing = true;
-	// new AsyncRefreshTask().execute();
-	// }
-	// }
+	void constructFacebookListItem(String responseString,
+			ArrayList<TimelineMessageListViewItem> dataList) {
+		// get individual facebook post
+		try {
+			JSONObject responseJSON = new JSONObject(responseString);
+			FacebookObject facebookObject = new FacebookObject(responseJSON);
+			dataList.add(new FacebookMessageListItem(facebookObject,
+					FacebookPostAdapter.this));
 
-	class AsyncRefreshTask extends AsyncTask<Void, Void, Void> {
-
-		ArrayList<TimelineMessageListViewItem> dataList = new ArrayList<TimelineMessageListViewItem>();
-
-		@Override
-		protected Void doInBackground(Void... params) {
-
-			Facebook facebook = Memory.getFacebookClient();
-			if (facebook != null) {
-
-				try {
-					String graphPath = graphId;
-					// graphPath = "128982007419_10150375358527420";
-					Bundle parameters = new Bundle();
-					// parameters.putString("limit", "50");
-					String responseString = facebook.request(graphPath,
-							parameters);
-
-					// get individual facebook post
-					try {
-						JSONObject responseJSON = new JSONObject(responseString);
-						FacebookObject facebookObject = new FacebookObject(
-								responseJSON);
-						dataList.add(new FacebookMessageListItem(
-								facebookObject, FacebookPostAdapter.this));
-
-						// add comments
-						if (facebookObject.commentsList != null) {
-							for (Comment comment : facebookObject.commentsList) {
-								dataList.add(new FacebookCommentListItem(
-										comment, FacebookPostAdapter.this));
-							}
-						}
-					} catch (JSONException e) {
-						e.printStackTrace();
-					}
-				} catch (MalformedURLException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
+			// add comments
+			if (facebookObject.commentsList != null) {
+				for (Comment comment : facebookObject.commentsList) {
+					dataList.add(new FacebookCommentListItem(comment,
+							FacebookPostAdapter.this));
 				}
 			}
-			return null;
+		} catch (JSONException e) {
+			e.printStackTrace();
 		}
-
-		protected void onPostExecute(Void v) {
-			itemList.clear();
-			itemList.addAll(dataList);
-			notifyDataSetChanged();
-			isRefreshing = false;
-
-			AndroidUtil.playListAnimation(listView);
-		}
-
 	}
 
 	public int getItemViewType(int position) {

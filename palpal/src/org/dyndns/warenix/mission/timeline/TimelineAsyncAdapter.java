@@ -29,6 +29,8 @@ public class TimelineAsyncAdapter extends AsyncListAdapter implements
 	 */
 	protected final int TIMEOUT = 3 * 60 * 1000;
 
+	private boolean mNeedSorting = true;
+
 	/**
 	 * Load timeline messages in multiple threads.
 	 */
@@ -71,6 +73,16 @@ public class TimelineAsyncAdapter extends AsyncListAdapter implements
 		runnableList.add(runnable);
 	}
 
+	/**
+	 * Sort TimelineMessageListViewItem by time, earliest first.
+	 * 
+	 * @param b
+	 *            if true, earliest TimelineMessageListViewItem first.
+	 */
+	public void setNeedSortingByTime(boolean b) {
+		mNeedSorting = b;
+	}
+
 	// +AsyncRefersh
 	@Override
 	public void onPostExecut(Object result) {
@@ -78,7 +90,9 @@ public class TimelineAsyncAdapter extends AsyncListAdapter implements
 
 		itemList.clear();
 		if (dataList.size() > 0) {
-			Collections.sort(dataList);
+			if (mNeedSorting) {
+				Collections.sort(dataList);
+			}
 			itemList.addAll(dataList);
 			notifyDataSetChanged();
 		}
@@ -89,7 +103,7 @@ public class TimelineAsyncAdapter extends AsyncListAdapter implements
 		WLog.i(TAG, "doInBackground");
 		mRefreshState = RefreshState.NOT_STARTED;
 		dataList.clear();
-		
+
 		int count = runnableList.size();
 		for (int i = 0; i < count; ++i) {
 			new Thread(runnableList.get(i)).start();

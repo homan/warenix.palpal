@@ -1,14 +1,23 @@
 package org.dyndns.warenix.lab.compat1.app;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+
 import org.dyndns.warenix.image.CachedWebImage;
 import org.dyndns.warenix.lab.compat1.R;
+import org.dyndns.warenix.lab.compat1.util.Memory;
 import org.dyndns.warenix.mission.facebook.FacebookAlbumCoverAdapter;
 import org.dyndns.warenix.mission.facebook.FacebookAlbumPhotoAdapter;
+import org.dyndns.warenix.mission.facebook.FacebookObject;
 import org.dyndns.warenix.mission.facebook.util.FacebookMaster;
 import org.dyndns.warenix.mission.timeline.TimelineListFragment;
 import org.dyndns.warenix.util.WLog;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -22,6 +31,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
 
 import com.example.android.actionbarcompat.ActionBarActivity;
+import com.facebook.android.Facebook;
 
 public class PhotoActivity extends ActionBarActivity implements
 		OnPageChangeListener, OnItemClickListener {
@@ -34,6 +44,7 @@ public class PhotoActivity extends ActionBarActivity implements
 	PhotoFragmentPagerAdapter mPagerAdapter;
 
 	TextView mAlbumTitle;
+	TextView mAlbumPaging;
 
 	ViewPager mGallery;
 	FacebookAlbumCoverAdapter mImageQueueAdapter;
@@ -42,6 +53,24 @@ public class PhotoActivity extends ActionBarActivity implements
 
 	protected String mGraphId = "me";
 	protected int mPageCount = 10;
+
+	protected FacebookObject mAlbum;
+	/**
+	 * number of page user can flip
+	 */
+	protected int mPagingCount = 1;
+
+	private Handler mUpdateTitleHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			mAlbum = (FacebookObject) msg.obj;
+			mAlbumTitle.setText(mAlbum.name);
+			// update page as album info may not ready when the photo list is
+			// loaded.
+			updateAlbumTitle(mSelectedAlbumPosition);
+			updateAlbumPager();
+		}
+	};
 
 	static {
 		CachedWebImage.setCacheDir("palpal");
@@ -55,6 +84,10 @@ public class PhotoActivity extends ActionBarActivity implements
 		setContentView(R.layout.photo_main);
 
 		FacebookMaster.restoreFacebook(getApplicationContext());
+
+		Bundle intent = getIntent().getExtras();
+		mGraphId = intent.getString(BUNDLE_GRAPH_ID);
+		mPageCount = intent.getInt(BUNDLE_PAGE_COUNT);
 
 		setTitle("Photo");
 
@@ -71,9 +104,41 @@ public class PhotoActivity extends ActionBarActivity implements
 
 	void setupAlbumGallery() {
 		mAlbumTitle = (TextView) findViewById(R.id.album_title);
+		mAlbumPaging = (TextView) findViewById(R.id.album_paging);
 		mGallery = (ViewPager) findViewById(R.id.album_gallery);
 		mImageQueueAdapter = new FacebookAlbumCoverAdapter(this);
 		mGallery.setAdapter(new FacebookAlbumCoverPageAdapter());
+
+		// update title
+		new Thread() {
+			public void run() {
+				Facebook facebook = Memory.getFacebookClient();
+				if (facebook != null) {
+					try {
+						String graphPath = mGraphId;
+						Bundle parameters = new Bundle();
+						// parameters.putString("limit", pageLimit);
+						// parameters.putString("offset", offset);
+						String responseString = facebook.request(graphPath,
+								parameters);
+
+						FacebookObject facebookObject = new FacebookObject(
+								new JSONObject(responseString));
+						Message msg = new Message();
+						msg.obj = facebookObject;
+						mUpdateTitleHandler.sendMessage(msg);
+
+					} catch (MalformedURLException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		}.start();
 
 		mGalleryPageChangeListener = new OnPageChangeListener() {
 
@@ -105,8 +170,18 @@ public class PhotoActivity extends ActionBarActivity implements
 
 	void updateAlbumTitle(int position) {
 		int start = (position * mPageCount) + 1;
-		mAlbumTitle.setText(String.format("#%d - #%d", start, start
-				+ mPageCount));
+		int end = start + mPageCount;
+		if (mAlbum != null) {
+			if (end > mAlbum.count) {
+				end = (int) mAlbum.count;
+			}
+		}
+		mAlbumPaging.setText(String.format("#%d - #%d", start, end));
+	}
+
+	void updateAlbumPager() {
+		mPagingCount = (int) Math.ceil((mAlbum.count + 0.5) / mPageCount);
+		mPagerAdapter.notifyDataSetChanged();
 	}
 
 	class FacebookAlbumCoverPageAdapter extends PagerAdapter {
@@ -147,10 +222,6 @@ public class PhotoActivity extends ActionBarActivity implements
 			WLog.d(TAG, "get item" + position);
 			Fragment f = TimelineListFragment.newInstance(4);
 
-			Bundle intent = getIntent().getExtras();
-			mGraphId = intent.getString(BUNDLE_GRAPH_ID);
-			mPageCount = intent.getInt(BUNDLE_PAGE_COUNT);
-
 			Bundle extra = FacebookAlbumPhotoAdapter.getExtra(mGraphId,
 					position, mPageCount);
 			f.setArguments(extra);
@@ -159,7 +230,7 @@ public class PhotoActivity extends ActionBarActivity implements
 
 		@Override
 		public int getCount() {
-			return 20;
+			return mPagingCount;
 		}
 	}
 
@@ -176,9 +247,7 @@ public class PhotoActivity extends ActionBarActivity implements
 
 	@Override
 	public void onPageSelected(int position) {
-		int start = (position * mPageCount);
-		mAlbumTitle.setText(String.format("#%d - #%d", start + 1, start
-				+ mPageCount));
+		updateAlbumTitle(position);
 	}
 
 	@Override
