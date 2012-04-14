@@ -61,13 +61,12 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@android:color/background_light"
             android:completionThreshold="1"
             android:hint="What&apos;s in your mind?"
             android:maxLines="3"
             android:padding="10dip"
             android:singleLine="false"
-            android:textColor="@android:color/black" />
+            android:textColor="@color/textColor" />
 
         <!-- <ImageButton -->
         <!-- android:layout_width="wrap_content" -->
