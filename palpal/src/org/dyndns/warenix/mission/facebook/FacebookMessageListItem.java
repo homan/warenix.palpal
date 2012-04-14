@@ -308,26 +308,29 @@ public class FacebookMessageListItem extends TimelineMessageListViewItem {
 										}
 									});
 
-							actionPopup.addAction(context, "View Album",
-									new View.OnClickListener() {
+							if (messageObject.type.equals("photo")) {
+								actionPopup.addAction(context, "View Album",
+										new View.OnClickListener() {
 
-										@Override
-										public void onClick(View v) {
-											String albumGraphId = FacebookMaster
-													.determineAlbumGraphIdFromLink(messageObject);
+											@Override
+											public void onClick(View v) {
+												final String albumGraphId = FacebookMaster
+														.determineAlbumGraphIdFromLink(messageObject);
 
-											Intent intent = new Intent(context,
-													PhotoActivity.class);
-											intent.putExtra(
-													PhotoActivity.BUNDLE_GRAPH_ID,
-													albumGraphId);
-											intent.putExtra(
-													PhotoActivity.BUNDLE_PAGE_COUNT,
-													10);
+												Intent intent = new Intent(
+														context,
+														PhotoActivity.class);
+												intent.putExtra(
+														PhotoActivity.BUNDLE_GRAPH_ID,
+														albumGraphId);
+												intent.putExtra(
+														PhotoActivity.BUNDLE_PAGE_COUNT,
+														10);
 
-											context.startActivity(intent);
-										}
-									});
+												context.startActivity(intent);
+											}
+										});
+							}
 						}
 						actionPopup.addAction(context, "Like",
 								new View.OnClickListener() {
@@ -341,10 +344,12 @@ public class FacebookMessageListItem extends TimelineMessageListViewItem {
 								});
 
 						String commentLink = null;
-						for (Action action : messageObject.actionList) {
-							if (action.link.contains("/posts/")) {
-								commentLink = action.link;
-								break;
+						if (messageObject.actionList != null) {
+							for (Action action : messageObject.actionList) {
+								if (action.link.contains("/posts/")) {
+									commentLink = action.link;
+									break;
+								}
 							}
 						}
 
