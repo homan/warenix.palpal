@@ -47,7 +47,7 @@ public class FacebookObject implements Serializable {
 
 	public static class Action implements Serializable {
 		public String name;
-		public String id;
+		public String link;
 	}
 
 	public static class Privacy implements Serializable {
@@ -204,6 +204,12 @@ public class FacebookObject implements Serializable {
 			}
 
 			try {
+				setActionsList(jsonObject);
+			} catch (JSONException e) {
+
+			}
+
+			try {
 				unread = jsonObject.getLong("unread");
 			} catch (JSONException e) {
 			}
@@ -320,6 +326,7 @@ public class FacebookObject implements Serializable {
 				Like like = new Like();
 				like.id = likeJSON.getString("id");
 				like.name = likeJSON.getString("name");
+				likesList.add(like);
 			}
 		}
 
@@ -408,6 +415,21 @@ public class FacebookObject implements Serializable {
 					storyTagList = new ArrayList<StoryTag>();
 				}
 				storyTagList.add(storyTag);
+			}
+		}
+	}
+
+	public void setActionsList(JSONObject jsonObject) throws JSONException {
+		JSONArray dataArray = jsonObject.getJSONArray("actions");
+		int l = dataArray.length();
+		if (l > 0) {
+			actionList = new ArrayList<Action>();
+			for (int i = 0; i < l; ++i) {
+				JSONObject actionJSON = dataArray.getJSONObject(i);
+				Action action = new Action();
+				action.name = actionJSON.getString("name");
+				action.link = actionJSON.getString("link");
+				actionList.add(action);
 			}
 		}
 	}

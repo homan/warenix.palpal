@@ -9,6 +9,7 @@ import org.dyndns.warenix.lab.compat1.app.PhotoActivity;
 import org.dyndns.warenix.lab.compat1.app.ReplyActivity;
 import org.dyndns.warenix.lab.compat1.util.Memory;
 import org.dyndns.warenix.lab.taskservice.TaskService;
+import org.dyndns.warenix.mission.facebook.FacebookObject.Action;
 import org.dyndns.warenix.mission.facebook.backgroundtask.LikePostBackgroundTask;
 import org.dyndns.warenix.mission.facebook.util.FacebookMaster;
 import org.dyndns.warenix.mission.timeline.StreamAdapter;
@@ -338,7 +339,32 @@ public class FacebookMessageListItem extends TimelineMessageListViewItem {
 														messageObject.id));
 									}
 								});
-						actionPopup.addAction(context, "Comment", null);
+
+						String commentLink = null;
+						for (Action action : messageObject.actionList) {
+							if (action.link.contains("/posts/")) {
+								commentLink = action.link;
+								break;
+							}
+						}
+
+						if (commentLink != null) {
+							final Uri uri = Uri.parse(commentLink);
+							actionPopup.addAction(context,
+									"Read original post in browser",
+									new View.OnClickListener() {
+
+										@Override
+										public void onClick(View v) {
+
+											Intent intent = new Intent(
+													Intent.ACTION_VIEW);
+											intent.setData(uri);
+
+											context.startActivity(intent);
+										}
+									});
+						}
 						if (messageObject.toUserList != null) {
 							actionPopup.addAction(context,
 									"View Tagged People", null);
