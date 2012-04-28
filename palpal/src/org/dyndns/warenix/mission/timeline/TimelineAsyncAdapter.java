@@ -36,6 +36,8 @@ public class TimelineAsyncAdapter extends AsyncListAdapter implements
 	 */
 	private ArrayList<Runnable> runnableList = new ArrayList<Runnable>();
 
+	int count;
+
 	public TimelineAsyncAdapter(Context context, ListView listView) {
 		super(context, listView);
 		setBackgroundLogic(this);
@@ -58,9 +60,12 @@ public class TimelineAsyncAdapter extends AsyncListAdapter implements
 	/**
 	 * caller runnable notify adapter that it has finished
 	 */
-	protected void notifyRunnableDone() {
+	protected synchronized void notifyRunnableDone() {
+		WLog.i(TAG, "notify runnable done");
 		synchronized (lock) {
+			count--;
 			lock.notify();
+			WLog.i(TAG, "notify runnable done - ok");
 		}
 	}
 
@@ -71,6 +76,14 @@ public class TimelineAsyncAdapter extends AsyncListAdapter implements
 	 */
 	protected void addRunnable(Runnable runnable) {
 		runnableList.add(runnable);
+	}
+
+	protected void clearRunnables() {
+		if (runnableList != null) {
+			runnableList.clear();
+		} else {
+			runnableList = new ArrayList<Runnable>();
+		}
 	}
 
 	/**
@@ -104,17 +117,18 @@ public class TimelineAsyncAdapter extends AsyncListAdapter implements
 		mRefreshState = RefreshState.NOT_STARTED;
 		dataList.clear();
 
-		int count = runnableList.size();
+		count = runnableList.size();
 		for (int i = 0; i < count; ++i) {
 			new Thread(runnableList.get(i)).start();
 		}
+		WLog.d(TAG, new Date().toLocaleString() + " " + count
+				+ " runnables executed");
 		while (count > 0) {
 			WLog.d(TAG, new Date().toLocaleString() + " " + count
 					+ " runnable remaining");
 			try {
 				synchronized (lock) {
 					lock.wait(TIMEOUT);
-					count--;
 				}
 
 			} catch (InterruptedException e) {
