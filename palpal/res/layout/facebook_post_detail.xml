@@ -20,12 +20,31 @@
         android:cacheColorHint="#ffffff"
         android:fastScrollEnabled="true" />
 
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="@style/customProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/progress_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/progress_bar"
+        android:layout_centerInParent="true"
+        android:text="No message."
+        android:textColor="@color/textColor" />
+
     <EditText
         android:id="@+id/comment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:maxLines="3"
-        android:singleLine="false" />
+        android:singleLine="false"
+        android:textColor="@color/textColor"
+        android:textCursorDrawable="@null" />
 
 </RelativeLayout>
