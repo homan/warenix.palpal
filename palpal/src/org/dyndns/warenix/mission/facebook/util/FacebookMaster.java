@@ -66,6 +66,13 @@ public class FacebookMaster {
 		return false;
 	}
 
+	public static void removeFacebook(Context context) {
+		PreferenceMaster.save(context, FacebookMaster.PREF_NAME,
+				FacebookMaster.ACCESS_TOKEN, null);
+		PreferenceMaster.save(context, FacebookMaster.PREF_NAME,
+				FacebookMaster.ACCESS_EXPIRES, -1);
+	}
+
 	public static String getLargeImage(String picture) {
 		if (picture != null) {
 			if (picture.contains("app_full_proxy.php")) {

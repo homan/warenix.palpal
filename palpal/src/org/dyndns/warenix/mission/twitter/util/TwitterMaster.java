@@ -54,6 +54,12 @@ public class TwitterMaster {
 		return false;
 	}
 
+	public static void removeTwitterClient(Context context) {
+		PreferenceMaster.save(context, PREF_NAME, ACCESS_TOKEN0, null);
+		PreferenceMaster.save(context, PREF_NAME, ACCESS_TOKEN1, null);
+		PreferenceMaster.save(context, PREF_NAME, SCREEN_NAME, null);
+	}
+
 	public static String getScreenName(Context context) {
 		return PreferenceMaster.load(context, PREF_NAME, SCREEN_NAME, "");
 	}

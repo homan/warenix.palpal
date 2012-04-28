@@ -9,7 +9,9 @@ import java.util.Date;
 import org.dyndns.warenix.lab.compat1.util.Memory;
 import org.dyndns.warenix.mission.facebook.FacebookMessageListItem;
 import org.dyndns.warenix.mission.facebook.FacebookObject;
+import org.dyndns.warenix.mission.facebook.util.FacebookMaster;
 import org.dyndns.warenix.mission.twitter.TwitterMessageListItem;
+import org.dyndns.warenix.mission.twitter.util.TwitterMaster;
 import org.dyndns.warenix.util.WLog;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,14 +40,19 @@ public class StreamAdapter extends TimelineAsyncAdapter {
 	public static int MESSAGE_TYPE_TWITTER = 1;
 	public static int MESSAGE_TYPE_FACEBOOK = 2;
 
-	public StreamAdapter(Context context, ListView listView) {
+	public StreamAdapter(final Context context, ListView listView) {
 		super(context, listView);
 
 		Runnable facebook = new Runnable() {
 			public void run() {
 				WLog.i(TAG, (new Date()).toLocaleString()
 						+ " facebook is running");
-				getFacebookFeed("me/home", "50");
+				if (FacebookMaster.restoreFacebook(context)) {
+					getFacebookFeed("me/home", "50");
+				} else {
+					WLog.i(TAG, (new Date()).toLocaleString()
+							+ " facebook is not linked");
+				}
 				WLog.i(TAG, (new Date()).toLocaleString() + " facebook is done");
 
 				notifyRunnableDone();
@@ -57,13 +64,19 @@ public class StreamAdapter extends TimelineAsyncAdapter {
 			public void run() {
 				WLog.i(TAG, (new Date()).toLocaleString()
 						+ " twitter is running");
-				getTwitterFeed(1, 50);
+				if (TwitterMaster.restoreTwitterClient(context)) {
+					getTwitterFeed(1, 50);
+				} else {
+					WLog.i(TAG, (new Date()).toLocaleString()
+							+ " twitter is not linked");
+				}
 				WLog.i(TAG, (new Date()).toLocaleString() + " twitter is done");
 
 				notifyRunnableDone();
 			}
 		};
 
+		clearRunnables();
 		addRunnable(facebook);
 		addRunnable(twitter);
 	}

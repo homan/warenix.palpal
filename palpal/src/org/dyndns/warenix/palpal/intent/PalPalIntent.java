@@ -11,4 +11,9 @@ public class PalPalIntent {
 	 */
 	public static final String ACTION_FACEBOOK_RESHARE_POST = "org.dyndns.warenix.palpal.facebook.ACTION_RESHARE_POST";
 
+	/**
+	 * Action to launch palpal main.
+	 */
+	public static final String ACTION_PALPAL_MAIN = "org.dyndns.warenix.palpal.ACTION_PALPAL_MAIN";
+
 }
