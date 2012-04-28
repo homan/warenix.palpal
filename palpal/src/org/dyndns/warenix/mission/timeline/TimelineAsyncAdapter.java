@@ -94,8 +94,8 @@ public class TimelineAsyncAdapter extends AsyncListAdapter implements
 				Collections.sort(dataList);
 			}
 			itemList.addAll(dataList);
-			notifyDataSetChanged();
 		}
+		notifyDataSetChanged();
 		AndroidUtil.playListAnimation(listView);
 	}
 

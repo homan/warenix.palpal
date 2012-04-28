@@ -91,7 +91,8 @@ public class TimelineListFragment extends ListFragment implements
 			adapter = new SampleListAdapter(getActivity(), listView);
 			break;
 		case 3:
-			adapter = new FacebookHomeAdapter(getActivity(), listView);
+			adapter = new FacebookHomeAdapter(getActivity(), listView,
+					getArguments());
 			break;
 		case 4:
 			adapter = new FacebookAlbumPhotoAdapter(getActivity(), listView,

@@ -73,7 +73,8 @@ public class TwitterTimelineListFragment extends ListFragment {
 		// StreamDataProvider());
 		// if (adapter == null) {
 		if (num == 0) {
-			adapter = new FacebookHomeAdapter(getActivity(), listView);
+			Bundle extras = FacebookHomeAdapter.getExtra("me", 0, 50);
+			adapter = new FacebookHomeAdapter(getActivity(), listView, extras);
 		} else if (num == 1) {
 			adapter = new TwitterMentionsAdapter(getActivity(), listView);
 		} else if (num == 2) {

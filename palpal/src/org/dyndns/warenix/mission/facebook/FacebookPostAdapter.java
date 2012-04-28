@@ -32,7 +32,7 @@ public class FacebookPostAdapter extends TimelineAsyncAdapter {
 			String graphId) {
 		super(context, listView);
 		this.graphId = graphId;
-		
+
 		setNeedSortingByTime(false);
 
 		Runnable facebook = new Runnable() {

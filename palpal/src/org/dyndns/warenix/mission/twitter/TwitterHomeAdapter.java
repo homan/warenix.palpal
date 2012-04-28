@@ -59,7 +59,6 @@ public class TwitterHomeAdapter extends ListViewAdapter {
 					e1.printStackTrace();
 				}
 			}
-			
 
 			// for (int i = 0; i < 100; ++i) {
 			// try {
