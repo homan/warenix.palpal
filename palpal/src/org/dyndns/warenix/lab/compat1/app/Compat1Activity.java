@@ -202,15 +202,16 @@ public class Compat1Activity extends ActionBarActivity {
 			break;
 
 		case R.id.menu_refresh:
-			Toast.makeText(this, "Fake refreshing...", Toast.LENGTH_SHORT)
-					.show();
-			getActionBarHelper().setRefreshActionItemState(true);
-			getWindow().getDecorView().postDelayed(new Runnable() {
-				@Override
-				public void run() {
-					getActionBarHelper().setRefreshActionItemState(false);
-				}
-			}, 1000);
+			// Toast.makeText(this, "Fake refreshing...", Toast.LENGTH_SHORT)
+			// .show();
+			// getActionBarHelper().setRefreshActionItemState(true);
+			// getWindow().getDecorView().postDelayed(new Runnable() {
+			// @Override
+			// public void run() {
+			// getActionBarHelper().setRefreshActionItemState(false);
+			// }
+			// }, 1000);
+			refreshTab(mTabHost.getCurrentTab());
 			break;
 
 		case R.id.menu_search:
@@ -225,6 +226,13 @@ public class Compat1Activity extends ActionBarActivity {
 		case R.id.menu_accounts:
 			intent = new Intent(this, AccountsActivity.class);
 			startActivity(intent);
+			break;
+		case R.id.menu_clear_cache:
+			new Thread() {
+				public void run() {
+					CachedWebImage.removeCacheDir("palpal");
+				}
+			}.start();
 			break;
 		}
 		return super.onOptionsItemSelected(item);
@@ -272,18 +280,21 @@ public class Compat1Activity extends ActionBarActivity {
 							boolean needRefresh = currentTabIndex == childIndex;
 							mTabHost.setCurrentTab(childIndex);
 							if (needRefresh) {
-								if (toast == null) {
-									toast = Toast.makeText(
-											Compat1Activity.this, "",
-											Toast.LENGTH_SHORT);
-								}
-								toast.setText("refresh tab " + currentTabIndex);
-								toast.cancel();
-								toast.show();
-
-								TimelineListFragment adapter = ((TimelineListFragment) (mTabsAdapter
-										.getItem(currentTabIndex)));
-								adapter.refresh();
+								// if (toast == null) {
+								// toast = Toast.makeText(
+								// Compat1Activity.this, "",
+								// Toast.LENGTH_SHORT);
+								// }
+								// toast.setText("refresh tab " +
+								// currentTabIndex);
+								// toast.cancel();
+								// toast.show();
+								//
+								// TimelineListFragment adapter =
+								// ((TimelineListFragment) (mTabsAdapter
+								// .getItem(currentTabIndex)));
+								// adapter.refresh();
+								refreshTab(currentTabIndex);
 							}
 						}
 					});
@@ -291,6 +302,20 @@ public class Compat1Activity extends ActionBarActivity {
 
 		TaskService.setRunning(true);
 
+	}
+
+	private void refreshTab(int currentTabIndex) {
+		if (toast == null) {
+			toast = Toast
+					.makeText(Compat1Activity.this, "", Toast.LENGTH_SHORT);
+		}
+		toast.setText("refresh tab " + currentTabIndex);
+		toast.cancel();
+		toast.show();
+
+		TimelineListFragment adapter = ((TimelineListFragment) (mTabsAdapter
+				.getItem(currentTabIndex)));
+		adapter.refresh();
 	}
 
 	public static class TabsAdapter extends FragmentStatePagerAdapter implements
