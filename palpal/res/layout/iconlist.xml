@@ -33,7 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="123"
-        android:textColor="@color/textColor" />
+        android:textColor="@color/labelColor" />
 
     <ImageView
         android:id="@+id/like"
@@ -47,7 +47,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="456"
-        android:textColor="@color/textColor" />
+        android:textColor="@color/labelColor" />
 
     <ImageView
         android:id="@+id/alert"

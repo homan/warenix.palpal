@@ -11,7 +11,7 @@
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
-  limitations under the License.
+  limitations under the License.
 -->
 
 <resources>
@@ -20,9 +20,11 @@
     <color name="palpalColor">#00CCEE</color>
     <color name="inputTextColor">#00CCEE</color>
     <color name="textColor">#f8f8f8</color>
+    <color name="labelColor">#000000</color>
     <color name="messageItemColorTop">#000000</color>
     <color name="messageItemColorBottom">#000000</color>
     <color name="actionbar_title_color">@color/palpalColor</color>
     <color name="tab_pressed">#222222</color>
     <color name="tab_text_color_normal">#f8f8f8</color>
+
 </resources>
