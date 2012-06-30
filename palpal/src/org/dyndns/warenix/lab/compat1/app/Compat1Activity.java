@@ -31,7 +31,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.TabHost;
 import android.widget.TabHost.TabContentFactory;
 import android.widget.TextView;
@@ -61,7 +60,9 @@ public class Compat1Activity extends ActionBarActivity {
 
 		// restoreClients();
 
-		restoreClientsToMemory();
+		if (savedInstanceState == null) {
+			restoreClientsToMemory();
+		}
 		onReady();
 	}
 
@@ -211,7 +212,8 @@ public class Compat1Activity extends ActionBarActivity {
 			// getActionBarHelper().setRefreshActionItemState(false);
 			// }
 			// }, 1000);
-			refreshTab(mTabHost.getCurrentTab());
+			// refreshTab(mTabHost.getCurrentTab());
+			refreshTab(mViewPager.getCurrentItem());
 			break;
 
 		case R.id.menu_search:
@@ -252,53 +254,61 @@ public class Compat1Activity extends ActionBarActivity {
 
 	void onReady() {
 		mViewPager = (ViewPager) this.findViewById(R.id.pager);
-
-		mTabHost = (TabHost) findViewById(android.R.id.tabhost);
-		mTabHost.setup();
-
 		mTabsAdapter = new TabsAdapter(this, mTabHost, mViewPager);
+		mTabsAdapter.addTab(null, BFragment.class, null);
+		mTabsAdapter.addTab(null, BFragment.class, null);
+		mTabsAdapter.addTab(null, BFragment.class, null);
+		mViewPager.setAdapter(mTabsAdapter);
 
-		setupTab(mTabsAdapter, new TextView(this), "Stream", BFragment.class,
-				null);
-		setupTab(mTabsAdapter, new TextView(this), "Mentions", BFragment.class,
-				null);
+		// mTabHost = (TabHost) findViewById(android.R.id.tabhost);
+		// mTabHost.setup();
+		//
+		// mTabsAdapter = new TabsAdapter(this, mTabHost, mViewPager);
+		//
 		// setupTab(mTabsAdapter, new TextView(this), "Stream", BFragment.class,
 		// null);
-
-		setupTab(mTabsAdapter, new TextView(this), "Messages", BFragment.class,
-				null);
-
-		for (int i = 0; i < mTabHost.getTabWidget().getChildCount(); ++i) {
-			final int childIndex = i;
-			mTabHost.getTabWidget().getChildAt(childIndex)
-					.setOnClickListener(new OnClickListener() {
-
-						@Override
-						public void onClick(View v) {
-							int currentTabIndex = mTabHost.getCurrentTab();
-
-							boolean needRefresh = currentTabIndex == childIndex;
-							mTabHost.setCurrentTab(childIndex);
-							if (needRefresh) {
-								// if (toast == null) {
-								// toast = Toast.makeText(
-								// Compat1Activity.this, "",
-								// Toast.LENGTH_SHORT);
-								// }
-								// toast.setText("refresh tab " +
-								// currentTabIndex);
-								// toast.cancel();
-								// toast.show();
-								//
-								// TimelineListFragment adapter =
-								// ((TimelineListFragment) (mTabsAdapter
-								// .getItem(currentTabIndex)));
-								// adapter.refresh();
-								refreshTab(currentTabIndex);
-							}
-						}
-					});
-		}
+		// setupTab(mTabsAdapter, new TextView(this), "Mentions",
+		// BFragment.class,
+		// null);
+		// // setupTab(mTabsAdapter, new TextView(this), "Stream",
+		// BFragment.class,
+		// // null);
+		//
+		// setupTab(mTabsAdapter, new TextView(this), "Messages",
+		// BFragment.class,
+		// null);
+		//
+		// for (int i = 0; i < mTabHost.getTabWidget().getChildCount(); ++i) {
+		// final int childIndex = i;
+		// mTabHost.getTabWidget().getChildAt(childIndex)
+		// .setOnClickListener(new OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View v) {
+		// int currentTabIndex = mTabHost.getCurrentTab();
+		//
+		// boolean needRefresh = currentTabIndex == childIndex;
+		// mTabHost.setCurrentTab(childIndex);
+		// if (needRefresh) {
+		// // if (toast == null) {
+		// // toast = Toast.makeText(
+		// // Compat1Activity.this, "",
+		// // Toast.LENGTH_SHORT);
+		// // }
+		// // toast.setText("refresh tab " +
+		// // currentTabIndex);
+		// // toast.cancel();
+		// // toast.show();
+		// //
+		// // TimelineListFragment adapter =
+		// // ((TimelineListFragment) (mTabsAdapter
+		// // .getItem(currentTabIndex)));
+		// // adapter.refresh();
+		// refreshTab(currentTabIndex);
+		// }
+		// }
+		// });
+		// }
 
 		TaskService.setRunning(true);
 
@@ -359,19 +369,19 @@ public class Compat1Activity extends ActionBarActivity {
 			mContext = activity;
 			mTabHost = tabHost;
 			mViewPager = pager;
-			mTabHost.setOnTabChangedListener(this);
+			// mTabHost.setOnTabChangedListener(this);
 			mViewPager.setAdapter(this);
 			mViewPager.setOnPageChangeListener(this);
 		}
 
 		public void addTab(TabHost.TabSpec tabSpec, Class<?> clss, Bundle args) {
-			tabSpec.setContent(new DummyTabFactory(mContext));
-			String tag = tabSpec.getTag();
-
-			TabInfo info = new TabInfo(tag, clss, args);
-			mTabs.add(info);
-			mTabHost.addTab(tabSpec);
-			notifyDataSetChanged();
+			// tabSpec.setContent(new DummyTabFactory(mContext));
+			// String tag = tabSpec.getTag();
+			//
+			// TabInfo info = new TabInfo(tag, clss, args);
+			// mTabs.add(info);
+			// mTabHost.addTab(tabSpec);
+			// notifyDataSetChanged();
 
 			// fragmentList.add(Fragment.instantiate(mContext,
 			// info.clss.getName(), info.args));
@@ -381,7 +391,7 @@ public class Compat1Activity extends ActionBarActivity {
 
 		@Override
 		public int getCount() {
-			return mTabs.size();
+			return fragmentList.size();
 		}
 
 		ArrayList<Fragment> fragmentList = new ArrayList<Fragment>();
@@ -412,11 +422,17 @@ public class Compat1Activity extends ActionBarActivity {
 		@Override
 		public void onPageSelected(int position) {
 			WLog.d(TAG, "page selceted at " + position);
-			mTabHost.setCurrentTab(position);
+			// mTabHost.setCurrentTab(position);
 		}
 
 		@Override
 		public void onPageScrollStateChanged(int state) {
+		}
+
+		@Override
+		public CharSequence getPageTitle(int position) {
+			String titles[] = { "Stream", "Mentions", "Messages" };
+			return titles[position];
 		}
 	}
 
