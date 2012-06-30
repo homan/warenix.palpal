@@ -177,8 +177,11 @@ public class StreamAdapter extends TimelineAsyncAdapter {
 
 	void constructTwitterListItem(ResponseList<twitter4j.Status> statusList,
 			ArrayList<TimelineMessageListViewItem> dataList) {
-		for (twitter4j.Status status : statusList) {
-			dataList.add(new TwitterMessageListItem(status, StreamAdapter.this));
+		if (statusList != null) {
+			for (twitter4j.Status status : statusList) {
+				dataList.add(new TwitterMessageListItem(status,
+						StreamAdapter.this));
+			}
 		}
 	}
 
