@@ -11,6 +11,7 @@ import org.dyndns.warenix.pattern.baseListView.AsyncListAdapter.AsyncRefreshList
 import org.dyndns.warenix.pattern.baseListView.ListViewAdapter;
 import org.dyndns.warenix.util.WLog;
 
+import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
@@ -35,6 +36,8 @@ public class TimelineListFragment extends ListFragment implements
 
 	protected ListViewAdapter adapter;
 
+	protected DataSetObserver mTimelineObserver;
+
 	protected ListView listView;
 	View mProgressBar;
 	TextView mProgressText;
@@ -47,7 +50,6 @@ public class TimelineListFragment extends ListFragment implements
 		args.putInt("num", num);
 		f.setArguments(args);
 		f.num = num;
-
 		return f;
 	}
 
@@ -105,6 +107,12 @@ public class TimelineListFragment extends ListFragment implements
 			((TimelineAsyncAdapter) adapter).setAsyncRefreshListener(this);
 			break;
 		}
+		mTimelineObserver = new DataSetObserver() {
+			public void onChanged() {
+				checkEmptyList();
+			}
+		};
+		adapter.registerDataSetObserver(mTimelineObserver);
 		setListAdapter(adapter);
 		// }
 
@@ -115,6 +123,7 @@ public class TimelineListFragment extends ListFragment implements
 	public void onDestroyView() {
 		WLog.d(TAG, "timelineListFragment onDestroyView()");
 		if (adapter != null) {
+			adapter.unregisterDataSetObserver(mTimelineObserver);
 			adapter.clear();
 			adapter = null;
 			listView = null;
@@ -189,6 +198,7 @@ public class TimelineListFragment extends ListFragment implements
 
 		if (itemListCopy != null) {
 			adapter.setItemList(itemListCopy);
+			adapter.notifyDataSetChanged();
 		} else {
 			refresh();
 		}
@@ -222,17 +232,20 @@ public class TimelineListFragment extends ListFragment implements
 				@Override
 				public void run() {
 					mProgressBar.setVisibility(View.GONE);
-					if (adapter != null) {
-						if (adapter.getCount() > 0) {
-							mProgressText.setVisibility(View.GONE);
-						} else {
-							mProgressText.setText("No message is found.");
-						}
-					}
+					checkEmptyList();
 				}
 			});
 		}
 		isRefreshing = false;
 	}
 
+	protected void checkEmptyList() {
+		if (adapter != null) {
+			if (adapter.getCount() > 0) {
+				mProgressText.setVisibility(View.GONE);
+			} else {
+				mProgressText.setText("No message is found.");
+			}
+		}
+	}
 }

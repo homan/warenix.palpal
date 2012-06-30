@@ -19,6 +19,7 @@ import org.json.JSONObject;
 
 import twitter4j.Paging;
 import twitter4j.ResponseList;
+import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import android.content.Context;
@@ -48,7 +49,8 @@ public class StreamAdapter extends TimelineAsyncAdapter {
 				WLog.i(TAG, (new Date()).toLocaleString()
 						+ " facebook is running");
 				if (FacebookMaster.restoreFacebook(context)) {
-					getFacebookFeed("me/home", "50");
+					homeResponseString = getFacebookFeed("me/home", "50");
+					feedResponseString = getFacebookFeed("me/feed", "10");
 				} else {
 					WLog.i(TAG, (new Date()).toLocaleString()
 							+ " facebook is not linked");
@@ -81,23 +83,23 @@ public class StreamAdapter extends TimelineAsyncAdapter {
 		addRunnable(twitter);
 	}
 
-	void getFacebookFeed(String graphPath, String pageLimit) {
+	String getFacebookFeed(String graphPath, String pageLimit) {
 		Facebook facebook = Memory.getFacebookClient();
 		if (facebook != null) {
-
 			try {
 				Bundle parameters = new Bundle();
 				parameters.putString("limit", pageLimit);
-				responseString = facebook.request(graphPath, parameters);
+				String responseString = facebook.request(graphPath, parameters);
 
 				constructFacebookListItem(responseString, dataList);
+				return responseString;
 			} catch (MalformedURLException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-
 		}
+		return null;
 
 	}
 
@@ -131,14 +133,28 @@ public class StreamAdapter extends TimelineAsyncAdapter {
 		return 2;
 	}
 
-	protected String responseString;
+	protected String homeResponseString;
+	protected String feedResponseString;
 	protected ResponseList<twitter4j.Status> statusList;
 
 	public Serializable getItemList() {
-		if (responseString != null && statusList != null) {
-			return new Object[] { responseString, statusList };
+		return new Object[] { feedResponseString, homeResponseString,
+				statusList };
+	}
+
+	public void setItemList(Serializable newItemList) {
+		if (newItemList != null) {
+			Object[] obj = (Object[]) newItemList;
+			feedResponseString = (String) obj[0];
+			homeResponseString = (String) obj[1];
+			statusList = (ResponseList<Status>) obj[2];
+
+			dataList.clear();
+			constructFacebookListItem(feedResponseString, dataList);
+			constructFacebookListItem(homeResponseString, dataList);
+			constructTwitterListItem(statusList, dataList);
+			this.onPostExecut(null);
 		}
-		return super.getItemList();
 	}
 
 	void constructFacebookListItem(String responseString,
