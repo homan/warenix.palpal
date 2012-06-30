@@ -95,6 +95,8 @@ public class FacebookMaster {
 		else if (picture.contains("ytimg.com")) {
 			if (picture.endsWith("hqdefault.jpg")) {
 				picture = picture.replace("hqdefault.jpg", "0.jpg");
+			} else if (picture.endsWith("mqdefault.jpg")) {
+				picture = picture.replace("mqdefault.jpg", "0.jpg");
 			} else if (picture.endsWith("default.jpg")) {
 				picture = picture.replace("default.jpg", "0.jpg");
 			}
