@@ -159,19 +159,20 @@ public class StreamAdapter extends TimelineAsyncAdapter {
 
 	void constructFacebookListItem(String responseString,
 			ArrayList<TimelineMessageListViewItem> dataList) {
-		try {
-			JSONObject responseJSON = new JSONObject(responseString);
-			JSONArray dataJSONArray = responseJSON.getJSONArray("data");
-			for (int i = 0; i < dataJSONArray.length(); ++i) {
-				FacebookObject facebookObject = new FacebookObject(
-						dataJSONArray.getJSONObject(i));
-				dataList.add(new FacebookMessageListItem(facebookObject,
-						StreamAdapter.this));
+		if (responseString != null) {
+			try {
+				JSONObject responseJSON = new JSONObject(responseString);
+				JSONArray dataJSONArray = responseJSON.getJSONArray("data");
+				for (int i = 0; i < dataJSONArray.length(); ++i) {
+					FacebookObject facebookObject = new FacebookObject(
+							dataJSONArray.getJSONObject(i));
+					dataList.add(new FacebookMessageListItem(facebookObject,
+							StreamAdapter.this));
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
 			}
-		} catch (JSONException e) {
-			e.printStackTrace();
 		}
-
 	}
 
 	void constructTwitterListItem(ResponseList<twitter4j.Status> statusList,

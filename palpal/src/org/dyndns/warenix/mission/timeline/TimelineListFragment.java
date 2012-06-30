@@ -148,9 +148,11 @@ public class TimelineListFragment extends ListFragment implements
 
 	public void refresh() {
 		if (!isRefreshing) {
-			mProgressBar.setVisibility(View.VISIBLE);
-			mProgressText.setVisibility(View.VISIBLE);
-			mProgressText.setText("We're preparing to load messages.");
+			if (mProgressBar != null) {
+				mProgressBar.setVisibility(View.VISIBLE);
+				mProgressText.setVisibility(View.VISIBLE);
+				mProgressText.setText("We're preparing to load messages.");
+			}
 
 			adapter.asyncRefresh();
 		}

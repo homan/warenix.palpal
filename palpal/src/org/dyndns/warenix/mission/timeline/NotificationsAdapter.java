@@ -43,7 +43,7 @@ public class NotificationsAdapter extends TimelineAsyncAdapter {
 				WLog.i(TAG, (new Date()).toLocaleString()
 						+ " facebook is running");
 				if (FacebookMaster.restoreFacebook(context)) {
-					getFacebookNotifications("10", true);
+					getFacebookNotifications("20", true);
 				} else {
 					WLog.i(TAG, (new Date()).toLocaleString()
 							+ " facebook is not linked");
@@ -59,7 +59,7 @@ public class NotificationsAdapter extends TimelineAsyncAdapter {
 				WLog.i(TAG, (new Date()).toLocaleString()
 						+ " twitter is running");
 				if (TwitterMaster.restoreTwitterClient(context)) {
-					getTwitterMentions(1, 10);
+					getTwitterMentions(1, 20);
 				} else {
 					WLog.i(TAG, (new Date()).toLocaleString()
 							+ " twitter is not linked");

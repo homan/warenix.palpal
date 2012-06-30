@@ -463,7 +463,7 @@ public class FacebookMessageListItem extends TimelineMessageListViewItem {
 
 	@Override
 	public Date getDate() {
-		return messageObject.created_time;
+		return messageObject.updated_time;
 	}
 
 	@Override

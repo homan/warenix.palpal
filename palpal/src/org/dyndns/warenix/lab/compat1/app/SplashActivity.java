@@ -1,8 +1,11 @@
 package org.dyndns.warenix.lab.compat1.app;
 
+import org.dyndns.warenix.image.CachedWebImage;
+import org.dyndns.warenix.lab.taskservice.TaskService;
 import org.dyndns.warenix.mission.facebook.util.FacebookMaster;
 import org.dyndns.warenix.mission.twitter.util.TwitterMaster;
 import org.dyndns.warenix.palpal.intent.PalPalIntent;
+import org.dyndns.warenix.util.WLog;
 
 import android.app.Activity;
 import android.content.Context;
@@ -23,11 +26,19 @@ public class SplashActivity extends Activity {
 
 	static {
 		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-				.detectDiskReads().detectDiskWrites().detectNetwork()
-				.penaltyLog().build());
+				.detectNetwork().penaltyLog().build());
 		StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
 				.detectLeakedSqlLiteObjects().penaltyLog().penaltyDeath()
 				.build());
+	}
+
+	/**
+	 * init code
+	 */
+	static {
+		CachedWebImage.setCacheDir("palpal");
+		WLog.setAppName("palpal");
+		TaskService.setRunning(true);
 	}
 
 	@Override

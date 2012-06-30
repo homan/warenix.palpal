@@ -1,12 +1,9 @@
 package org.dyndns.warenix.lab.compat1.app;
 
-import java.util.ArrayList;
-
 import org.dyndns.warenix.actionbar.R;
 import org.dyndns.warenix.image.CachedWebImage;
 import org.dyndns.warenix.lab.compat1.app.facebook.AuthenFacebookActivity;
 import org.dyndns.warenix.lab.compat1.app.twitter.AuthenTwitterActivity;
-import org.dyndns.warenix.lab.compat1.fragment.BFragment;
 import org.dyndns.warenix.lab.compat1.util.AndroidUtil;
 import org.dyndns.warenix.lab.taskservice.BackgroundTask;
 import org.dyndns.warenix.lab.taskservice.TaskService;
@@ -32,32 +29,21 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TabHost;
-import android.widget.TabHost.TabContentFactory;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.actionbarcompat.ActionBarActivity;
 
-public class Compat1Activity extends ActionBarActivity {
-	private static final String TAG = "Compat1Activity";
-	TabHost mTabHost;
+public class MainActivity extends ActionBarActivity {
+	private static final String TAG = "MainActivity";
 	TabsAdapter mTabsAdapter;
 	ViewPager mViewPager;
-	Toast toast;
-
-	static int sFragmentCount = 0;
-
-	static {
-		CachedWebImage.setCacheDir("palpal");
-		WLog.setAppName("palpal");
-	}
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-
 		AndroidUtil.hideSoftwareKeyboard(this);
 
 		// restoreClients();
@@ -202,6 +188,7 @@ public class Compat1Activity extends ActionBarActivity {
 		switch (item.getItemId()) {
 		case android.R.id.home:
 			Toast.makeText(this, "Tapped home", Toast.LENGTH_SHORT).show();
+			finish();
 			break;
 
 		case R.id.menu_refresh:
@@ -242,178 +229,36 @@ public class Compat1Activity extends ActionBarActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	private void setupTab(final TabsAdapter adapter, final View view,
-			final String tag, Class<?> cls, Bundle args) {
-		View tabview = createTabView(mTabHost.getContext(), tag);
-
-		adapter.addTab(mTabHost.newTabSpec(tag).setIndicator(tabview)
-				.setContent(new TabContentFactory() {
-					public View createTabContent(String tag) {
-						return view;
-					}
-				}), cls, args);
-	}
-
 	void onReady() {
 		mViewPager = (ViewPager) this.findViewById(R.id.pager);
-		mTabsAdapter = new TabsAdapter(this, mTabHost, mViewPager);
-		mTabsAdapter.addTab(null, BFragment.class, null);
-		mTabsAdapter.addTab(null, BFragment.class, null);
-		mTabsAdapter.addTab(null, BFragment.class, null);
+		mTabsAdapter = new TabsAdapter(this, null, mViewPager);
 		mViewPager.setAdapter(mTabsAdapter);
-
-		// mTabHost = (TabHost) findViewById(android.R.id.tabhost);
-		// mTabHost.setup();
-		//
-		// mTabsAdapter = new TabsAdapter(this, mTabHost, mViewPager);
-		//
-		// setupTab(mTabsAdapter, new TextView(this), "Stream", BFragment.class,
-		// null);
-		// setupTab(mTabsAdapter, new TextView(this), "Mentions",
-		// BFragment.class,
-		// null);
-		// // setupTab(mTabsAdapter, new TextView(this), "Stream",
-		// BFragment.class,
-		// // null);
-		//
-		// setupTab(mTabsAdapter, new TextView(this), "Messages",
-		// BFragment.class,
-		// null);
-		//
-		// for (int i = 0; i < mTabHost.getTabWidget().getChildCount(); ++i) {
-		// final int childIndex = i;
-		// mTabHost.getTabWidget().getChildAt(childIndex)
-		// .setOnClickListener(new OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View v) {
-		// int currentTabIndex = mTabHost.getCurrentTab();
-		//
-		// boolean needRefresh = currentTabIndex == childIndex;
-		// mTabHost.setCurrentTab(childIndex);
-		// if (needRefresh) {
-		// // if (toast == null) {
-		// // toast = Toast.makeText(
-		// // Compat1Activity.this, "",
-		// // Toast.LENGTH_SHORT);
-		// // }
-		// // toast.setText("refresh tab " +
-		// // currentTabIndex);
-		// // toast.cancel();
-		// // toast.show();
-		// //
-		// // TimelineListFragment adapter =
-		// // ((TimelineListFragment) (mTabsAdapter
-		// // .getItem(currentTabIndex)));
-		// // adapter.refresh();
-		// refreshTab(currentTabIndex);
-		// }
-		// }
-		// });
-		// }
-
-		TaskService.setRunning(true);
-
 	}
 
 	private void refreshTab(int currentTabIndex) {
-		if (toast == null) {
-			toast = Toast
-					.makeText(Compat1Activity.this, "", Toast.LENGTH_SHORT);
-		}
-		toast.setText("refresh tab " + currentTabIndex);
-		toast.cancel();
-		toast.show();
-
 		TimelineListFragment adapter = ((TimelineListFragment) (mTabsAdapter
 				.getItem(currentTabIndex)));
 		adapter.refresh();
 	}
 
 	public static class TabsAdapter extends FragmentStatePagerAdapter implements
-			TabHost.OnTabChangeListener, ViewPager.OnPageChangeListener {
+			ViewPager.OnPageChangeListener {
 		private final Context mContext;
-		private final TabHost mTabHost;
-		private final ViewPager mViewPager;
-		private final ArrayList<TabInfo> mTabs = new ArrayList<TabInfo>();
-
-		static final class TabInfo {
-			private final String tag;
-			private final Class<?> clss;
-			private final Bundle args;
-
-			TabInfo(String _tag, Class<?> _class, Bundle _args) {
-				tag = _tag;
-				clss = _class;
-				args = _args;
-			}
-		}
-
-		static class DummyTabFactory implements TabHost.TabContentFactory {
-			private final Context mContext;
-
-			public DummyTabFactory(Context context) {
-				mContext = context;
-			}
-
-			@Override
-			public View createTabContent(String tag) {
-				View v = new View(mContext);
-				v.setMinimumWidth(0);
-				v.setMinimumHeight(0);
-				return v;
-			}
-		}
 
 		public TabsAdapter(FragmentActivity activity, TabHost tabHost,
 				ViewPager pager) {
 			super(activity.getSupportFragmentManager());
 			mContext = activity;
-			mTabHost = tabHost;
-			mViewPager = pager;
-			// mTabHost.setOnTabChangedListener(this);
-			mViewPager.setAdapter(this);
-			mViewPager.setOnPageChangeListener(this);
-		}
-
-		public void addTab(TabHost.TabSpec tabSpec, Class<?> clss, Bundle args) {
-			// tabSpec.setContent(new DummyTabFactory(mContext));
-			// String tag = tabSpec.getTag();
-			//
-			// TabInfo info = new TabInfo(tag, clss, args);
-			// mTabs.add(info);
-			// mTabHost.addTab(tabSpec);
-			// notifyDataSetChanged();
-
-			// fragmentList.add(Fragment.instantiate(mContext,
-			// info.clss.getName(), info.args));
-			fragmentList
-					.add(TimelineListFragment.newInstance(sFragmentCount++));
 		}
 
 		@Override
 		public int getCount() {
-			return fragmentList.size();
+			return FragmentConfig.titles.length;
 		}
-
-		ArrayList<Fragment> fragmentList = new ArrayList<Fragment>();
 
 		@Override
 		public Fragment getItem(int position) {
-			// if (fragmentList.size() <= position
-			// || fragmentList.get(position) == null) {
-			// TabInfo info = mTabs.get(position);
-			// fragmentList.add(Fragment.instantiate(mContext,
-			// info.clss.getName(), info.args));
-			// }
-			return fragmentList.get(position);
-			// return TwitterTimelineListFragment.newInstance(position);
-		}
-
-		@Override
-		public void onTabChanged(String tabId) {
-			int position = mTabHost.getCurrentTab();
-			mViewPager.setCurrentItem(position);
+			return TimelineListFragment.newInstance(position);
 		}
 
 		@Override
@@ -424,7 +269,6 @@ public class Compat1Activity extends ActionBarActivity {
 		@Override
 		public void onPageSelected(int position) {
 			WLog.d(TAG, "page selceted at " + position);
-			// mTabHost.setCurrentTab(position);
 		}
 
 		@Override
@@ -433,8 +277,7 @@ public class Compat1Activity extends ActionBarActivity {
 
 		@Override
 		public CharSequence getPageTitle(int position) {
-			String titles[] = { "Stream", "Mentions", "Messages" };
-			return titles[position];
+			return FragmentConfig.getTitle(position);
 		}
 	}
 
@@ -460,5 +303,16 @@ public class Compat1Activity extends ActionBarActivity {
 				.restoreTwitterClient(getApplicationContext());
 		boolean isFacebookOk = FacebookMaster
 				.restoreFacebook(getApplicationContext());
+	}
+
+	static class FragmentConfig {
+		private static String titles[] = { "Stream", "Mentions", "Messages" };
+
+		static public String getTitle(int position) {
+			if (position < titles.length) {
+				return titles[position];
+			}
+			return null;
+		}
 	}
 }
