@@ -6,7 +6,6 @@ import org.dyndns.warenix.lab.compat1.R;
 import org.dyndns.warenix.mission.facebook.FacebookAlbumAdapter;
 import org.dyndns.warenix.mission.facebook.FacebookAlbumPhotoAdapter;
 import org.dyndns.warenix.mission.facebook.FacebookHomeAdapter;
-import org.dyndns.warenix.mission.sample.SampleListAdapter;
 import org.dyndns.warenix.pattern.baseListView.AsyncListAdapter.AsyncRefreshListener;
 import org.dyndns.warenix.pattern.baseListView.ListViewAdapter;
 import org.dyndns.warenix.util.WLog;
@@ -90,7 +89,8 @@ public class TimelineListFragment extends ListFragment implements
 			((TimelineAsyncAdapter) adapter).setAsyncRefreshListener(this);
 			break;
 		case 2:
-			adapter = new SampleListAdapter(getActivity(), listView);
+			adapter = new MessagesAdapter(getActivity(), listView);
+			((TimelineAsyncAdapter) adapter).setAsyncRefreshListener(this);
 			break;
 		case 3:
 			adapter = new FacebookHomeAdapter(getActivity(), listView,
