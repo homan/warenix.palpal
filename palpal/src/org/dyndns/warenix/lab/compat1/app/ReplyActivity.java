@@ -121,6 +121,7 @@ public class ReplyActivity extends ActionBarActivity {
 		case PARAM_FACEBOOK_POST_ADAPTER:
 			String graphId = bundle.getString(BUNDLE_FACEBOOK_GRAPH_ID);
 			listViewAdapter = new FacebookPostAdapter(this, listView, graphId);
+			break;
 		default:
 			WLog.d(TAG, String.format("unknown adapter type[%d]", adapterType));
 			return;
