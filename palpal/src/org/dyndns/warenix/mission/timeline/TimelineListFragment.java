@@ -3,9 +3,7 @@ package org.dyndns.warenix.mission.timeline;
 import java.io.Serializable;
 
 import org.dyndns.warenix.lab.compat1.R;
-import org.dyndns.warenix.mission.facebook.FacebookAlbumAdapter;
-import org.dyndns.warenix.mission.facebook.FacebookAlbumPhotoAdapter;
-import org.dyndns.warenix.mission.facebook.FacebookHomeAdapter;
+import org.dyndns.warenix.lab.compat1.app.timeline.TimelineFactory.TimelineConfig;
 import org.dyndns.warenix.pattern.baseListView.AsyncListAdapter.AsyncRefreshListener;
 import org.dyndns.warenix.pattern.baseListView.ListViewAdapter;
 import org.dyndns.warenix.util.WLog;
@@ -52,6 +50,34 @@ public class TimelineListFragment extends ListFragment implements
 		return f;
 	}
 
+	protected TimelineConfig mConfig;
+
+	public static TimelineListFragment newInstance(TimelineConfig config) {
+		TimelineListFragment f = new TimelineListFragment();
+		Bundle args = f.prepareInitArgument(config);
+		f.setArguments(args);
+		return f;
+	}
+
+	// public static TimelineListFragment newInstance(TimelineConfig config) {
+	// TimelineListFragment f = new TimelineListFragment();
+	//
+	// // Supply num input as an argument.
+	// Bundle args = new Bundle();
+	// args.putParcelable("config", config);
+	// f.setArguments(args);
+	// return f;
+	// }
+
+	/**
+	 * subclass show implement this method
+	 * 
+	 * @return
+	 */
+	protected Bundle prepareInitArgument(TimelineConfig config) {
+		return null;
+	}
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -79,34 +105,37 @@ public class TimelineListFragment extends ListFragment implements
 		// adapter = new TimelineListAdapter(listView, new
 		// StreamDataProvider());
 		// if (adapter == null) {
-		switch (num) {
-		case 0:
-			adapter = new StreamAdapter(getActivity(), listView);
-			((TimelineAsyncAdapter) adapter).setAsyncRefreshListener(this);
-			break;
-		case 1:
-			adapter = new NotificationsAdapter(getActivity(), listView);
-			((TimelineAsyncAdapter) adapter).setAsyncRefreshListener(this);
-			break;
-		case 2:
-			adapter = new MessagesAdapter(getActivity(), listView);
-			((TimelineAsyncAdapter) adapter).setAsyncRefreshListener(this);
-			break;
-		case 3:
-			adapter = new FacebookHomeAdapter(getActivity(), listView,
-					getArguments());
-			break;
-		case 4:
-			adapter = new FacebookAlbumPhotoAdapter(getActivity(), listView,
-					getArguments());
-			((TimelineAsyncAdapter) adapter).setAsyncRefreshListener(this);
-			break;
-		case 5:
-			adapter = new FacebookAlbumAdapter(getActivity(), listView,
-					getArguments());
-			((TimelineAsyncAdapter) adapter).setAsyncRefreshListener(this);
-			break;
-		}
+		// switch (num) {
+		// case 0:
+		// adapter = new StreamAdapter(getActivity(), listView);
+		// ((TimelineAsyncAdapter) adapter).setAsyncRefreshListener(this);
+		// break;
+		// case 1:
+		// adapter = new NotificationsAdapter(getActivity(), listView);
+		// ((TimelineAsyncAdapter) adapter).setAsyncRefreshListener(this);
+		// break;
+		// case 2:
+		// adapter = new MessagesAdapter(getActivity(), listView);
+		// ((TimelineAsyncAdapter) adapter).setAsyncRefreshListener(this);
+		// break;
+		// case 3:
+		// adapter = new FacebookHomeAdapter(getActivity(), listView,
+		// getArguments());
+		// break;
+		// case 4:
+		// adapter = new FacebookAlbumPhotoAdapter(getActivity(), listView,
+		// getArguments());
+		// ((TimelineAsyncAdapter) adapter).setAsyncRefreshListener(this);
+		// break;
+		// case 5:
+		// adapter = new FacebookAlbumAdapter(getActivity(), listView,
+		// getArguments());
+		// ((TimelineAsyncAdapter) adapter).setAsyncRefreshListener(this);
+		// break;
+		// }
+		adapter = getAdapter();
+		((TimelineAsyncAdapter) adapter).setAsyncRefreshListener(this);
+
 		mTimelineObserver = new DataSetObserver() {
 			public void onChanged() {
 				checkEmptyList();
@@ -249,5 +278,14 @@ public class TimelineListFragment extends ListFragment implements
 				mProgressText.setText("No message is found.");
 			}
 		}
+	}
+
+	/**
+	 * Let subclass implements this method
+	 * 
+	 * @return
+	 */
+	public ListViewAdapter getAdapter() {
+		return null;
 	}
 }

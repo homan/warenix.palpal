@@ -1,7 +1,9 @@
 package org.dyndns.warenix.mission.timeline;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.Date;
 
 import org.dyndns.warenix.lab.compat1.util.Memory;
@@ -17,6 +19,7 @@ import org.json.JSONObject;
 
 import twitter4j.Paging;
 import twitter4j.ResponseList;
+import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import android.content.Context;
@@ -35,6 +38,9 @@ public class NotificationsAdapter extends TimelineAsyncAdapter {
 
 	private static final String TAG = "NotificationsAdapter";
 
+	String facebookNotificationResponseString;
+	ResponseList<twitter4j.Status> statusList;
+
 	public NotificationsAdapter(final Context context, ListView listView) {
 		super(context, listView);
 
@@ -43,13 +49,15 @@ public class NotificationsAdapter extends TimelineAsyncAdapter {
 				WLog.i(TAG, (new Date()).toLocaleString()
 						+ " facebook is running");
 				if (FacebookMaster.restoreFacebook(context)) {
-					getFacebookNotifications("20", true);
+					facebookNotificationResponseString = getFacebookNotifications(
+							"20", true);
+					constructFacebookListItem(
+							facebookNotificationResponseString, dataList);
 				} else {
 					WLog.i(TAG, (new Date()).toLocaleString()
 							+ " facebook is not linked");
 				}
 				WLog.i(TAG, (new Date()).toLocaleString() + " facebook is done");
-
 				notifyRunnableDone();
 			}
 		};
@@ -59,7 +67,8 @@ public class NotificationsAdapter extends TimelineAsyncAdapter {
 				WLog.i(TAG, (new Date()).toLocaleString()
 						+ " twitter is running");
 				if (TwitterMaster.restoreTwitterClient(context)) {
-					getTwitterMentions(1, 20);
+					statusList = getTwitterMentions(1, 20);
+					constructTwitterListItem(statusList, dataList);
 				} else {
 					WLog.i(TAG, (new Date()).toLocaleString()
 							+ " twitter is not linked");
@@ -75,7 +84,7 @@ public class NotificationsAdapter extends TimelineAsyncAdapter {
 		addRunnable(twitter);
 	}
 
-	void getFacebookNotifications(String pageLimit, boolean includeRead) {
+	String getFacebookNotifications(String pageLimit, boolean includeRead) {
 		String graphPath = "me/notifications";
 		Facebook facebook = Memory.getFacebookClient();
 		if (facebook != null) {
@@ -84,38 +93,17 @@ public class NotificationsAdapter extends TimelineAsyncAdapter {
 				parameters.putString("include_read", includeRead ? "1" : "0");
 				parameters.putString("limit", pageLimit);
 				String responseString = facebook.request(graphPath, parameters);
-
-				try {
-					JSONObject responseJSON = new JSONObject(responseString);
-					JSONArray dataJSONArray = responseJSON.getJSONArray("data");
-					for (int i = 0; i < dataJSONArray.length(); ++i) {
-						FacebookObject facebookObject = new FacebookObject(
-								dataJSONArray.getJSONObject(i));
-						if (mRefreshState == RefreshState.DONE) {
-							WLog.d(TAG,
-									String.format(
-											"facebook sync stop due to timeout. Ignore %d messages of total %d",
-											dataJSONArray.length() - i,
-											dataJSONArray.length()));
-							break;
-						}
-						dataList.add(new FacebookMessageListItem(
-								facebookObject, NotificationsAdapter.this));
-					}
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-
+				return responseString;
 			} catch (MalformedURLException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-
 		}
+		return null;
 	}
 
-	void getTwitterMentions(int pageNo, int pageLimit) {
+	ResponseList<twitter4j.Status> getTwitterMentions(int pageNo, int pageLimit) {
 		Twitter twitter = Memory.getTwitterClient();
 		if (twitter != null) {
 			try {
@@ -123,17 +111,50 @@ public class NotificationsAdapter extends TimelineAsyncAdapter {
 				ResponseList<twitter4j.Status> statusList = twitter
 						.getMentions(paging);
 
-				for (twitter4j.Status status : statusList) {
-					if (mRefreshState == RefreshState.DONE) {
-						WLog.d(TAG, String
-								.format("twitter sync stop due to timeout."));
-						break;
-					}
-					dataList.add(new TwitterMessageListItem(status,
-							NotificationsAdapter.this));
-				}
 			} catch (TwitterException e1) {
 				e1.printStackTrace();
+			}
+		}
+		return null;
+	}
+
+	void constructTwitterListItem(ResponseList<twitter4j.Status> statusList,
+			ArrayList<TimelineMessageListViewItem> dataList) {
+		if (statusList != null) {
+			for (twitter4j.Status status : statusList) {
+				if (mRefreshState == RefreshState.DONE) {
+					WLog.d(TAG,
+							String.format("twitter sync stop due to timeout."));
+					break;
+				}
+				dataList.add(new TwitterMessageListItem(status,
+						NotificationsAdapter.this));
+			}
+		}
+	}
+
+	void constructFacebookListItem(String responseString,
+			ArrayList<TimelineMessageListViewItem> dataList) {
+		if (responseString != null) {
+			try {
+				JSONObject responseJSON = new JSONObject(responseString);
+				JSONArray dataJSONArray = responseJSON.getJSONArray("data");
+				for (int i = 0; i < dataJSONArray.length(); ++i) {
+					FacebookObject facebookObject = new FacebookObject(
+							dataJSONArray.getJSONObject(i));
+					if (mRefreshState == RefreshState.DONE) {
+						WLog.d(TAG,
+								String.format(
+										"facebook sync stop due to timeout. Ignore %d messages of total %d",
+										dataJSONArray.length() - i,
+										dataJSONArray.length()));
+						break;
+					}
+					dataList.add(new FacebookMessageListItem(facebookObject,
+							NotificationsAdapter.this));
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
 			}
 		}
 	}
@@ -153,4 +174,23 @@ public class NotificationsAdapter extends TimelineAsyncAdapter {
 	public int getViewTypeCount() {
 		return 2;
 	}
+
+	public Serializable getItemList() {
+		return new Object[] { facebookNotificationResponseString, statusList };
+	}
+
+	public void setItemList(Serializable newItemList) {
+		if (newItemList != null) {
+			Object[] obj = (Object[]) newItemList;
+			facebookNotificationResponseString = (String) obj[0];
+			statusList = (ResponseList<Status>) obj[1];
+
+			dataList.clear();
+			constructFacebookListItem(facebookNotificationResponseString,
+					dataList);
+			constructTwitterListItem(statusList, dataList);
+			this.onPostExecut(null);
+		}
+	}
+
 }

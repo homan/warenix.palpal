@@ -1,8 +1,12 @@
 package org.dyndns.warenix.lab.compat1.app;
 
+import java.util.ArrayList;
+
 import org.dyndns.warenix.actionbar.R;
 import org.dyndns.warenix.image.CachedWebImage;
 import org.dyndns.warenix.lab.compat1.app.facebook.AuthenFacebookActivity;
+import org.dyndns.warenix.lab.compat1.app.timeline.TimelineFactory;
+import org.dyndns.warenix.lab.compat1.app.timeline.TimelineFactory.TimelineConfig;
 import org.dyndns.warenix.lab.compat1.app.twitter.AuthenTwitterActivity;
 import org.dyndns.warenix.lab.compat1.util.AndroidUtil;
 import org.dyndns.warenix.lab.taskservice.BackgroundTask;
@@ -38,6 +42,16 @@ public class MainActivity extends ActionBarActivity {
 	private static final String TAG = "MainActivity";
 	TabsAdapter mTabsAdapter;
 	ViewPager mViewPager;
+
+	static ArrayList<TimelineConfig> sTimelineConfigList = new ArrayList<TimelineConfig>();
+	static {
+		sTimelineConfigList.add(new TimelineConfig(TimelineConfig.Type.Stream,
+				"Stream"));
+		sTimelineConfigList.add(new TimelineConfig(
+				TimelineConfig.Type.Notifications, "Notifications"));
+		sTimelineConfigList.add(new TimelineConfig(
+				TimelineConfig.Type.Messages, "Messages"));
+	}
 
 	/** Called when the activity is first created. */
 	@Override
@@ -253,12 +267,12 @@ public class MainActivity extends ActionBarActivity {
 
 		@Override
 		public int getCount() {
-			return FragmentConfig.titles.length;
+			return sTimelineConfigList.size();
 		}
 
 		@Override
 		public Fragment getItem(int position) {
-			return TimelineListFragment.newInstance(position);
+			return TimelineFactory.factory(sTimelineConfigList.get(position));
 		}
 
 		@Override
@@ -277,7 +291,7 @@ public class MainActivity extends ActionBarActivity {
 
 		@Override
 		public CharSequence getPageTitle(int position) {
-			return FragmentConfig.getTitle(position);
+			return sTimelineConfigList.get(position).mTitle;
 		}
 	}
 
@@ -305,14 +319,14 @@ public class MainActivity extends ActionBarActivity {
 				.restoreFacebook(getApplicationContext());
 	}
 
-	static class FragmentConfig {
-		private static String titles[] = { "Stream", "Mentions", "Messages" };
-
-		static public String getTitle(int position) {
-			if (position < titles.length) {
-				return titles[position];
-			}
-			return null;
-		}
-	}
+	// static class FragmentConfig {
+	// private static String titles[] = { "Stream", "Mentions", "Messages" };
+	//
+	// static public String getTitle(int position) {
+	// if (position < titles.length) {
+	// return titles[position];
+	// }
+	// return null;
+	// }
+	// }
 }
