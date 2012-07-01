@@ -250,9 +250,9 @@ public class MainActivity extends ActionBarActivity {
 	}
 
 	private void refreshTab(int currentTabIndex) {
-		TimelineListFragment adapter = ((TimelineListFragment) (mTabsAdapter
-				.getItem(currentTabIndex)));
-		adapter.refresh();
+		TimelineListFragment f = (TimelineListFragment) mTabsAdapter
+				.instantiateItem(mViewPager, currentTabIndex);
+		((TimelineListFragment) f).refresh();
 	}
 
 	public static class TabsAdapter extends FragmentStatePagerAdapter implements
