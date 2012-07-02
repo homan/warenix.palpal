@@ -5,12 +5,13 @@ import java.net.MalformedURLException;
 
 import org.dyndns.warenix.image.CachedWebImage;
 import org.dyndns.warenix.lab.compat1.R;
+import org.dyndns.warenix.lab.compat1.app.timeline.TimelineFactory;
+import org.dyndns.warenix.lab.compat1.app.timeline.TimelineFactory.TimelineConfig;
 import org.dyndns.warenix.lab.compat1.util.Memory;
 import org.dyndns.warenix.mission.facebook.FacebookAlbumCoverAdapter;
 import org.dyndns.warenix.mission.facebook.FacebookAlbumPhotoAdapter;
 import org.dyndns.warenix.mission.facebook.FacebookObject;
 import org.dyndns.warenix.mission.facebook.util.FacebookMaster;
-import org.dyndns.warenix.mission.timeline.TimelineListFragment;
 import org.dyndns.warenix.util.WLog;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -220,7 +221,9 @@ public class PhotoActivity extends ActionBarActivity implements
 		@Override
 		public Fragment getItem(int position) {
 			WLog.d(TAG, "get item" + position);
-			Fragment f = TimelineListFragment.newInstance(4);
+			// Fragment f = TimelineListFragment.newInstance(4);
+			Fragment f = TimelineFactory.factory(new TimelineConfig(
+					TimelineConfig.Type.Photo, "photo " + position));
 
 			Bundle extra = FacebookAlbumPhotoAdapter.getExtra(mGraphId,
 					position, mPageCount);

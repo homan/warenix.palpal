@@ -17,6 +17,7 @@ public class TimelineFactory {
 
 		public static enum Type {
 			Stream, Notifications, Messages,
+			Photo
 		}
 
 		// + Parcelable
@@ -61,6 +62,8 @@ public class TimelineFactory {
 			case Messages:
 				f = MessagesTimeline.newInstance(config);
 				break;
+			case Photo:
+				f = PhotoTimeline.newInstance(config);
 			}
 		}
 		return f;
