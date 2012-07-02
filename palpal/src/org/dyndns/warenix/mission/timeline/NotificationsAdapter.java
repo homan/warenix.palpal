@@ -110,7 +110,7 @@ public class NotificationsAdapter extends TimelineAsyncAdapter {
 				Paging paging = new Paging(pageNo, pageLimit);
 				ResponseList<twitter4j.Status> statusList = twitter
 						.getMentions(paging);
-
+				return statusList;
 			} catch (TwitterException e1) {
 				e1.printStackTrace();
 			}
