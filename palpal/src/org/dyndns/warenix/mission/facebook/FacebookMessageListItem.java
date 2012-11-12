@@ -7,6 +7,7 @@ import org.dyndns.warenix.image.WebImage.WebImageListener;
 import org.dyndns.warenix.lab.compat1.R;
 import org.dyndns.warenix.lab.compat1.app.PhotoActivity;
 import org.dyndns.warenix.lab.compat1.app.ReplyActivity;
+import org.dyndns.warenix.lab.compat1.app.facebook.ZoomImageActivity;
 import org.dyndns.warenix.lab.compat1.util.Memory;
 import org.dyndns.warenix.lab.taskservice.TaskService;
 import org.dyndns.warenix.mission.facebook.FacebookObject.Action;
@@ -332,6 +333,26 @@ public class FacebookMessageListItem extends TimelineMessageListViewItem {
 											}
 										});
 							}
+						}
+
+						if (messageObject.picture != null) {
+							actionPopup.addAction(context, "Zoom Image",
+									new View.OnClickListener() {
+
+										@Override
+										public void onClick(View v) {
+											String imageUrl = FacebookMaster
+													.getLargeImage(messageObject.picture);
+											// replace large image with original
+											imageUrl.replace("_n.jpg", "_o.jpg");
+											Intent intent = new Intent(context,
+													ZoomImageActivity.class);
+											intent.putExtra(
+													ZoomImageActivity.BUNDLE_IMAGE_URL,
+													imageUrl);
+											context.startActivity(intent);
+										}
+									});
 						}
 						actionPopup.addAction(context, "Like",
 								new View.OnClickListener() {
