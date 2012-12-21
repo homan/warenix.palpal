@@ -16,13 +16,13 @@
 
 package com.sonyericsson.zoom;
 
-import com.sonyericsson.util.SpringDynamics;
+import java.util.Observable;
+import java.util.Observer;
 
 import android.os.Handler;
 import android.os.SystemClock;
 
-import java.util.Observable;
-import java.util.Observer;
+import com.sonyericsson.util.SpringDynamics;
 
 /**
  * The DynamicZoomControl is responsible for controlling a ZoomState. It makes

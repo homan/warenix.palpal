@@ -9,22 +9,22 @@ import org.dyndns.warenix.lab.compat1.app.twitter.AuthenTwitterActivity;
 import org.dyndns.warenix.lab.compat1.util.Memory;
 import org.dyndns.warenix.mission.facebook.util.FacebookMaster;
 import org.dyndns.warenix.mission.twitter.util.TwitterMaster;
+import org.dyndns.warenix.palpal.AppActivity;
 import org.dyndns.warenix.util.WLog;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-import com.example.android.actionbarcompat.ActionBarActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
 import com.facebook.android.Facebook;
 
-public class AccountsActivity extends ActionBarActivity {
+public class AccountsActivity extends AppActivity {
 	private static final String TAG = "AccountsActivity";
 
 	public static String BUNDLE_MESSAGE_OBJECT = "messageObject";
@@ -154,7 +154,7 @@ public class AccountsActivity extends ActionBarActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater menuInflater = getMenuInflater();
+		MenuInflater menuInflater = getSupportMenuInflater();
 		// menuInflater.inflate(R.menu.reply_menu, menu);
 
 		// Calling super after populating the menu is necessary here to ensure

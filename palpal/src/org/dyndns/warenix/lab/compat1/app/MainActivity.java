@@ -2,8 +2,8 @@ package org.dyndns.warenix.lab.compat1.app;
 
 import java.util.ArrayList;
 
-import org.dyndns.warenix.actionbar.R;
 import org.dyndns.warenix.image.CachedWebImage;
+import org.dyndns.warenix.lab.compat1.R;
 import org.dyndns.warenix.lab.compat1.app.facebook.AuthenFacebookActivity;
 import org.dyndns.warenix.lab.compat1.app.timeline.TimelineFactory;
 import org.dyndns.warenix.lab.compat1.app.timeline.TimelineFactory.TimelineConfig;
@@ -18,6 +18,7 @@ import org.dyndns.warenix.mission.facebook.util.FacebookMaster;
 import org.dyndns.warenix.mission.timeline.TimelineListFragment;
 import org.dyndns.warenix.mission.twitter.backgroundtask.ReplyStatusBackgroundTask;
 import org.dyndns.warenix.mission.twitter.util.TwitterMaster;
+import org.dyndns.warenix.palpal.AppActivity;
 import org.dyndns.warenix.util.WLog;
 
 import android.content.Context;
@@ -28,17 +29,16 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.android.actionbarcompat.ActionBarActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppActivity {
 	private static final String TAG = "MainActivity";
 	TabsAdapter mTabsAdapter;
 	ViewPager mViewPager;
@@ -187,7 +187,7 @@ public class MainActivity extends ActionBarActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater menuInflater = getMenuInflater();
+		MenuInflater menuInflater = getSupportMenuInflater();
 		menuInflater.inflate(R.menu.main, menu);
 
 		// Calling super after populating the menu is necessary here to ensure

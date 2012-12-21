@@ -14,6 +14,7 @@ import org.dyndns.warenix.mission.twitter.TwitterUserFilterQueryProvider;
 import org.dyndns.warenix.mission.twitter.backgroundtask.ReplyDirectMessageBackgroundTask;
 import org.dyndns.warenix.mission.twitter.backgroundtask.ReplyStatusBackgroundTask;
 import org.dyndns.warenix.mission.twitter.util.TwitterMaster;
+import org.dyndns.warenix.palpal.AppActivity;
 import org.dyndns.warenix.pattern.baseListView.ListViewAdapter;
 import org.dyndns.warenix.util.WLog;
 
@@ -21,18 +22,17 @@ import twitter4j.Twitter;
 import twitter4j.UserMentionEntity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.Gallery;
 import android.widget.ListView;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.Toast;
 
-import com.example.android.actionbarcompat.ActionBarActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 
-public class ReplyActivity extends ActionBarActivity {
+public class ReplyActivity extends AppActivity {
 	private static final String TAG = "ReplyActivity";
 	public static String BUNDLE_MESSAGE_OBJECT = "messageObject";
 	public static String BUNDLE_FACEBOOK_GRAPH_ID = "facebookGraphId";
@@ -140,7 +140,7 @@ public class ReplyActivity extends ActionBarActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater menuInflater = getMenuInflater();
+		MenuInflater menuInflater = getSupportMenuInflater();
 		menuInflater.inflate(R.menu.reply_menu, menu);
 
 		// Calling super after populating the menu is necessary here to ensure

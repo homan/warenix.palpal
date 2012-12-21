@@ -3,12 +3,9 @@ package org.dyndns.warenix.mission.twitter;
 import java.util.ArrayList;
 
 import org.dyndns.warenix.lab.compat1.util.AndroidUtil;
-import org.dyndns.warenix.lab.compat1.util.Memory;
 import org.dyndns.warenix.mission.timeline.TimelineMessageListViewItem;
 import org.dyndns.warenix.pattern.baseListView.ListViewAdapter;
 
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.ListView;

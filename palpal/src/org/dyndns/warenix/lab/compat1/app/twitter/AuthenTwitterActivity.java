@@ -3,6 +3,7 @@ package org.dyndns.warenix.lab.compat1.app.twitter;
 import org.dyndns.warenix.lab.compat1.R;
 import org.dyndns.warenix.lab.compat1.util.Memory;
 import org.dyndns.warenix.lab.compat1.util.PreferenceMaster;
+import org.dyndns.warenix.palpal.AppActivity;
 import org.dyndns.warenix.util.WLog;
 
 import twitter4j.Twitter;
@@ -24,9 +25,7 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.android.actionbarcompat.ActionBarActivity;
-
-public class AuthenTwitterActivity extends ActionBarActivity {
+public class AuthenTwitterActivity extends AppActivity {
 	private static final String TAG = "AuthenTwitterActivity";
 	public static final String PREF_NAME = "twitter_pref";
 	public static final String ACCESS_TOKEN0 = "access_token0";

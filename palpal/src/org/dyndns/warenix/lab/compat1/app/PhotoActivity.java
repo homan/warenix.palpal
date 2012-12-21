@@ -12,6 +12,7 @@ import org.dyndns.warenix.mission.facebook.FacebookAlbumCoverAdapter;
 import org.dyndns.warenix.mission.facebook.FacebookAlbumPhotoAdapter;
 import org.dyndns.warenix.mission.facebook.FacebookObject;
 import org.dyndns.warenix.mission.facebook.util.FacebookMaster;
+import org.dyndns.warenix.palpal.AppActivity;
 import org.dyndns.warenix.util.WLog;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,10 +32,9 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
 
-import com.example.android.actionbarcompat.ActionBarActivity;
 import com.facebook.android.Facebook;
 
-public class PhotoActivity extends ActionBarActivity implements
+public class PhotoActivity extends AppActivity implements
 		OnPageChangeListener, OnItemClickListener {
 	private static final String TAG = "PhotoActivity";
 

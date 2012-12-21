@@ -1,0 +1,7 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@drawable/abs__ab_solid_dark_holo" android:state_pressed="true"/>
+    <item android:drawable="@drawable/abs__ab_solid_dark_holo" android:state_activated="true"/>
+    <item android:drawable="@drawable/abs__ab_solid_light_holo"/>
+
+</selector>

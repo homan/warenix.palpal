@@ -3,19 +3,19 @@ package org.dyndns.warenix.lab.compat1.app.facebook;
 import org.dyndns.warenix.lab.compat1.R;
 import org.dyndns.warenix.lab.compat1.util.PreferenceMaster;
 import org.dyndns.warenix.mission.facebook.util.FacebookMaster;
+import org.dyndns.warenix.palpal.AppActivity;
 import org.dyndns.warenix.util.WLog;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import com.example.android.actionbarcompat.ActionBarActivity;
 import com.facebook.android.DialogError;
 import com.facebook.android.Facebook;
 import com.facebook.android.Facebook.DialogListener;
 import com.facebook.android.FacebookError;
 
-public class AuthenFacebookActivity extends ActionBarActivity {
+public class AuthenFacebookActivity extends AppActivity {
 	private static final String TAG = "AuthenFacebookActivity";
 	static final String[] permissions = new String[] { "user_about_me",
 			"friends_about_me", "user_activities", "friends_activities",

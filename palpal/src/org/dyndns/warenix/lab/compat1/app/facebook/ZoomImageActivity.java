@@ -82,7 +82,7 @@ public class ZoomImageActivity extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// getMenuInflater().inflate(R.menu.activity_image, menu);
+		// getSupportMenuInflater().inflate(R.menu.activity_image, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 

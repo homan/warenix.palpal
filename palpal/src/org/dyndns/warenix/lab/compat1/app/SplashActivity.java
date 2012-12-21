@@ -36,7 +36,7 @@ public class SplashActivity extends Activity {
 	 * init code
 	 */
 	static {
-		CachedWebImage.setCacheDir("palpal");
+		CachedWebImage.setCacheDir(".palpal");
 		WLog.setAppName("palpal");
 		TaskService.setRunning(true);
 	}

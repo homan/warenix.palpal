@@ -3,18 +3,18 @@ package org.dyndns.warenix.lab.compat1.app.facebook;
 import org.dyndns.warenix.lab.compat1.R;
 import org.dyndns.warenix.lab.compat1.util.AndroidUtil;
 import org.dyndns.warenix.mission.facebook.FacebookPostAdapter;
+import org.dyndns.warenix.palpal.AppActivity;
 import org.dyndns.warenix.pattern.baseListView.ListViewAdapter;
 
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ListView;
 
-import com.example.android.actionbarcompat.ActionBarActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
 
-public class PostDetailActivity extends ActionBarActivity {
+public class PostDetailActivity extends AppActivity {
 
 	public static final String BUNDLE_GRAPH_ID = "graph_id";
 
@@ -38,7 +38,7 @@ public class PostDetailActivity extends ActionBarActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater menuInflater = getMenuInflater();
+		MenuInflater menuInflater = getSupportMenuInflater();
 		menuInflater.inflate(R.menu.post_menu, menu);
 
 		// Calling super after populating the menu is necessary here to ensure

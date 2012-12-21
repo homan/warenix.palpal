@@ -6,23 +6,19 @@ import org.dyndns.warenix.lab.compat1.util.AndroidUtil;
 import org.dyndns.warenix.mission.facebook.FacebookAlbumPhotoAdapter;
 import org.dyndns.warenix.mission.facebook.util.FacebookMaster;
 import org.dyndns.warenix.mission.timeline.TimelineListFragment;
-import org.dyndns.warenix.pattern.baseListView.ListViewAdapter;
+import org.dyndns.warenix.palpal.AppActivity;
 import org.dyndns.warenix.util.WLog;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.Gallery;
-import android.widget.MultiAutoCompleteTextView;
 import android.widget.Toast;
 
-import com.example.android.actionbarcompat.ActionBarActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 
-public class AlbumActivity extends ActionBarActivity {
+public class AlbumActivity extends AppActivity {
 	private static final String TAG = "AlbumActivity";
 
 	static {
@@ -54,7 +50,7 @@ public class AlbumActivity extends ActionBarActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater menuInflater = getMenuInflater();
+		MenuInflater menuInflater = getSupportMenuInflater();
 		menuInflater.inflate(R.menu.reply_menu, menu);
 
 		// Calling super after populating the menu is necessary here to ensure

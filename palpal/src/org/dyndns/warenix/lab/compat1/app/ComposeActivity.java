@@ -17,6 +17,7 @@ import org.dyndns.warenix.mission.facebook.backgroundtask.SharePhotoBackgroundTa
 import org.dyndns.warenix.mission.twitter.backgroundtask.UpdateStatusBackgroundTask;
 import org.dyndns.warenix.mission.twitter.backgroundtask.UploadPhotoBackgroundTask;
 import org.dyndns.warenix.mission.twitter.util.TwitterMaster;
+import org.dyndns.warenix.palpal.AppActivity;
 import org.dyndns.warenix.palpal.intent.PalPalIntent;
 import org.dyndns.warenix.util.ImageUtil;
 import org.dyndns.warenix.util.WLog;
@@ -25,9 +26,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
@@ -38,9 +36,11 @@ import android.widget.EditText;
 import android.widget.Gallery;
 import android.widget.Toast;
 
-import com.example.android.actionbarcompat.ActionBarActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 
-public class ComposeActivity extends ActionBarActivity {
+public class ComposeActivity extends AppActivity {
 	private static final String TAG = "ComposeActivity";
 	public static final String BUNDLE_GRAPH_ID = "graphId";
 
@@ -219,7 +219,7 @@ public class ComposeActivity extends ActionBarActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater menuInflater = getMenuInflater();
+		MenuInflater menuInflater = getSupportMenuInflater();
 		menuInflater.inflate(R.menu.post_menu, menu);
 
 		// Calling super after populating the menu is necessary here to ensure

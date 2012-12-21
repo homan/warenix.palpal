@@ -4,7 +4,6 @@ package com.sonyericsson.zoom;
 import android.content.Context;
 import android.graphics.PointF;
 import android.util.FloatMath;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
