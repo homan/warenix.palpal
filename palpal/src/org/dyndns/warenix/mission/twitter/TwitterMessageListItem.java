@@ -4,12 +4,17 @@ import java.util.Date;
 
 import org.dyndns.warenix.image.CachedWebImage;
 import org.dyndns.warenix.image.WebImage.WebImageListener;
-import org.dyndns.warenix.lab.compat1.R;
-import org.dyndns.warenix.lab.compat1.app.ReplyActivity;
+import org.dyndns.warenix.lab.taskservice.BackgroundTask;
+import org.dyndns.warenix.lab.taskservice.TaskService;
+import org.dyndns.warenix.mission.facebook.LinkPreview;
+import org.dyndns.warenix.mission.facebook.backgroundtask.LinkPreviewBackgroundTask;
+import org.dyndns.warenix.mission.facebook.util.FacebookMaster;
 import org.dyndns.warenix.mission.timeline.StreamAdapter;
 import org.dyndns.warenix.mission.timeline.TimelineMessageListViewItem;
 import org.dyndns.warenix.mission.twitter.util.TwitterLinkify;
 import org.dyndns.warenix.mission.ui.IconListView;
+import org.dyndns.warenix.palpal.R;
+import org.dyndns.warenix.palpal.app.ReplyActivity;
 import org.dyndns.warenix.palpal.intent.PalPalIntent;
 import org.dyndns.warenix.pattern.baseListView.IViewHolder;
 import org.dyndns.warenix.pattern.baseListView.ListViewAdapter;
@@ -17,7 +22,9 @@ import org.dyndns.warenix.util.ImageUtil;
 import org.dyndns.warenix.util.WLog;
 import org.dyndns.warenix.widget.actionpopup.ActionPopup;
 
+import twitter4j.MediaEntity;
 import twitter4j.Status;
+import twitter4j.URLEntity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -43,6 +50,7 @@ public class TwitterMessageListItem extends TimelineMessageListViewItem {
 		ImageView conversationMode;
 		ImageView profileImage2;
 		TextView username2;
+		ImageView image;
 
 		@Override
 		public void releaseMemory() {
@@ -86,6 +94,7 @@ public class TwitterMessageListItem extends TimelineMessageListViewItem {
 		viewHolder.username2 = (TextView) user2.findViewById(R.id.username);
 		viewHolder.profileImage2 = (ImageView) user2
 				.findViewById(R.id.profileImage);
+		viewHolder.image = (ImageView) view.findViewById(R.id.image);
 		view.setTag(viewHolder);
 		return view;
 	}
@@ -123,6 +132,44 @@ public class TwitterMessageListItem extends TimelineMessageListViewItem {
 					.replace("_normal", "");
 			setProfileImage(viewHolder.profileImage2, position,
 					profileImageUrlBig);
+		}
+
+		MediaEntity[] mediaEntities = messageObject.getMediaEntities();
+		if (mediaEntities != null && mediaEntities.length > 0) {
+			viewHolder.image.setVisibility(View.VISIBLE);
+			setProfileImage(viewHolder.image, position, mediaEntities[0]
+					.getMediaURL().toString());
+		} else {
+			// use facebook to get preview
+			URLEntity[] urlEntities = messageObject.getURLEntities();
+			if (urlEntities != null && urlEntities.length > 0) {
+				viewHolder.image.setVisibility(View.VISIBLE);
+				final String linkUrl = urlEntities[0].getDisplayURL()
+						.toString();
+
+				new Thread() {
+					public void run() {
+						String response = FacebookMaster
+								.getLinkpreview(linkUrl);
+						final LinkPreview linkPreview = new LinkPreview(
+								response);
+						viewHolder.image.post(new Runnable() {
+							public void run() {
+								if (linkPreview.previewImageList != null) {
+									setProfileImage(viewHolder.image, position,
+											linkPreview.previewImageList.get(0));
+								} else {
+									viewHolder.image.setVisibility(View.GONE);
+								}
+							}
+						});
+
+					}
+				}.start();
+				viewHolder.image.setImageResource(R.drawable.ic_launcher);
+			} else {
+				viewHolder.image.setVisibility(View.GONE);
+			}
 		}
 
 		String profileImageUrlBig = messageObject.getUser()
