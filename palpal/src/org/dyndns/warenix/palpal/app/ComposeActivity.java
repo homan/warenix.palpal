@@ -1,9 +1,8 @@
-package org.dyndns.warenix.lab.compat1.app;
+package org.dyndns.warenix.palpal.app;
 
 import java.util.ArrayList;
 
 import org.dyndns.warenix.imageuploader.ImageQueueAdapter;
-import org.dyndns.warenix.lab.compat1.R;
 import org.dyndns.warenix.lab.compat1.util.AndroidUtil;
 import org.dyndns.warenix.lab.taskservice.BackgroundTask;
 import org.dyndns.warenix.lab.taskservice.TaskService;
@@ -17,7 +16,7 @@ import org.dyndns.warenix.mission.facebook.backgroundtask.SharePhotoBackgroundTa
 import org.dyndns.warenix.mission.twitter.backgroundtask.UpdateStatusBackgroundTask;
 import org.dyndns.warenix.mission.twitter.backgroundtask.UploadPhotoBackgroundTask;
 import org.dyndns.warenix.mission.twitter.util.TwitterMaster;
-import org.dyndns.warenix.palpal.AppActivity;
+import org.dyndns.warenix.palpal.R;
 import org.dyndns.warenix.palpal.intent.PalPalIntent;
 import org.dyndns.warenix.util.ImageUtil;
 import org.dyndns.warenix.util.WLog;

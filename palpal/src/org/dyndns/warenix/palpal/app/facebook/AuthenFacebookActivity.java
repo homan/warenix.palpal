@@ -1,9 +1,9 @@
-package org.dyndns.warenix.lab.compat1.app.facebook;
+package org.dyndns.warenix.palpal.app.facebook;
 
-import org.dyndns.warenix.lab.compat1.R;
+import org.dyndns.warenix.palpal.R;
 import org.dyndns.warenix.lab.compat1.util.PreferenceMaster;
 import org.dyndns.warenix.mission.facebook.util.FacebookMaster;
-import org.dyndns.warenix.palpal.AppActivity;
+import org.dyndns.warenix.palpal.app.AppActivity;
 import org.dyndns.warenix.util.WLog;
 
 import android.content.Intent;

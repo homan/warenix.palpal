@@ -1,4 +1,4 @@
-package org.dyndns.warenix.lab.compat1.app;
+package org.dyndns.warenix.palpal.app;
 
 import org.dyndns.warenix.abs.activity.SimpleABSActionbarActivity;
 

@@ -7,7 +7,7 @@ import org.dyndns.warenix.mission.timeline.TimelineMessageListViewItem;
 import org.dyndns.warenix.pattern.baseListView.ListViewAdapter;
 
 import android.content.Context;
-import android.os.AsyncTask;
+import org.dyndns.warenix.util.AsyncTask;
 import android.widget.ListView;
 
 /**

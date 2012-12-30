@@ -1,9 +1,9 @@
-package org.dyndns.warenix.lab.compat1.app.facebook;
+package org.dyndns.warenix.palpal.app.facebook;
 
 import java.io.IOException;
 import java.net.URL;
 
-import org.dyndns.warenix.lab.compat1.R;
+import org.dyndns.warenix.palpal.R;
 import org.dyndns.warenix.util.DownloadUtil;
 
 import android.app.Activity;

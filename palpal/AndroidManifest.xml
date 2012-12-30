@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.dyndns.warenix.lab.compat1"
+    package="org.dyndns.warenix.palpal"
     android:installLocation="auto"
-    android:versionCode="6"
-    android:versionName="2.1 dev" >
+    android:versionCode="7"
+    android:versionName="2.2" >
 
     <uses-sdk
         android:minSdkVersion="9"

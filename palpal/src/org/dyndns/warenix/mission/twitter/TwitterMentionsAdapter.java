@@ -10,7 +10,7 @@ import twitter4j.ResponseList;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import android.content.Context;
-import android.os.AsyncTask;
+import org.dyndns.warenix.util.AsyncTask;
 import android.widget.ListView;
 
 public class TwitterMentionsAdapter extends ListViewAdapter {

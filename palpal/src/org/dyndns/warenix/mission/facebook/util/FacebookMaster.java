@@ -20,7 +20,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
-import org.dyndns.warenix.lab.compat1.R;
+import org.dyndns.warenix.palpal.R;
 import org.dyndns.warenix.lab.compat1.util.Memory;
 import org.dyndns.warenix.lab.compat1.util.PreferenceMaster;
 import org.dyndns.warenix.mission.facebook.FacebookObject;

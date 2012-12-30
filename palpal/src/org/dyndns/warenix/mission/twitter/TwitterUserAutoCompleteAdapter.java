@@ -1,6 +1,6 @@
 package org.dyndns.warenix.mission.twitter;
 
-import org.dyndns.warenix.lab.compat1.R;
+import org.dyndns.warenix.palpal.R;
 
 import android.content.Context;
 import android.database.Cursor;

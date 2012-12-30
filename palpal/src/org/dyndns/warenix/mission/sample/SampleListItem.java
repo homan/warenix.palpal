@@ -1,6 +1,6 @@
 package org.dyndns.warenix.mission.sample;
 
-import org.dyndns.warenix.lab.compat1.R;
+import org.dyndns.warenix.palpal.R;
 import org.dyndns.warenix.pattern.baseListView.IViewHolder;
 import org.dyndns.warenix.pattern.baseListView.ListViewItem;
 

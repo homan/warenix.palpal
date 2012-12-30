@@ -7,7 +7,7 @@ import java.util.HashMap;
 
 import org.dyndns.warenix.image.CachedWebImage;
 import org.dyndns.warenix.image.WebImage.WebImageListener;
-import org.dyndns.warenix.lab.compat1.R;
+import org.dyndns.warenix.palpal.R;
 
 import android.content.Context;
 import android.graphics.Bitmap;

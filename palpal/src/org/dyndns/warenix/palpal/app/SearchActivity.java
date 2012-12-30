@@ -1,8 +1,7 @@
-package org.dyndns.warenix.lab.compat1.app;
+package org.dyndns.warenix.palpal.app;
 
-import org.dyndns.warenix.lab.compat1.R;
 import org.dyndns.warenix.lab.compat1.util.AndroidUtil;
-import org.dyndns.warenix.palpal.AppActivity;
+import org.dyndns.warenix.palpal.R;
 
 import android.os.Bundle;
 

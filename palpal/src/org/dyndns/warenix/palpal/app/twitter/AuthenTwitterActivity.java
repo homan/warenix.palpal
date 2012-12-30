@@ -1,9 +1,9 @@
-package org.dyndns.warenix.lab.compat1.app.twitter;
+package org.dyndns.warenix.palpal.app.twitter;
 
-import org.dyndns.warenix.lab.compat1.R;
+import org.dyndns.warenix.palpal.R;
+import org.dyndns.warenix.palpal.app.AppActivity;
 import org.dyndns.warenix.lab.compat1.util.Memory;
 import org.dyndns.warenix.lab.compat1.util.PreferenceMaster;
-import org.dyndns.warenix.palpal.AppActivity;
 import org.dyndns.warenix.util.WLog;
 
 import twitter4j.Twitter;
@@ -13,7 +13,7 @@ import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.AsyncTask;
+import org.dyndns.warenix.util.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;

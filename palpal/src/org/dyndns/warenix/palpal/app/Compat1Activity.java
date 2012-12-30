@@ -1,11 +1,8 @@
-package org.dyndns.warenix.lab.compat1.app;
+package org.dyndns.warenix.palpal.app;
 
 import java.util.ArrayList;
 
 import org.dyndns.warenix.image.CachedWebImage;
-import org.dyndns.warenix.lab.compat1.R;
-import org.dyndns.warenix.lab.compat1.app.facebook.AuthenFacebookActivity;
-import org.dyndns.warenix.lab.compat1.app.twitter.AuthenTwitterActivity;
 import org.dyndns.warenix.lab.compat1.fragment.BFragment;
 import org.dyndns.warenix.lab.compat1.util.AndroidUtil;
 import org.dyndns.warenix.lab.taskservice.BackgroundTask;
@@ -17,7 +14,9 @@ import org.dyndns.warenix.mission.facebook.util.FacebookMaster;
 import org.dyndns.warenix.mission.timeline.TimelineListFragment;
 import org.dyndns.warenix.mission.twitter.backgroundtask.ReplyStatusBackgroundTask;
 import org.dyndns.warenix.mission.twitter.util.TwitterMaster;
-import org.dyndns.warenix.palpal.AppActivity;
+import org.dyndns.warenix.palpal.R;
+import org.dyndns.warenix.palpal.app.facebook.AuthenFacebookActivity;
+import org.dyndns.warenix.palpal.app.twitter.AuthenTwitterActivity;
 import org.dyndns.warenix.util.WLog;
 
 import android.content.Context;

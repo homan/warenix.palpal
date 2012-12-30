@@ -1,9 +1,9 @@
 package org.dyndns.warenix.mission.sample;
 
-import org.dyndns.warenix.lab.compat1.R;
+import org.dyndns.warenix.palpal.R;
 import org.dyndns.warenix.util.WLog;
 
-import android.os.AsyncTask;
+import org.dyndns.warenix.util.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;

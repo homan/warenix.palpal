@@ -45,14 +45,16 @@ public class LinkPreview implements Serializable {
 			} catch (JSONException e) {
 			}
 
-			JSONArray mediaJSONArray = json.getJSONArray("media");
+			if (json.has("media")) {
+				JSONArray mediaJSONArray = json.getJSONArray("media");
 
-			previewImageList = new ArrayList<String>();
-			for (int i = 0; i < mediaJSONArray.length(); ++i) {
-				JSONObject previewJSON = mediaJSONArray.getJSONObject(i);
+				previewImageList = new ArrayList<String>();
+				for (int i = 0; i < mediaJSONArray.length(); ++i) {
+					JSONObject previewJSON = mediaJSONArray.getJSONObject(i);
 
-				previewImageList.add(URLDecoder.decode(previewJSON
-						.getString("src")));
+					previewImageList.add(URLDecoder.decode(previewJSON
+							.getString("src")));
+				}
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();

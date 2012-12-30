@@ -2,7 +2,7 @@ package org.dyndns.warenix.mission.timeline;
 
 import java.io.Serializable;
 
-import org.dyndns.warenix.lab.compat1.R;
+import org.dyndns.warenix.palpal.R;
 import org.dyndns.warenix.lab.compat1.app.timeline.TimelineFactory.TimelineConfig;
 import org.dyndns.warenix.pattern.baseListView.AsyncListAdapter.AsyncRefreshListener;
 import org.dyndns.warenix.pattern.baseListView.ListViewAdapter;

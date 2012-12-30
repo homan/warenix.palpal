@@ -1,10 +1,9 @@
-package org.dyndns.warenix.lab.compat1.app;
+package org.dyndns.warenix.palpal.app;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 
 import org.dyndns.warenix.image.CachedWebImage;
-import org.dyndns.warenix.lab.compat1.R;
 import org.dyndns.warenix.lab.compat1.app.timeline.TimelineFactory;
 import org.dyndns.warenix.lab.compat1.app.timeline.TimelineFactory.TimelineConfig;
 import org.dyndns.warenix.lab.compat1.util.Memory;
@@ -12,7 +11,7 @@ import org.dyndns.warenix.mission.facebook.FacebookAlbumCoverAdapter;
 import org.dyndns.warenix.mission.facebook.FacebookAlbumPhotoAdapter;
 import org.dyndns.warenix.mission.facebook.FacebookObject;
 import org.dyndns.warenix.mission.facebook.util.FacebookMaster;
-import org.dyndns.warenix.palpal.AppActivity;
+import org.dyndns.warenix.palpal.R;
 import org.dyndns.warenix.util.WLog;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,8 +33,8 @@ import android.widget.TextView;
 
 import com.facebook.android.Facebook;
 
-public class PhotoActivity extends AppActivity implements
-		OnPageChangeListener, OnItemClickListener {
+public class PhotoActivity extends AppActivity implements OnPageChangeListener,
+		OnItemClickListener {
 	private static final String TAG = "PhotoActivity";
 
 	public static final String BUNDLE_GRAPH_ID = "graph_id";

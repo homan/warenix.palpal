@@ -1,6 +1,5 @@
-package org.dyndns.warenix.lab.compat1.app;
+package org.dyndns.warenix.palpal.app;
 
-import org.dyndns.warenix.lab.compat1.R;
 import org.dyndns.warenix.lab.compat1.util.AndroidUtil;
 import org.dyndns.warenix.lab.compat1.util.IndicatorTokenizer;
 import org.dyndns.warenix.lab.compat1.util.Memory;
@@ -14,7 +13,7 @@ import org.dyndns.warenix.mission.twitter.TwitterUserFilterQueryProvider;
 import org.dyndns.warenix.mission.twitter.backgroundtask.ReplyDirectMessageBackgroundTask;
 import org.dyndns.warenix.mission.twitter.backgroundtask.ReplyStatusBackgroundTask;
 import org.dyndns.warenix.mission.twitter.util.TwitterMaster;
-import org.dyndns.warenix.palpal.AppActivity;
+import org.dyndns.warenix.palpal.R;
 import org.dyndns.warenix.pattern.baseListView.ListViewAdapter;
 import org.dyndns.warenix.util.WLog;
 
@@ -70,7 +69,7 @@ public class ReplyActivity extends AppActivity {
 		TwitterUserAutoCompleteAdapter adapter = new TwitterUserAutoCompleteAdapter(
 				this, null);
 		adapter.setFilterQueryProvider(new TwitterUserFilterQueryProvider());
-		commentTextView.setAdapter(adapter);
+//		commentTextView.setAdapter(adapter);
 
 		ListView listView = (ListView) findViewById(android.R.id.list);
 

@@ -6,7 +6,7 @@ import org.dyndns.warenix.pattern.baseListView.ListViewAdapter;
 import org.dyndns.warenix.pattern.baseListView.ListViewItem;
 
 import android.content.Context;
-import android.os.AsyncTask;
+import org.dyndns.warenix.util.AsyncTask;
 import android.widget.ListView;
 
 public class SampleListAdapter extends ListViewAdapter {

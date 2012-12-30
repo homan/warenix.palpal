@@ -1,4 +1,4 @@
-package org.dyndns.warenix.lab.compat1.app;
+package org.dyndns.warenix.palpal.app;
 
 import org.dyndns.warenix.image.CachedWebImage;
 import org.dyndns.warenix.lab.taskservice.TaskService;

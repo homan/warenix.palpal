@@ -6,19 +6,20 @@
 
     <ImageView
         android:id="@+id/profileImage"
-        android:layout_width="64dip"
-        android:layout_height="64dip"
-        android:layout_centerHorizontal="true"
+        android:layout_width="96dip"
+        android:layout_height="96dip"
+        android:layout_centerVertical="true"
         android:src="@drawable/ic_monkey" />
 
     <TextView
         android:id="@+id/username"
         android:layout_width="128dip"
         android:layout_height="wrap_content"
-        android:layout_below="@id/profileImage"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/profileImage"
         android:gravity="center_horizontal"
-        android:textColor="@color/labelColor"
         android:text="warenix (Wong Chi Fung)"
+        android:textColor="@color/labelColor"
         android:textSize="20dip" />
 
 </RelativeLayout>

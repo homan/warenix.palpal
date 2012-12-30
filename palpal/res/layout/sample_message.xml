@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="@drawable/underline"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="5dip" >
@@ -84,6 +85,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="1dip"
             android:background="@color/messageItemColorBottom"
+            android:lineSpacingMultiplier="1.2"
             android:padding="7dip"
             android:text="RT @hkxforce: &apos;那些年...一變成廣東話&apos;個期我地一齊溝過的女&apos;，馬上由純愛變成mk夜場味"
             android:textColor="@color/textColor"

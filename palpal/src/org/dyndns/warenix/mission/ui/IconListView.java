@@ -1,7 +1,8 @@
 package org.dyndns.warenix.mission.ui;
 
-import org.dyndns.warenix.lab.compat1.R;
+import org.dyndns.warenix.palpal.R;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+@SuppressLint("NewApi")
 public class IconListView extends LinearLayout {
 
 	ImageView favourite;

@@ -1,6 +1,6 @@
 package org.dyndns.warenix.lab.compat1.util;
 
-import org.dyndns.warenix.lab.compat1.R;
+import org.dyndns.warenix.palpal.R;
 
 import android.app.Activity;
 import android.view.View;

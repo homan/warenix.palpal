@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 
 import org.dyndns.warenix.image.ImageUtil;
-import org.dyndns.warenix.lab.compat1.R;
+import org.dyndns.warenix.palpal.R;
 import org.dyndns.warenix.lab.compat1.util.Memory;
 import org.dyndns.warenix.lab.compat1.util.PreferenceMaster;
 import org.dyndns.warenix.util.WLog;

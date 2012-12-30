@@ -4,10 +4,7 @@ import java.util.Date;
 
 import org.dyndns.warenix.image.CachedWebImage;
 import org.dyndns.warenix.image.WebImage.WebImageListener;
-import org.dyndns.warenix.lab.compat1.R;
-import org.dyndns.warenix.lab.compat1.app.PhotoActivity;
-import org.dyndns.warenix.lab.compat1.app.ReplyActivity;
-import org.dyndns.warenix.lab.compat1.app.facebook.ZoomImageActivity;
+import org.dyndns.warenix.palpal.R;
 import org.dyndns.warenix.lab.compat1.util.Memory;
 import org.dyndns.warenix.lab.taskservice.TaskService;
 import org.dyndns.warenix.mission.facebook.FacebookObject.Action;
@@ -17,6 +14,9 @@ import org.dyndns.warenix.mission.timeline.StreamAdapter;
 import org.dyndns.warenix.mission.timeline.TimelineMessageListViewItem;
 import org.dyndns.warenix.mission.twitter.util.TwitterLinkify;
 import org.dyndns.warenix.mission.ui.IconListView;
+import org.dyndns.warenix.palpal.app.PhotoActivity;
+import org.dyndns.warenix.palpal.app.ReplyActivity;
+import org.dyndns.warenix.palpal.app.facebook.ZoomImageActivity;
 import org.dyndns.warenix.palpal.intent.PalPalIntent;
 import org.dyndns.warenix.pattern.baseListView.IViewHolder;
 import org.dyndns.warenix.pattern.baseListView.ListViewAdapter;
@@ -234,7 +234,7 @@ public class FacebookMessageListItem extends TimelineMessageListViewItem {
 		//
 		if (messageObject.fromUser != null) {
 			String profileImageUrlBig = String.format(
-					"https://graph.facebook.com/%s/picture?type=normal",
+					"https://graph.facebook.com/%s/picture?type=large",
 					messageObject.fromUser.id);
 			setProfileImage(viewHolder.profileImage, position,
 					profileImageUrlBig);
