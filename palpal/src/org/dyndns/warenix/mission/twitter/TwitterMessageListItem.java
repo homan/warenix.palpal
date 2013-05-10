@@ -2,12 +2,11 @@ package org.dyndns.warenix.mission.twitter;
 
 import java.util.Date;
 
-import org.dyndns.warenix.image.CachedWebImage;
-import org.dyndns.warenix.image.WebImage.WebImageListener;
 import org.dyndns.warenix.mission.facebook.LinkPreview;
 import org.dyndns.warenix.mission.facebook.util.FacebookMaster;
 import org.dyndns.warenix.mission.timeline.StreamAdapter;
 import org.dyndns.warenix.mission.timeline.TimelineMessageListViewItem;
+import org.dyndns.warenix.mission.twitter.util.TwitterLinkCache;
 import org.dyndns.warenix.mission.twitter.util.TwitterLinkify;
 import org.dyndns.warenix.mission.ui.IconListView;
 import org.dyndns.warenix.palpal.R;
@@ -23,7 +22,6 @@ import twitter4j.Status;
 import twitter4j.URLEntity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.view.ContextMenu;
 import android.view.View;
@@ -34,7 +32,6 @@ import android.widget.TextView;
 public class TwitterMessageListItem extends TimelineMessageListViewItem {
 	private static final String TAG = "TwitterMessageListItem";
 
-	ListViewAdapter adapter;
 	twitter4j.Status messageObject;
 
 	static class ViewHolder implements IViewHolder {
@@ -69,8 +66,8 @@ public class TwitterMessageListItem extends TimelineMessageListViewItem {
 	}
 
 	public TwitterMessageListItem(Object messageObject, ListViewAdapter adapter) {
+		super(adapter);
 		this.messageObject = (Status) messageObject;
-		this.adapter = adapter;
 	}
 
 	@Override
@@ -141,30 +138,55 @@ public class TwitterMessageListItem extends TimelineMessageListViewItem {
 			// use facebook to get preview
 			URLEntity[] urlEntities = messageObject.getURLEntities();
 			if (urlEntities != null && urlEntities.length > 0) {
-				viewHolder.image.setVisibility(View.VISIBLE);
 				final String linkUrl = urlEntities[0].getDisplayURL()
 						.toString();
+				final String imagePreviewCache = TwitterLinkCache
+						.getPreview(linkUrl);
+				WLog.d(TAG, String.format("link[%s] cached[%s]", linkUrl,
+						imagePreviewCache));
 
-				new Thread() {
-					public void run() {
-						String response = FacebookMaster
-								.getLinkpreview(linkUrl);
-						final LinkPreview linkPreview = new LinkPreview(
-								response);
-						viewHolder.image.post(new Runnable() {
+				if (TwitterLinkCache.NO_PERVIEW.equals(imagePreviewCache)) {
+					viewHolder.image.setVisibility(View.GONE);
+				} else {
+					if (null == imagePreviewCache) {
+						// try fetch image preview using facebook service
+						viewHolder.image.setVisibility(View.VISIBLE);
+						new Thread() {
 							public void run() {
-								if (linkPreview.previewImageList != null) {
-									setProfileImage(viewHolder.image, position,
-											linkPreview.previewImageList.get(0));
-								} else {
-									viewHolder.image.setVisibility(View.GONE);
-								}
-							}
-						});
+								String response = FacebookMaster
+										.getLinkpreview(linkUrl);
+								final LinkPreview linkPreview = new LinkPreview(
+										response);
+								viewHolder.image.post(new Runnable() {
+									public void run() {
+										if (linkPreview.previewImageList != null) {
+											String previewImage = linkPreview.previewImageList
+													.get(0);
+											TwitterLinkCache.addPreview(
+													linkUrl, previewImage);
+											setProfileImage(viewHolder.image,
+													position, previewImage);
+										} else {
+											viewHolder.image
+													.setVisibility(View.GONE);
+											TwitterLinkCache
+													.addPreview(
+															linkUrl,
+															TwitterLinkCache.NO_PERVIEW);
+										}
+									}
+								});
 
+							}
+						}.start();
+					} else {
+						// use cached url
+						viewHolder.image.setVisibility(View.VISIBLE);
+						setProfileImage(viewHolder.image, position,
+								imagePreviewCache);
 					}
-				}.start();
-				viewHolder.image.setImageResource(R.drawable.ic_launcher);
+				}
+
 			} else {
 				viewHolder.image.setVisibility(View.GONE);
 			}
@@ -274,40 +296,6 @@ public class TwitterMessageListItem extends TimelineMessageListViewItem {
 
 	}
 
-	public void setProfileImage(final ImageView imageView, final int position,
-			String imageUrl) {
-
-		if (!adapter.isIdle()) {
-			imageView.setImageResource(R.drawable.ic_launcher);
-			WLog.d(TAG, "warenix, list is not ready, skip " + position);
-			return;
-		}
-		WLog.d(TAG, "warenix, setProfile " + position);
-		imageView.setImageResource(R.drawable.ic_launcher);
-		CachedWebImage webImage2 = new CachedWebImage();
-		webImage2.setWebImageListener(new WebImageListener() {
-
-			@Override
-			public void onImageSet(ImageView image, Bitmap bitmap) {
-				// if (adapter.isChildVisible(position)) {
-				WLog.d(TAG, "onImageSet for position " + position
-						+ " set bitmap");
-				imageView.setImageBitmap(bitmap);
-				// } else {
-				// WLog.d(TAG, "onImageSet for position " + position
-				// + " recycle bitmap");
-				// ImageUtil.recycleBitmap(bitmap);
-				// }
-			}
-
-			@Override
-			public void onImageSet(ImageView image) {
-			}
-		});
-
-		webImage2.startDownloadImage("" + position, imageUrl, imageView, null);
-	}
-
 	@Override
 	public Date getDate() {
 		return messageObject.getCreatedAt();
@@ -317,4 +305,5 @@ public class TwitterMessageListItem extends TimelineMessageListViewItem {
 	public int setMessageType() {
 		return StreamAdapter.MESSAGE_TYPE_TWITTER;
 	}
+
 }

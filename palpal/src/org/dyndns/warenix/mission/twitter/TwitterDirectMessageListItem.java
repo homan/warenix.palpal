@@ -4,15 +4,14 @@ import java.util.Date;
 
 import org.dyndns.warenix.image.CachedWebImage;
 import org.dyndns.warenix.image.WebImage.WebImageListener;
-import org.dyndns.warenix.palpal.R;
-import org.dyndns.warenix.palpal.app.ReplyActivity;
 import org.dyndns.warenix.mission.timeline.StreamAdapter;
 import org.dyndns.warenix.mission.timeline.TimelineMessageListViewItem;
 import org.dyndns.warenix.mission.twitter.util.TwitterLinkify;
 import org.dyndns.warenix.mission.ui.IconListView;
+import org.dyndns.warenix.palpal.R;
+import org.dyndns.warenix.palpal.app.ReplyActivity;
 import org.dyndns.warenix.pattern.baseListView.IViewHolder;
 import org.dyndns.warenix.pattern.baseListView.ListViewAdapter;
-import org.dyndns.warenix.util.ImageUtil;
 import org.dyndns.warenix.util.WLog;
 import org.dyndns.warenix.widget.actionpopup.ActionPopup;
 
@@ -28,7 +27,6 @@ import android.widget.TextView;
 public class TwitterDirectMessageListItem extends TimelineMessageListViewItem {
 	private static final String TAG = "TwitterDirectMessageListItem";
 
-	ListViewAdapter adapter;
 	twitter4j.DirectMessage messageObject;
 
 	static class ViewHolder implements IViewHolder {
@@ -63,8 +61,8 @@ public class TwitterDirectMessageListItem extends TimelineMessageListViewItem {
 
 	public TwitterDirectMessageListItem(Object messageObject,
 			ListViewAdapter adapter) {
+		super(adapter);
 		this.messageObject = (twitter4j.DirectMessage) messageObject;
-		this.adapter = adapter;
 	}
 
 	@Override
@@ -154,39 +152,6 @@ public class TwitterDirectMessageListItem extends TimelineMessageListViewItem {
 
 	}
 
-	public void setProfileImage(final ImageView imageView, final int position,
-			String imageUrl) {
-		if (!adapter.isIdle()) {
-			imageView.setImageResource(R.drawable.ic_launcher);
-			WLog.d(TAG, "warenix, list is not ready, skip " + position);
-			return;
-		}
-
-		imageView.setImageResource(R.drawable.ic_launcher);
-		CachedWebImage webImage2 = new CachedWebImage();
-		webImage2.setWebImageListener(new WebImageListener() {
-
-			@Override
-			public void onImageSet(ImageView image, Bitmap bitmap) {
-				// if (adapter.isChildVisible(position)) {
-				WLog.d(TAG, "onImageSet for position " + position
-						+ " set bitmap");
-				imageView.setImageBitmap(bitmap);
-				// } else {
-				// WLog.d(TAG, "onImageSet for position " + position
-				// + " recycle bitmap");
-				// ImageUtil.recycleBitmap(bitmap);
-				// }
-			}
-
-			@Override
-			public void onImageSet(ImageView image) {
-			}
-		});
-
-		webImage2.startDownloadImage("" + position, imageUrl, imageView, null);
-	}
-
 	@Override
 	public Date getDate() {
 		return messageObject.getCreatedAt();
@@ -196,4 +161,5 @@ public class TwitterDirectMessageListItem extends TimelineMessageListViewItem {
 	public int setMessageType() {
 		return StreamAdapter.MESSAGE_TYPE_TWITTER;
 	}
+
 }
