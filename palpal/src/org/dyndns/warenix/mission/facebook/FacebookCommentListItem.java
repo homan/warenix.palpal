@@ -136,23 +136,27 @@ public class FacebookCommentListItem extends TimelineMessageListViewItem {
 
 	public void setProfileImage(final ImageView imageView, final int position,
 			String imageUrl) {
-
+		if (!adapter.isIdle()) {
+			imageView.setImageResource(R.drawable.ic_launcher);
+			WLog.d(TAG, "warenix, list is not ready, skip " + position);
+			return;
+		}
 		imageView.setImageResource(R.drawable.ic_launcher);
 		CachedWebImage webImage2 = new CachedWebImage();
 		webImage2.setWebImageListener(new WebImageListener() {
 
 			@Override
 			public void onImageSet(ImageView image, Bitmap bitmap) {
-				if (adapter.isChildVisible(position)) {
-					WLog.d(TAG, "onImageSet for position " + position
-							+ " set bitmap");
-					imageView.setImageBitmap(bitmap);
+				// if (adapter.isChildVisible(position)) {
+				WLog.d(TAG, "onImageSet for position " + position
+						+ " set bitmap");
+				imageView.setImageBitmap(bitmap);
 
-				} else {
-					WLog.d(TAG, "onImageSet for position " + position
-							+ " recycle bitmap");
-					ImageUtil.recycleBitmap(bitmap);
-				}
+				// } else {
+				// WLog.d(TAG, "onImageSet for position " + position
+				// + " recycle bitmap");
+				// ImageUtil.recycleBitmap(bitmap);
+				// }
 			}
 
 			@Override

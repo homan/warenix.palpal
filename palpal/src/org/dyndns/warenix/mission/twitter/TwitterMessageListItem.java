@@ -4,10 +4,7 @@ import java.util.Date;
 
 import org.dyndns.warenix.image.CachedWebImage;
 import org.dyndns.warenix.image.WebImage.WebImageListener;
-import org.dyndns.warenix.lab.taskservice.BackgroundTask;
-import org.dyndns.warenix.lab.taskservice.TaskService;
 import org.dyndns.warenix.mission.facebook.LinkPreview;
-import org.dyndns.warenix.mission.facebook.backgroundtask.LinkPreviewBackgroundTask;
 import org.dyndns.warenix.mission.facebook.util.FacebookMaster;
 import org.dyndns.warenix.mission.timeline.StreamAdapter;
 import org.dyndns.warenix.mission.timeline.TimelineMessageListViewItem;
@@ -18,7 +15,6 @@ import org.dyndns.warenix.palpal.app.ReplyActivity;
 import org.dyndns.warenix.palpal.intent.PalPalIntent;
 import org.dyndns.warenix.pattern.baseListView.IViewHolder;
 import org.dyndns.warenix.pattern.baseListView.ListViewAdapter;
-import org.dyndns.warenix.util.ImageUtil;
 import org.dyndns.warenix.util.WLog;
 import org.dyndns.warenix.widget.actionpopup.ActionPopup;
 
@@ -51,6 +47,7 @@ public class TwitterMessageListItem extends TimelineMessageListViewItem {
 		ImageView profileImage2;
 		TextView username2;
 		ImageView image;
+		ImageView coverImage;
 
 		@Override
 		public void releaseMemory() {
@@ -84,6 +81,7 @@ public class TwitterMessageListItem extends TimelineMessageListViewItem {
 		viewHolder.username = (TextView) view.findViewById(R.id.username);
 		viewHolder.profileImage = (ImageView) view
 				.findViewById(R.id.profileImage);
+		viewHolder.coverImage = (ImageView) view.findViewById(R.id.coverImage);
 		viewHolder.message = (TextView) view.findViewById(R.id.message);
 		viewHolder.postDate = (TextView) view.findViewById(R.id.postDate);
 
@@ -175,6 +173,8 @@ public class TwitterMessageListItem extends TimelineMessageListViewItem {
 		String profileImageUrlBig = messageObject.getUser()
 				.getProfileImageURL().toString().replace("_normal", "");
 		setProfileImage(viewHolder.profileImage, position, profileImageUrlBig);
+		setProfileImage(viewHolder.coverImage, position, messageObject
+				.getUser().getProfileBackgroundImageUrl());
 
 		view.setOnClickListener(new View.OnClickListener() {
 
@@ -276,21 +276,28 @@ public class TwitterMessageListItem extends TimelineMessageListViewItem {
 
 	public void setProfileImage(final ImageView imageView, final int position,
 			String imageUrl) {
+
+		if (!adapter.isIdle()) {
+			imageView.setImageResource(R.drawable.ic_launcher);
+			WLog.d(TAG, "warenix, list is not ready, skip " + position);
+			return;
+		}
+		WLog.d(TAG, "warenix, setProfile " + position);
 		imageView.setImageResource(R.drawable.ic_launcher);
 		CachedWebImage webImage2 = new CachedWebImage();
 		webImage2.setWebImageListener(new WebImageListener() {
 
 			@Override
 			public void onImageSet(ImageView image, Bitmap bitmap) {
-				if (adapter.isChildVisible(position)) {
-					WLog.d(TAG, "onImageSet for position " + position
-							+ " set bitmap");
-					imageView.setImageBitmap(bitmap);
-				} else {
-					WLog.d(TAG, "onImageSet for position " + position
-							+ " recycle bitmap");
-					ImageUtil.recycleBitmap(bitmap);
-				}
+				// if (adapter.isChildVisible(position)) {
+				WLog.d(TAG, "onImageSet for position " + position
+						+ " set bitmap");
+				imageView.setImageBitmap(bitmap);
+				// } else {
+				// WLog.d(TAG, "onImageSet for position " + position
+				// + " recycle bitmap");
+				// ImageUtil.recycleBitmap(bitmap);
+				// }
 			}
 
 			@Override

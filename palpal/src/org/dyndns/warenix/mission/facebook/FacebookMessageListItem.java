@@ -4,7 +4,6 @@ import java.util.Date;
 
 import org.dyndns.warenix.image.CachedWebImage;
 import org.dyndns.warenix.image.WebImage.WebImageListener;
-import org.dyndns.warenix.palpal.R;
 import org.dyndns.warenix.lab.compat1.util.Memory;
 import org.dyndns.warenix.lab.taskservice.TaskService;
 import org.dyndns.warenix.mission.facebook.FacebookObject.Action;
@@ -14,13 +13,13 @@ import org.dyndns.warenix.mission.timeline.StreamAdapter;
 import org.dyndns.warenix.mission.timeline.TimelineMessageListViewItem;
 import org.dyndns.warenix.mission.twitter.util.TwitterLinkify;
 import org.dyndns.warenix.mission.ui.IconListView;
+import org.dyndns.warenix.palpal.R;
 import org.dyndns.warenix.palpal.app.PhotoActivity;
 import org.dyndns.warenix.palpal.app.ReplyActivity;
 import org.dyndns.warenix.palpal.app.facebook.ZoomImageActivity;
 import org.dyndns.warenix.palpal.intent.PalPalIntent;
 import org.dyndns.warenix.pattern.baseListView.IViewHolder;
 import org.dyndns.warenix.pattern.baseListView.ListViewAdapter;
-import org.dyndns.warenix.util.ImageUtil;
 import org.dyndns.warenix.util.WLog;
 import org.dyndns.warenix.widget.actionpopup.ActionPopup;
 
@@ -52,6 +51,7 @@ public class FacebookMessageListItem extends TimelineMessageListViewItem {
 		ImageView profileImage2;
 		TextView username2;
 		ImageView image;
+		ImageView coverImage;
 
 		@Override
 		public void releaseMemory() {
@@ -85,6 +85,7 @@ public class FacebookMessageListItem extends TimelineMessageListViewItem {
 		viewHolder.username = (TextView) view.findViewById(R.id.username);
 		viewHolder.profileImage = (ImageView) view
 				.findViewById(R.id.profileImage);
+		viewHolder.coverImage = (ImageView) view.findViewById(R.id.coverImage);
 		viewHolder.message = (TextView) view.findViewById(R.id.message);
 		viewHolder.postDate = (TextView) view.findViewById(R.id.postDate);
 
@@ -125,22 +126,40 @@ public class FacebookMessageListItem extends TimelineMessageListViewItem {
 
 		String message = "";
 		if (messageObject.message != null) {
-			message += messageObject.message + "\n";
+			if (!message.equals("")) {
+				message += "\n";
+			}
+			message += messageObject.message;
 		}
 		if (messageObject.story != null) {
-			message += messageObject.story + "\n";
+			if (!message.equals("")) {
+				message += "\n";
+			}
+			message += messageObject.story;
 		}
 		if (messageObject.title != null) {
-			message += messageObject.title + "\n";
+			if (!message.equals("")) {
+				message += "\n";
+			}
+			message += messageObject.title;
 		}
 		if (messageObject.name != null) {
-			message += messageObject.name + "\n";
+			if (!message.equals("")) {
+				message += "\n";
+			}
+			message += messageObject.name;
 		}
 		if (messageObject.caption != null) {
-			message += messageObject.caption + "\n";
+			if (!message.equals("")) {
+				message += "\n";
+			}
+			message += messageObject.caption;
 		}
 		if (messageObject.count != 0) {
-			message += "x" + messageObject.count + "\n";
+			if (!message.equals("")) {
+				message += "\n";
+			}
+			message += "x" + messageObject.count;
 		}
 		viewHolder.message.setText(message);
 		TwitterLinkify.addTwitterLinkify(viewHolder.message);
@@ -238,6 +257,11 @@ public class FacebookMessageListItem extends TimelineMessageListViewItem {
 					messageObject.fromUser.id);
 			setProfileImage(viewHolder.profileImage, position,
 					profileImageUrlBig);
+
+			String coverImage = String.format(
+					"https://graph.facebook.com/%s?fields=cover",
+					messageObject.fromUser.id);
+			setProfileImage(viewHolder.coverImage, position, profileImageUrlBig);
 		}
 
 		view.setOnClickListener(new View.OnClickListener() {
@@ -455,23 +479,29 @@ public class FacebookMessageListItem extends TimelineMessageListViewItem {
 
 	public void setProfileImage(final ImageView imageView, final int position,
 			String imageUrl) {
+		if (!adapter.isIdle()) {
+			imageView.setImageResource(R.drawable.ic_launcher);
+			WLog.d(TAG, "warenix, list is not ready, skip " + position);
+			return;
+		}
 
+		WLog.d(TAG, "warenix, setProfile " + position);
 		imageView.setImageResource(R.drawable.ic_launcher);
 		CachedWebImage webImage2 = new CachedWebImage();
 		webImage2.setWebImageListener(new WebImageListener() {
 
 			@Override
 			public void onImageSet(ImageView image, Bitmap bitmap) {
-				if (adapter.isChildVisible(position)) {
-					WLog.d(TAG, "onImageSet for position " + position
-							+ " set bitmap");
-					imageView.setImageBitmap(bitmap);
+				// if (adapter.isChildVisible(position)) {
+				WLog.d(TAG, "onImageSet for position " + position
+						+ " set bitmap");
+				imageView.setImageBitmap(bitmap);
 
-				} else {
-					WLog.d(TAG, "onImageSet for position " + position
-							+ " recycle bitmap");
-					ImageUtil.recycleBitmap(bitmap);
-				}
+				// } else {
+				// WLog.d(TAG, "onImageSet for position " + position
+				// + " recycle bitmap");
+				// ImageUtil.recycleBitmap(bitmap);
+				// }
 			}
 
 			@Override

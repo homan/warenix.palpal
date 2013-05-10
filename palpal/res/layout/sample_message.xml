@@ -1,36 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/message_container"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/underline"
+    android:layout_margin="8dp"
+    android:background="#a2b1a0"
     android:gravity="center"
-    android:orientation="vertical"
-    android:padding="5dip" >
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dip"
-        android:background="@drawable/underline"
-        android:padding="7dip" >
-
-        <include
-            android:id="@+id/iconList"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            layout="@layout/iconlist" />
-
-        <TextView
-            android:id="@+id/postDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:text="Oct 27,2011 10:17:04 PM"
-            android:textColor="@color/labelColor"
-            android:textSize="12dip" />
-    </RelativeLayout>
+    android:orientation="vertical" >
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -84,13 +60,38 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="1dip"
-            android:background="@color/messageItemColorBottom"
+            android:background="#f1efed"
+            android:fontFamily="sans-serif-condensed"
             android:lineSpacingMultiplier="1.2"
             android:padding="7dip"
             android:text="RT @hkxforce: &apos;那些年...一變成廣東話&apos;個期我地一齊溝過的女&apos;，馬上由純愛變成mk夜場味"
-            android:textColor="@color/textColor"
+            android:textColor="#222205"
             android:textColorLink="@color/palpalColor"
             android:textSize="16dip" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dip"
+            android:padding="7dip" >
+
+            <include
+                android:id="@+id/iconList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                layout="@layout/iconlist" />
+
+            <TextView
+                android:id="@+id/postDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:text="Oct 27,2011 10:17:04 PM"
+                android:textColor="@color/labelColor"
+                android:textSize="12dip" />
+        </RelativeLayout>
     </LinearLayout>
 
 </LinearLayout>

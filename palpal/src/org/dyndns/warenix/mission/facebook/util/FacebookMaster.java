@@ -31,6 +31,7 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.facebook.android.Facebook;
 
@@ -151,16 +152,27 @@ public class FacebookMaster {
 					return groupMessageId;
 				}
 			} else if (messageObject.link.contains("/posts/")) {
+				String path = null;
+				try {
+					URL url = new URL(messageObject.link);
+					path = url.getPath();
+				} catch (MalformedURLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+					path = messageObject.link;
+				}
 
+				// TODO fix
+				// http://www.facebook.com/warenix/posts/10151449344954021?comment_id=26364022&offset=0&total_comments=5
 				// if (messageObject.message == null) {
 				// // get the postId
 				// return messageObject.link.substring(messageObject.link
 				// .lastIndexOf('/') + 1);
 				// } else {
 				// get userId_postId
-				int startPos = "http://www.facebook.com/".length();
-				String username = messageObject.link.substring(startPos,
-						messageObject.link.indexOf('/', startPos));
+				int startPos = 1;
+				String username = path.substring(startPos,
+						path.indexOf('/', startPos));
 				Facebook facebook = Memory.getFacebookClient();
 				Bundle params = new Bundle();
 				params.putString("fields", "id");
@@ -168,10 +180,8 @@ public class FacebookMaster {
 					String responseString = facebook.request(username, params);
 					JSONObject json = new JSONObject(responseString);
 					String userId = json.getString("id");
-					return userId
-							+ "_"
-							+ messageObject.link.substring(messageObject.link
-									.lastIndexOf('/') + 1);
+					return userId + "_"
+							+ path.substring(path.lastIndexOf('/') + 1);
 				} catch (MalformedURLException e) {
 					e.printStackTrace();
 				} catch (IOException e) {
