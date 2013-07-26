@@ -128,92 +128,100 @@ public class ComposeActivity extends AppActivity {
 		}
 	}
 
+	TaskServiceStateListener mTaskServiceStateListener = new TaskServiceStateListener() {
+
+		@Override
+		public void onQueueSizeChanged(int newQueueSize) {
+			WLog.d("taskservice", "onQueueSizeChanged " + newQueueSize);
+		}
+
+		@Override
+		public void onBackgroundTaskRemoved(final BackgroundTask task) {
+			runOnUiThread(new Runnable() {
+
+				@Override
+				public void run() {
+
+					if (task instanceof LinkPreviewBackgroundTask) {
+						mLinkPreview = (LinkPreview) task.getResult();
+
+						String tempImageLink = null;
+						if (mLinkPreview.previewImageList != null) {
+							for (int i = 0; i < mLinkPreview.previewImageList
+									.size(); ++i) {
+								tempImageLink = mLinkPreview.previewImageList
+										.get(i);
+								// workaround for error (#100) FBCDN image
+								// is not allowed in stream
+								// fbcn.net images are not allowed
+								// so skip fetching image preview using
+								// facebook engine
+								if (!tempImageLink.contains("fbcdn.net"))
+									imageQueueAdapter
+											.addImageUri(Uri
+													.parse(mLinkPreview.previewImageList
+															.get(i)));
+							}
+						}
+
+						nameText.setText(mLinkPreview.name);
+						captionText.setText(mLinkPreview.caption);
+						linkText.setText(mLinkPreview.link);
+						descriptionText.setText(mLinkPreview.description);
+						sourceText.setText(mLinkPreview.source);
+					} else if (task instanceof ShareLinkBackgroundTask) {
+						Toast.makeText(ComposeActivity.this, "Link is shared!",
+								Toast.LENGTH_SHORT).show();
+					} else if (task instanceof ShareMessageBackgroundTask) {
+						Toast.makeText(ComposeActivity.this,
+								"Message is shared!", Toast.LENGTH_SHORT)
+								.show();
+					} else if (task instanceof SharePhotoBackgroundTask) {
+						Toast.makeText(
+								ComposeActivity.this,
+								imageQueueAdapter.getCount()
+										+ " photos are shared!",
+								Toast.LENGTH_SHORT).show();
+					} else if (task instanceof UpdateStatusBackgroundTask) {
+						Toast.makeText(
+								ComposeActivity.this,
+								imageQueueAdapter.getCount()
+										+ "Twitter status is updated!",
+								Toast.LENGTH_SHORT).show();
+					}
+				}
+			});
+		}
+
+		@Override
+		public void onBackgroundTaskExecuted(final BackgroundTask task) {
+			runOnUiThread(new Runnable() {
+
+				@Override
+				public void run() {
+					Toast.makeText(getApplicationContext(),
+							"executing " + task.toString(), Toast.LENGTH_SHORT)
+							.show();
+				}
+			});
+		}
+
+		@Override
+		public void onBackgroundTaskAdded(BackgroundTask task) {
+
+		}
+	};
+
 	public void onResume() {
 		super.onResume();
 
-		TaskService.setStateListener(new TaskServiceStateListener() {
+		TaskService.addStateListener(mTaskServiceStateListener);
+	}
 
-			@Override
-			public void onQueueSizeChanged(int newQueueSize) {
-				WLog.d("taskservice", "onQueueSizeChanged " + newQueueSize);
-			}
+	public void onPause() {
+		super.onPause();
 
-			@Override
-			public void onBackgroundTaskRemoved(final BackgroundTask task) {
-				runOnUiThread(new Runnable() {
-
-					@Override
-					public void run() {
-
-						if (task instanceof LinkPreviewBackgroundTask) {
-							mLinkPreview = (LinkPreview) task.getResult();
-
-							String tempImageLink = null;
-							if (mLinkPreview.previewImageList != null) {
-								for (int i = 0; i < mLinkPreview.previewImageList
-										.size(); ++i) {
-									tempImageLink = mLinkPreview.previewImageList
-											.get(i);
-									// workaround for error (#100) FBCDN image
-									// is not allowed in stream
-									// fbcn.net images are not allowed
-									// so skip fetching image preview using
-									// facebook engine
-									if (!tempImageLink.contains("fbcdn.net"))
-										imageQueueAdapter.addImageUri(Uri
-												.parse(mLinkPreview.previewImageList
-														.get(i)));
-								}
-							}
-
-							nameText.setText(mLinkPreview.name);
-							captionText.setText(mLinkPreview.caption);
-							linkText.setText(mLinkPreview.link);
-							descriptionText.setText(mLinkPreview.description);
-							sourceText.setText(mLinkPreview.source);
-						} else if (task instanceof ShareLinkBackgroundTask) {
-							Toast.makeText(ComposeActivity.this,
-									"Link is shared!", Toast.LENGTH_SHORT)
-									.show();
-						} else if (task instanceof ShareMessageBackgroundTask) {
-							Toast.makeText(ComposeActivity.this,
-									"Message is shared!", Toast.LENGTH_SHORT)
-									.show();
-						} else if (task instanceof SharePhotoBackgroundTask) {
-							Toast.makeText(
-									ComposeActivity.this,
-									imageQueueAdapter.getCount()
-											+ " photos are shared!",
-									Toast.LENGTH_SHORT).show();
-						} else if (task instanceof UpdateStatusBackgroundTask) {
-							Toast.makeText(
-									ComposeActivity.this,
-									imageQueueAdapter.getCount()
-											+ "Twitter status is updated!",
-									Toast.LENGTH_SHORT).show();
-						}
-					}
-				});
-			}
-
-			@Override
-			public void onBackgroundTaskExecuted(final BackgroundTask task) {
-				runOnUiThread(new Runnable() {
-
-					@Override
-					public void run() {
-						Toast.makeText(getApplicationContext(),
-								"executing " + task.toString(),
-								Toast.LENGTH_SHORT).show();
-					}
-				});
-			}
-
-			@Override
-			public void onBackgroundTaskAdded(BackgroundTask task) {
-
-			}
-		});
+		TaskService.removeStateListener(mTaskServiceStateListener);
 	}
 
 	@Override

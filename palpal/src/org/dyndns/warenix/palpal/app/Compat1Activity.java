@@ -67,55 +67,61 @@ public class Compat1Activity extends AppActivity {
 		onReady();
 	}
 
+	TaskServiceStateListener mTaskServiceStateListener = new TaskServiceStateListener() {
+
+		@Override
+		public void onQueueSizeChanged(int newQueueSize) {
+
+		}
+
+		@Override
+		public void onBackgroundTaskRemoved(final BackgroundTask task) {
+			runOnUiThread(new Runnable() {
+				public void run() {
+					if (task instanceof LikePostBackgroundTask) {
+						Toast.makeText(getApplicationContext(), "Like +1",
+								Toast.LENGTH_SHORT).show();
+					} else if (task instanceof CommentPostBackgroundTask) {
+						Toast.makeText(getApplicationContext(),
+								"Comment posted", Toast.LENGTH_SHORT).show();
+					} else if (task instanceof ReplyStatusBackgroundTask) {
+						Toast.makeText(getApplicationContext(),
+								"Status replied", Toast.LENGTH_SHORT).show();
+					}
+				}
+			});
+		}
+
+		@Override
+		public void onBackgroundTaskExecuted(final BackgroundTask task) {
+			runOnUiThread(new Runnable() {
+
+				@Override
+				public void run() {
+					Toast.makeText(getApplicationContext(),
+							"executing " + task.toString(), Toast.LENGTH_SHORT)
+							.show();
+				}
+			});
+
+		}
+
+		@Override
+		public void onBackgroundTaskAdded(BackgroundTask task) {
+
+		}
+	};
+
 	public void onResume() {
 		super.onResume();
 
-		TaskService.setStateListener(new TaskServiceStateListener() {
+		TaskService.addStateListener(mTaskServiceStateListener);
+	}
 
-			@Override
-			public void onQueueSizeChanged(int newQueueSize) {
+	public void onPause() {
+		super.onPause();
 
-			}
-
-			@Override
-			public void onBackgroundTaskRemoved(final BackgroundTask task) {
-				runOnUiThread(new Runnable() {
-					public void run() {
-						if (task instanceof LikePostBackgroundTask) {
-							Toast.makeText(getApplicationContext(), "Like +1",
-									Toast.LENGTH_SHORT).show();
-						} else if (task instanceof CommentPostBackgroundTask) {
-							Toast.makeText(getApplicationContext(),
-									"Comment posted", Toast.LENGTH_SHORT)
-									.show();
-						} else if (task instanceof ReplyStatusBackgroundTask) {
-							Toast.makeText(getApplicationContext(),
-									"Status replied", Toast.LENGTH_SHORT)
-									.show();
-						}
-					}
-				});
-			}
-
-			@Override
-			public void onBackgroundTaskExecuted(final BackgroundTask task) {
-				runOnUiThread(new Runnable() {
-
-					@Override
-					public void run() {
-						Toast.makeText(getApplicationContext(),
-								"executing " + task.toString(),
-								Toast.LENGTH_SHORT).show();
-					}
-				});
-
-			}
-
-			@Override
-			public void onBackgroundTaskAdded(BackgroundTask task) {
-
-			}
-		});
+		TaskService.removeStateListener(mTaskServiceStateListener);
 	}
 
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {

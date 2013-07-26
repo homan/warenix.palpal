@@ -62,7 +62,7 @@
             android:lineSpacingMultiplier="1.2"
             android:padding="7dip"
             android:text="RT @hkxforce: &apos;那些年...一變成廣東話&apos;個期我地一齊溝過的女&apos;，馬上由純愛變成mk夜場味"
-            android:textColor="#222205"
+            android:textColor="#ffffff"
             android:textColorLink="@color/palpalColor"
             android:textSize="16dip" />
 

@@ -45,11 +45,11 @@ public abstract class TimelineMessageListViewItem extends ListViewItem
 
 	public void setProfileImage(final ImageView imageView, final int position,
 			String imageUrl) {
-		if (!adapter.isIdle()) {
-			imageView.setImageResource(R.drawable.ic_launcher);
-			WLog.d(TAG, "warenix, list is not ready, skip " + position);
-			return;
-		}
+//		if (!adapter.isIdle()) {
+//			imageView.setImageResource(R.drawable.ic_launcher);
+//			WLog.d(TAG, "warenix, list is not ready, skip " + position);
+//			return;
+//		}
 
 		imageView.setImageResource(R.drawable.ic_launcher);
 		CachedWebImage webImage2 = new CachedWebImage();

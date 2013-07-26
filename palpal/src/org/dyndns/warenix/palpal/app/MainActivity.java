@@ -3,7 +3,6 @@ package org.dyndns.warenix.palpal.app;
 import java.util.ArrayList;
 
 import org.dyndns.warenix.image.CachedWebImage;
-import org.dyndns.warenix.palpal.R;
 import org.dyndns.warenix.lab.compat1.app.timeline.TimelineFactory;
 import org.dyndns.warenix.lab.compat1.app.timeline.TimelineFactory.TimelineConfig;
 import org.dyndns.warenix.lab.compat1.util.AndroidUtil;
@@ -16,9 +15,7 @@ import org.dyndns.warenix.mission.facebook.util.FacebookMaster;
 import org.dyndns.warenix.mission.timeline.TimelineListFragment;
 import org.dyndns.warenix.mission.twitter.backgroundtask.ReplyStatusBackgroundTask;
 import org.dyndns.warenix.mission.twitter.util.TwitterMaster;
-import org.dyndns.warenix.palpal.R.id;
-import org.dyndns.warenix.palpal.R.layout;
-import org.dyndns.warenix.palpal.R.menu;
+import org.dyndns.warenix.palpal.R;
 import org.dyndns.warenix.palpal.app.facebook.AuthenFacebookActivity;
 import org.dyndns.warenix.palpal.app.twitter.AuthenTwitterActivity;
 import org.dyndns.warenix.util.WLog;
@@ -70,55 +67,59 @@ public class MainActivity extends AppActivity {
 		onReady();
 	}
 
+	TaskServiceStateListener mTaskServiceStateListener = new TaskServiceStateListener() {
+
+		@Override
+		public void onQueueSizeChanged(int newQueueSize) {
+
+		}
+
+		@Override
+		public void onBackgroundTaskRemoved(final BackgroundTask task) {
+			runOnUiThread(new Runnable() {
+				public void run() {
+					if (task instanceof LikePostBackgroundTask) {
+						Toast.makeText(getApplicationContext(), "Like +1",
+								Toast.LENGTH_SHORT).show();
+					} else if (task instanceof CommentPostBackgroundTask) {
+						Toast.makeText(getApplicationContext(),
+								"Comment posted", Toast.LENGTH_SHORT).show();
+					} else if (task instanceof ReplyStatusBackgroundTask) {
+						Toast.makeText(getApplicationContext(),
+								"Status replied", Toast.LENGTH_SHORT).show();
+					}
+				}
+			});
+		}
+
+		@Override
+		public void onBackgroundTaskExecuted(final BackgroundTask task) {
+			runOnUiThread(new Runnable() {
+
+				@Override
+				public void run() {
+					Toast.makeText(getApplicationContext(),
+							"executing " + task.toString(), Toast.LENGTH_SHORT)
+							.show();
+				}
+			});
+
+		}
+
+		@Override
+		public void onBackgroundTaskAdded(BackgroundTask task) {
+
+		}
+	};
+
 	public void onResume() {
 		super.onResume();
+		TaskService.addStateListener(mTaskServiceStateListener);
+	}
 
-		TaskService.setStateListener(new TaskServiceStateListener() {
-
-			@Override
-			public void onQueueSizeChanged(int newQueueSize) {
-
-			}
-
-			@Override
-			public void onBackgroundTaskRemoved(final BackgroundTask task) {
-				runOnUiThread(new Runnable() {
-					public void run() {
-						if (task instanceof LikePostBackgroundTask) {
-							Toast.makeText(getApplicationContext(), "Like +1",
-									Toast.LENGTH_SHORT).show();
-						} else if (task instanceof CommentPostBackgroundTask) {
-							Toast.makeText(getApplicationContext(),
-									"Comment posted", Toast.LENGTH_SHORT)
-									.show();
-						} else if (task instanceof ReplyStatusBackgroundTask) {
-							Toast.makeText(getApplicationContext(),
-									"Status replied", Toast.LENGTH_SHORT)
-									.show();
-						}
-					}
-				});
-			}
-
-			@Override
-			public void onBackgroundTaskExecuted(final BackgroundTask task) {
-				runOnUiThread(new Runnable() {
-
-					@Override
-					public void run() {
-						Toast.makeText(getApplicationContext(),
-								"executing " + task.toString(),
-								Toast.LENGTH_SHORT).show();
-					}
-				});
-
-			}
-
-			@Override
-			public void onBackgroundTaskAdded(BackgroundTask task) {
-
-			}
-		});
+	public void onPause() {
+		super.onPause();
+		TaskService.removeStateListener(mTaskServiceStateListener);
 	}
 
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
