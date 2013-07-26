@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.dyndns.warenix.image.CachedWebImage;
 import org.dyndns.warenix.image.WebImage.WebImageListener;
+import org.dyndns.warenix.palpal.R;
 import org.dyndns.warenix.lab.compat1.util.Memory;
 import org.dyndns.warenix.lab.taskservice.TaskService;
 import org.dyndns.warenix.mission.facebook.FacebookObject.Action;
@@ -13,7 +14,6 @@ import org.dyndns.warenix.mission.timeline.StreamAdapter;
 import org.dyndns.warenix.mission.timeline.TimelineMessageListViewItem;
 import org.dyndns.warenix.mission.twitter.util.TwitterLinkify;
 import org.dyndns.warenix.mission.ui.IconListView;
-import org.dyndns.warenix.palpal.R;
 import org.dyndns.warenix.palpal.app.PhotoActivity;
 import org.dyndns.warenix.palpal.app.ReplyActivity;
 import org.dyndns.warenix.palpal.app.facebook.ZoomImageActivity;

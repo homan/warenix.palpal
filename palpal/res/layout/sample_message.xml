@@ -3,9 +3,7 @@
     android:id="@+id/message_container"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:layout_margin="8dp"
-    android:background="#a2b1a0"
-    android:gravity="center"
+    android:background="@drawable/underline"
     android:orientation="vertical" >
 
     <LinearLayout
@@ -60,8 +58,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="1dip"
-            android:background="#f1efed"
-            android:fontFamily="sans-serif-condensed"
+            android:background="@color/messageItemColorBottom"
             android:lineSpacingMultiplier="1.2"
             android:padding="7dip"
             android:text="RT @hkxforce: &apos;那些年...一變成廣東話&apos;個期我地一齊溝過的女&apos;，馬上由純愛變成mk夜場味"

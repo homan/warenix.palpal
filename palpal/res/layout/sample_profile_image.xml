@@ -13,22 +13,20 @@
 
     <ImageView
         android:id="@+id/profileImage"
-        android:layout_width="wrap_content"
+        android:layout_width="96dip"
         android:layout_height="96dip"
-        android:layout_centerHorizontal="true"
-        android:scaleType="centerCrop"
+        android:layout_centerVertical="true"
         android:src="@drawable/ic_monkey" />
 
     <TextView
         android:id="@+id/username"
         android:layout_width="128dip"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:fontFamily="sans-serif-condensed"
+        android:layout_toRightOf="@id/profileImage"
         android:gravity="center_horizontal"
-        android:text="warenix"
+        android:text="warenix (Wong Chi Fung)"
         android:textColor="@color/labelColor"
-        android:textSize="28dip" />
+        android:textSize="20dip" />
 
 </RelativeLayout>

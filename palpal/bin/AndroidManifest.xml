@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="org.dyndns.warenix.palpal"
+    android:installLocation="auto"
+    android:versionCode="7"
+    android:versionName="2.2" >
+
+    <uses-sdk
+        android:minSdkVersion="9"
+        android:targetSdkVersion="16" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <application
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".app.SplashActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".app.Compat1Activity"
+            android:label="@string/app_name"
+            android:launchMode="singleTask" >
+        </activity>
+        <activity
+            android:name=".app.MainActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTask" >
+            <intent-filter>
+                <action android:name="org.dyndns.warenix.palpal.ACTION_PALPAL_MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <!-- send search query to SearchActivity and search button for all activities -->
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".app.SearchActivity" />
+        </activity>
+        <activity
+            android:name=".app.AccountsActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".app.SearchActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTop" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/quick_search" />
+        </activity>
+        <activity
+            android:name=".app.facebook.PostDetailActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".app.twitter.AuthenTwitterActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".app.facebook.AuthenFacebookActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".app.ComposeActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTop" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEND_MULTIPLE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="image/*" />
+            </intent-filter>
+
+            <!-- share link -->
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+
+                <data android:mimeType="text/plain" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <!-- Reshare post -->
+            <intent-filter>
+                <action android:name="org.dyndns.warenix.palpal.facebook.ACTION_RESHARE_POST" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <!-- Quote Tweet -->
+            <intent-filter>
+                <action android:name="org.dyndns.warenix.palpal.twitter.ACTION_QUOTE_TWEET" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".app.ReplyActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".app.facebook.AlbumActivity"
+            android:label="PalPal Album" >
+        </activity>
+        <activity
+            android:name=".app.facebook.ZoomImageActivity"
+            android:label="PalPal Zoom Image" >
+        </activity>
+        <activity
+            android:name=".app.PhotoActivity"
+            android:label="PalPal Photo" >
+        </activity>
+
+        <service android:name="org.dyndns.warenix.lab.taskservice.TaskService" />
+    </application>
+
+</manifest>
