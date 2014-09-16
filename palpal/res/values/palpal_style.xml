@@ -1,7 +1,0 @@
-<resources>
-
-    <style name="customProgressBar" parent="@android:style/Widget.ProgressBar">
-        <item name="android:indeterminateDrawable">@drawable/custom_progress</item>
-    </style>
-
-</resources>
